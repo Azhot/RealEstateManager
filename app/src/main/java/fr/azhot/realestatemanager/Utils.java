@@ -13,6 +13,8 @@ import java.util.Date;
 
 public class Utils {
 
+    public static final Float EUR_DOLLAR_EXCHANGE_RATE = 0.812f;
+
     /**
      * Conversion d'un prix d'un bien immobilier (Dollars vers Euros)
      * NOTE : NE PAS SUPPRIMER, A MONTRER DURANT LA SOUTENANCE
@@ -22,6 +24,10 @@ public class Utils {
      */
     public static int convertDollarToEuro(int dollars) {
         return (int) Math.round(dollars * 0.812);
+    }
+
+    public static int convertEuroToDollar(int euros) {
+        return Math.round(euros / EUR_DOLLAR_EXCHANGE_RATE);
     }
 
     /**
