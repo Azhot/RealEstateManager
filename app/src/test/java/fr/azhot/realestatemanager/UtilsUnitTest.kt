@@ -3,6 +3,9 @@ package fr.azhot.realestatemanager
 import fr.azhot.realestatemanager.Utils.EUR_DOLLAR_EXCHANGE_RATE
 import org.junit.Assert.*
 import org.junit.Test
+import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.util.*
 import kotlin.math.roundToInt
 
 class UtilsUnitTest {
@@ -12,5 +15,13 @@ class UtilsUnitTest {
         val dollars = (euros / EUR_DOLLAR_EXCHANGE_RATE).roundToInt()
 
         assertEquals(dollars, Utils.convertEuroToDollar(euros))
+    }
+
+    @Test
+    fun getDateFormatted_isWorking() {
+        val format = SimpleDateFormat("dd/MM/yyyy")
+        val date = format.format(Date())
+
+        assertEquals(date, Utils.getTodayDate())
     }
 }
