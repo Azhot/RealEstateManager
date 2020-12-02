@@ -7,5 +7,5 @@ data class Address(
     var city: String,
     var roadName: String,
     var number: String,
-    var complement: String,
+    var complement: String?,
 )

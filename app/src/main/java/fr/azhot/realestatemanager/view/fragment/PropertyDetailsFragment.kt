@@ -10,25 +10,32 @@ import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailsBinding
 
 class PropertyDetailsFragment : Fragment() {
 
+
+    // companion
+    companion object {
+        private val TAG = PropertyDetailsFragment::class.simpleName
+
+        @JvmStatic
+        fun newInstance() = PropertyDetailsFragment()
+    }
+
+
+    // variables
     lateinit var mBinding: FragmentPropertyDetailsBinding
 
+
+    // overridden functions
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         init(layoutInflater)
         return mBinding.root
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() =
-            PropertyDetailsFragment().apply {
-                arguments = Bundle()
-            }
-    }
 
+    // functions
     private fun init(layoutInflater: LayoutInflater) {
         mBinding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
     }

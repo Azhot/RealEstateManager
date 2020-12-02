@@ -6,6 +6,7 @@
     tools:context=".view.fragment.PropertyListFragment">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/property_list_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:listitem="@layout/cell_property" />
