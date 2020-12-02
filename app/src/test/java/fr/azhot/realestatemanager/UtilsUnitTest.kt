@@ -1,10 +1,10 @@
 package fr.azhot.realestatemanager
 
-import fr.azhot.realestatemanager.Utils.EUR_DOLLAR_EXCHANGE_RATE
+import fr.azhot.realestatemanager.utils.Utils
+import fr.azhot.realestatemanager.utils.Utils.EUR_DOLLAR_EXCHANGE_RATE
 import org.junit.Assert.*
 import org.junit.Test
 import java.text.SimpleDateFormat
-import java.time.DayOfWeek
 import java.util.*
 import kotlin.math.roundToInt
 

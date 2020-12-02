@@ -1,17 +1,17 @@
 package fr.azhot.realestatemanager.view.fragment
 
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentPropertyListBinding
-import fr.azhot.realestatemanager.model.Address
-import fr.azhot.realestatemanager.model.Property
-import fr.azhot.realestatemanager.model.PropertyType
-import fr.azhot.realestatemanager.model.Realtor
+import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
 import java.util.*
@@ -21,7 +21,7 @@ class PropertyListFragment(private val mListener: PropertyClickListener) : Fragm
 
     // companion
     companion object {
-        private val TAG = PropertyListAdapter::class.simpleName
+        // private val TAG = PropertyListAdapter::class.simpleName
 
         @JvmStatic
         fun newInstance(listener: PropertyClickListener) = PropertyListFragment(listener)
@@ -45,7 +45,7 @@ class PropertyListFragment(private val mListener: PropertyClickListener) : Fragm
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         init(layoutInflater)
-        configRecyclerView()
+        configPropertyRecyclerView()
         return mBinding.root
     }
 
@@ -55,12 +55,13 @@ class PropertyListFragment(private val mListener: PropertyClickListener) : Fragm
         mBinding = FragmentPropertyListBinding.inflate(layoutInflater)
     }
 
-    private fun configRecyclerView() {
-        mBinding.propertyListRecyclerView.layoutManager = LinearLayoutManager(context)
-        mAdapter = PropertyListAdapter(mContext, populateList(), mListener)
+    private fun configPropertyRecyclerView() {
+        mBinding.propertyListRecyclerView.layoutManager = LinearLayoutManager(mContext)
+        mAdapter = PropertyListAdapter(Glide.with(this), populateList(), mListener)
         mBinding.propertyListRecyclerView.adapter = mAdapter
     }
 
+    // todo : to be deleted
     private fun populateList(): List<Property> {
         val addresses = mutableListOf(
             Address(
@@ -104,7 +105,28 @@ class PropertyListFragment(private val mListener: PropertyClickListener) : Fragm
                 150,
                 5,
                 "This is a big flat",
-                mutableListOf(),
+                mutableListOf(
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Living-room too long"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Bathroom"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Bedroom"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Kitchen"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Lobby"
+                    ),
+                ),
                 addresses[0],
                 addresses,
                 false,
@@ -119,7 +141,20 @@ class PropertyListFragment(private val mListener: PropertyClickListener) : Fragm
                 250,
                 9,
                 "This is a big house",
-                mutableListOf(),
+                mutableListOf(
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Living-room"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Living-room"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(resources, R.drawable.living_room),
+                        "Living-room"
+                    ),
+                ),
                 addresses[1],
                 addresses,
                 false,

@@ -1,4 +1,4 @@
-package fr.azhot.realestatemanager;
+package fr.azhot.realestatemanager.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

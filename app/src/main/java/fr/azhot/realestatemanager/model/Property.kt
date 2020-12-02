@@ -10,7 +10,7 @@ data class Property(
     var squareMeters: Int,
     var rooms: Int,
     var description: String,
-    var photos: MutableList<Bitmap>,
+    var photos: MutableList<Photo>,
     var address: Address,
     var nearbyPointsOfInterest: MutableList<Address>,
     var sold: Boolean,
