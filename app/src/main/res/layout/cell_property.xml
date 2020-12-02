@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/ic_white_background_with_underline">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/photo_image_view"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/purple_500" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/type_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/average_margin"
+        android:textSize="@dimen/average_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/city_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/photo_image_view"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Flat" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/city_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/average_margin"
+        android:textSize="@dimen/average_text_size"
+        app:layout_constraintBottom_toTopOf="@id/price_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/photo_image_view"
+        app:layout_constraintTop_toBottomOf="@id/type_text_view"
+        tools:text="Manhattan" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/price_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/average_margin"
+        android:textColor="@color/fuchsia_400"
+        android:textSize="@dimen/large_text_size"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/photo_image_view"
+        app:layout_constraintTop_toBottomOf="@id/city_text_view"
+        tools:text="$17,870,000" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
