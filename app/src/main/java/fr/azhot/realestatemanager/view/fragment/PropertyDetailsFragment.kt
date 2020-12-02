@@ -6,9 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailsBinding
+import fr.azhot.realestatemanager.model.Property
 
 
-class PropertyDetailsFragment : Fragment() {
+class PropertyDetailsFragment(private val property: Property) : Fragment() {
 
 
     // companion
@@ -16,7 +17,7 @@ class PropertyDetailsFragment : Fragment() {
         private val TAG = PropertyDetailsFragment::class.simpleName
 
         @JvmStatic
-        fun newInstance() = PropertyDetailsFragment()
+        fun newInstance(property: Property) = PropertyDetailsFragment(property)
     }
 
 
@@ -31,6 +32,7 @@ class PropertyDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         init(layoutInflater)
+        mBinding.name.text = property.address.name
         return mBinding.root
     }
 

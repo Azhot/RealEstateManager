@@ -2,11 +2,9 @@ package fr.azhot.realestatemanager.view.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.azhot.realestatemanager.databinding.FragmentPropertyListBinding
@@ -18,7 +16,7 @@ import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
 import java.util.*
 
-class PropertyListFragment : Fragment(), PropertyClickListener {
+class PropertyListFragment(private val mListener: PropertyClickListener) : Fragment() {
 
 
     // companion
@@ -26,7 +24,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
         private val TAG = PropertyListAdapter::class.simpleName
 
         @JvmStatic
-        fun newInstance() = PropertyListFragment()
+        fun newInstance(listener: PropertyClickListener) = PropertyListFragment(listener)
     }
 
 
@@ -51,13 +49,6 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
         return mBinding.root
     }
 
-    override fun onPropertyClickListener(property: Property) {
-        Log.d(TAG, "onPropertyClick")
-        Toast.makeText(context, "User clicked on ${property.address.name}", Toast.LENGTH_SHORT)
-            .show()
-        // todo : send user to the corresponding property
-    }
-
 
     // functions
     private fun init(layoutInflater: LayoutInflater) {
@@ -66,7 +57,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
     private fun configRecyclerView() {
         mBinding.propertyListRecyclerView.layoutManager = LinearLayoutManager(context)
-        mAdapter = PropertyListAdapter(mContext, populateList(), this)
+        mAdapter = PropertyListAdapter(mContext, populateList(), mListener)
         mBinding.propertyListRecyclerView.adapter = mAdapter
     }
 

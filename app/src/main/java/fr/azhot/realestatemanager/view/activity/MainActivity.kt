@@ -4,9 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
+import fr.azhot.realestatemanager.model.Property
+import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
+import fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragment
 import fr.azhot.realestatemanager.view.fragment.PropertyListFragment
 
-class MainActivity : AppCompatActivity() {
+
+class MainActivity : AppCompatActivity(), PropertyClickListener {
 
 
     // companion
@@ -27,6 +31,25 @@ class MainActivity : AppCompatActivity() {
         setContentView(mBinding.root)
     }
 
+    override fun onBackPressed() {
+        if (supportFragmentManager.backStackEntryCount > 0) {
+            supportFragmentManager.popBackStack()
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onPropertyClickListener(property: Property) {
+        supportFragmentManager
+            .beginTransaction()
+            .replace(
+                mBinding.fragmentContainerView.id,
+                PropertyDetailsFragment.newInstance(property)
+            )
+            .addToBackStack(null)
+            .commit()
+    }
+
 
     // functions
     private fun init(layoutInflater: LayoutInflater) {
@@ -36,7 +59,7 @@ class MainActivity : AppCompatActivity() {
     private fun launchPropertyListFragment() {
         supportFragmentManager
             .beginTransaction()
-            .replace(mBinding.fragmentContainerView.id, PropertyListFragment.newInstance())
+            .replace(mBinding.fragmentContainerView.id, PropertyListFragment.newInstance(this))
             .commit()
     }
 }
