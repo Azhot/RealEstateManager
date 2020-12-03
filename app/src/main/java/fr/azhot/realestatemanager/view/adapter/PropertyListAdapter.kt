@@ -11,7 +11,7 @@ import java.util.*
 
 class PropertyListAdapter(
     private val mGlide: RequestManager,
-    private var mProperties: List<Property>,
+    private var mPropertyList: List<Property>,
     private val mListener: PropertyClickListener,
 ) : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
 
@@ -33,7 +33,7 @@ class PropertyListAdapter(
     }
 
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
-        val data = mProperties[position]
+        val data = mPropertyList[position]
         holder.bind(data)
         holder.itemView.setOnClickListener {
             mListener.onPropertyClickListener(data)
@@ -41,7 +41,7 @@ class PropertyListAdapter(
     }
 
     override fun getItemCount(): Int {
-        return mProperties.count()
+        return mPropertyList.count()
     }
 
 
@@ -57,7 +57,7 @@ class PropertyListAdapter(
             // todo : set "no-picture"
             if (property.photos.isNotEmpty()) {
                 mGlide
-                    .load(property.photos[0])
+                    .load(property.photos[0].bitmap)
                     .centerCrop()
                     .into(mBinding.photoImageView)
             }

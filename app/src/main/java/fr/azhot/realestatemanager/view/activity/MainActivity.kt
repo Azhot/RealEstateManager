@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity(), PropertyClickListener {
 
 
     // variables
-    lateinit var mBinding: ActivityMainBinding
+    private lateinit var mBinding: ActivityMainBinding
 
 
     // overridden functions
@@ -57,9 +57,15 @@ class MainActivity : AppCompatActivity(), PropertyClickListener {
     }
 
     private fun launchPropertyListFragment() {
+        val propertyList = Property.populatePropertyList(this)
         supportFragmentManager
             .beginTransaction()
-            .replace(mBinding.fragmentContainerView.id, PropertyListFragment.newInstance(this))
+            .replace(
+                mBinding.fragmentContainerView.id, PropertyListFragment.newInstance(
+                    this,
+                    propertyList
+                )
+            )
             .commit()
     }
 }
