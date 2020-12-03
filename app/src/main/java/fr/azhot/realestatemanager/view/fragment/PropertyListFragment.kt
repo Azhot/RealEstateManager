@@ -44,7 +44,6 @@ class PropertyListFragment(
         mContext = context
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {

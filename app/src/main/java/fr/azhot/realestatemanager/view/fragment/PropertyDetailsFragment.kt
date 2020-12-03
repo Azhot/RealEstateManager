@@ -31,6 +31,7 @@ class PropertyDetailsFragment(private val mProperty: Property) : Fragment() {
     private lateinit var mAdapter: MediaListAdapter
 
 
+    // overridden functions
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mContext = context

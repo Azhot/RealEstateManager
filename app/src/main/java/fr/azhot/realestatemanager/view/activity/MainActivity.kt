@@ -1,12 +1,13 @@
 package fr.azhot.realestatemanager.view.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import androidx.appcompat.app.AppCompatActivity
+import com.google.gson.Gson
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
 import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
-import fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragment
 import fr.azhot.realestatemanager.view.fragment.PropertyListFragment
 
 
@@ -15,7 +16,8 @@ class MainActivity : AppCompatActivity(), PropertyClickListener {
 
     // companion
     companion object {
-        private val TAG = MainActivity::class.simpleName
+        //private val TAG = MainActivity::class.simpleName
+        const val PROPERTY_EXTRA = "property_extra"
     }
 
 
@@ -31,23 +33,11 @@ class MainActivity : AppCompatActivity(), PropertyClickListener {
         setContentView(mBinding.root)
     }
 
-    override fun onBackPressed() {
-        if (supportFragmentManager.backStackEntryCount > 0) {
-            supportFragmentManager.popBackStack()
-        } else {
-            super.onBackPressed()
-        }
-    }
-
     override fun onPropertyClickListener(property: Property) {
-        supportFragmentManager
-            .beginTransaction()
-            .replace(
-                mBinding.fragmentContainerView.id,
-                PropertyDetailsFragment.newInstance(property)
-            )
-            .addToBackStack(null)
-            .commit()
+        val gson = Gson()
+        val intent = Intent(this, PropertyDetailsActivity::class.java)
+        intent.putExtra(PROPERTY_EXTRA, gson.toJson(property))
+        startActivity(intent)
     }
 
 
@@ -61,10 +51,8 @@ class MainActivity : AppCompatActivity(), PropertyClickListener {
         supportFragmentManager
             .beginTransaction()
             .replace(
-                mBinding.fragmentContainerView.id, PropertyListFragment.newInstance(
-                    this,
-                    propertyList
-                )
+                mBinding.propertyListContainerView.id,
+                PropertyListFragment.newInstance(this, propertyList)
             )
             .commit()
     }

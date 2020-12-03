@@ -28,20 +28,20 @@ data class Property(
                 Address(
                     1L,
                     "Apartment",
+                    "75116",
+                    "Paris",
+                    "rue du Bison",
+                    "15",
+                    null,
+                ),
+                Address(
+                    2L,
+                    "House",
                     "78480",
                     "Verneuil-sur-seine",
                     "rue du Hameau",
                     "52",
                     "TER",
-                ),
-                Address(
-                    2L,
-                    "House",
-                    "75116",
-                    "Paris",
-                    "rue du Bizon",
-                    "15",
-                    null,
                 ),
             )
 
@@ -68,24 +68,24 @@ data class Property(
                     "This is a big flat",
                     mutableListOf(
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_living_room),
                             "Living-room too long"
                         ),
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_bathroom),
                             "Bathroom"
                         ),
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_bedroom),
                             "Bedroom"
                         ),
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_kitchen),
                             "Kitchen"
                         ),
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
-                            "Lobby"
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_hall),
+                            "Hall"
                         ),
                     ),
                     addresses[0],
@@ -104,16 +104,16 @@ data class Property(
                     "This is a big house",
                     mutableListOf(
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
-                            "Living-room"
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_hall),
+                            "Hall"
                         ),
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
-                            "Living-room"
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_bedroom),
+                            "Kitchen"
                         ),
                         Photo(
-                            BitmapFactory.decodeResource(context.resources, R.drawable.living_room),
-                            "Living-room"
+                            BitmapFactory.decodeResource(context.resources, R.drawable.thumb_kitchen),
+                            "Bedroom"
                         ),
                     ),
                     addresses[1],

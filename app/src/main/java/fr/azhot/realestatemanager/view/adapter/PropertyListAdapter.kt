@@ -53,7 +53,6 @@ class PropertyListAdapter(
         RecyclerView.ViewHolder(mBinding.root) {
 
         fun bind(property: Property) {
-
             // todo : set "no-picture"
             if (property.photos.isNotEmpty()) {
                 mGlide

@@ -12,7 +12,7 @@
         android:layout_height="120dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@color/purple_500" />
+        tools:background="@drawable/thumb_living_room" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/type_text_view"

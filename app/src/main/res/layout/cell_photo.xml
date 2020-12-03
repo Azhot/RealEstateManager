@@ -10,7 +10,7 @@
         android:id="@+id/photo_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:src="@drawable/living_room" />
+        tools:src="@drawable/thumb_living_room" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/photo_description_text_view"

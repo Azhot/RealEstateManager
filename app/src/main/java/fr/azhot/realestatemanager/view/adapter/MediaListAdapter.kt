@@ -41,7 +41,6 @@ class MediaListAdapter(
         RecyclerView.ViewHolder(mBinding.root) {
 
         fun bind(photo: Photo) {
-
             mGlide
                 .load(photo.bitmap)
                 .centerCrop()
