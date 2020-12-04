@@ -7,24 +7,27 @@
     tools:context=".view.activity.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/property_list_container_view"
+        android:id="@+id/main_container_view"
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:background="@drawable/ic_white_background_with_right_border"
+        android:paddingStart="0dp"
+        android:paddingEnd="1dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/property_details_container_view"
+        app:layout_constraintEnd_toStartOf="@id/secondary_container_view"
         app:layout_constraintHorizontal_weight="4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_property_list" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/property_details_container_view"
+        android:id="@+id/secondary_container_view"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_weight="7"
-        app:layout_constraintStart_toEndOf="@id/property_list_container_view"
+        app:layout_constraintStart_toEndOf="@id/main_container_view"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout="@layout/fragment_property_details" />
 
