@@ -26,34 +26,19 @@ object PropertyRepository {
         val addresses = mutableListOf(
             Address(
                 1L,
-                "Apartment",
                 "75116",
                 "Paris",
-                "rue du Bison",
+                "rue du Test",
                 "15",
-                null,
-            ),
-            Address(
-                2L,
-                "House",
-                "78480",
-                "Verneuil-sur-seine",
-                "rue du Hameau",
-                "52",
-                "TER",
+                "Ter",
             ),
         )
 
         val realtors = mutableListOf(
             Realtor(
                 1L,
-                "François",
-                "Jouvelot",
-            ),
-            Realtor(
-                2L,
-                "Gisèle",
-                "Sellier",
+                "Michel",
+                "Tropfort",
             ),
         )
 
@@ -61,7 +46,7 @@ object PropertyRepository {
             Property(
                 1L,
                 PropertyType.FLAT,
-                1500000,
+                750000,
                 150,
                 5,
                 "This is a big flat",
@@ -118,12 +103,68 @@ object PropertyRepository {
                         "Bedroom"
                     ),
                 ),
-                addresses[1],
+                addresses[0],
                 addresses,
                 false,
                 Date(),
                 null,
-                realtors[1],
+                realtors[0],
+            ),
+            Property(
+                2L,
+                PropertyType.DUPLEX,
+                1500000,
+                200,
+                7,
+                "This is a big house",
+                mutableListOf(
+                    Photo(
+                        BitmapFactory.decodeResource(context.resources, R.drawable.thumb_kitchen),
+                        "Kitchen"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(context.resources, R.drawable.thumb_bathroom),
+                        "Bathroom"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(context.resources, R.drawable.thumb_kitchen),
+                        "Bedroom"
+                    ),
+                ),
+                addresses[0],
+                addresses,
+                false,
+                Date(),
+                null,
+                realtors[0],
+            ),
+            Property(
+                2L,
+                PropertyType.PENTHOUSE,
+                2500000,
+                250,
+                9,
+                "This is a big house",
+                mutableListOf(
+                    Photo(
+                        BitmapFactory.decodeResource(context.resources, R.drawable.thumb_bathroom),
+                        "Bathroom"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(context.resources, R.drawable.thumb_kitchen),
+                        "Bedroom"
+                    ),
+                    Photo(
+                        BitmapFactory.decodeResource(context.resources, R.drawable.thumb_kitchen),
+                        "Kitchen"
+                    ),
+                ),
+                addresses[0],
+                addresses,
+                false,
+                Date(),
+                null,
+                realtors[0],
             )
         )
     }
