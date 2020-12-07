@@ -33,16 +33,14 @@ class PropertyListAdapter(
     }
 
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
-        val data = mPropertyList[position]
-        holder.bind(data)
+        val property = mPropertyList[position]
+        holder.bind(property)
         holder.itemView.setOnClickListener {
-            mListener.onPropertyClickListener(data)
+            mListener.onPropertyClickListener(property)
         }
     }
 
-    override fun getItemCount(): Int {
-        return mPropertyList.count()
-    }
+    override fun getItemCount(): Int = mPropertyList.count()
 
 
     // inner class

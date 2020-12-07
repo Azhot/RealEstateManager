@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -38,23 +39,24 @@ class PropertyDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        init(layoutInflater)
+        mBinding = initFragmentPropertyDetailsBinding(layoutInflater)
+        mViewModel = initPropertyDetailsFragmentViewModel(this)
+        initPropertyObserver(mBinding.mediaRecyclerView)
         return mBinding.root
     }
 
 
     // functions
-    private fun init(layoutInflater: LayoutInflater) {
-        mBinding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
-        mViewModel = ViewModelProvider(this).get(PropertyDetailsFragmentViewModel::class.java)
-        initPropertyObserver(mBinding.mediaRecyclerView)
-    }
+    private fun initFragmentPropertyDetailsBinding(layoutInflater: LayoutInflater) =
+        FragmentPropertyDetailsBinding.inflate(layoutInflater)
 
-    private fun initPropertyObserver(recyclerView: RecyclerView) {
+    private fun initPropertyDetailsFragmentViewModel(owner: ViewModelStoreOwner) =
+        ViewModelProvider(owner).get(PropertyDetailsFragmentViewModel::class.java)
+
+    private fun initPropertyObserver(recyclerView: RecyclerView) =
         mViewModel.getCurrentProperty().observe(viewLifecycleOwner, { property ->
             configMediaRecyclerView(recyclerView, property)
         })
-    }
 
     private fun configMediaRecyclerView(recyclerView: RecyclerView, property: Property) {
         recyclerView.layoutManager = LinearLayoutManager(

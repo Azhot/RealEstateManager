@@ -23,14 +23,11 @@ class MediaListAdapter(
         return PhotoViewHolder(view, mGlide)
     }
 
-    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        val data = mPhotos[position]
-        holder.bind(data)
-    }
+    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) =
+        holder.bind(mPhotos[position])
 
-    override fun getItemCount(): Int {
-        return mPhotos.count()
-    }
+
+    override fun getItemCount(): Int = mPhotos.count()
 
 
     // inner class

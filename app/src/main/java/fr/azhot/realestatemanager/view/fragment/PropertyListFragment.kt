@@ -43,7 +43,7 @@ class PropertyListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        init(layoutInflater)
+        mBinding = initFragmentPropertyListBinding(layoutInflater)
         configPropertyRecyclerView(
             mBinding.propertyListRecyclerView,
             PropertyRepository.populatePropertyList(requireContext())
@@ -53,9 +53,9 @@ class PropertyListFragment : Fragment() {
 
 
     // functions
-    private fun init(layoutInflater: LayoutInflater) {
-        mBinding = FragmentPropertyListBinding.inflate(layoutInflater)
-    }
+    private fun initFragmentPropertyListBinding(layoutInflater: LayoutInflater) =
+        FragmentPropertyListBinding.inflate(layoutInflater)
+
 
     private fun configPropertyRecyclerView(
         recyclerView: RecyclerView,
@@ -65,7 +65,7 @@ class PropertyListFragment : Fragment() {
         val adapter = PropertyListAdapter(
             Glide.with(this),
             propertyList,
-            (context as PropertyClickListener)
+            context as PropertyClickListener
         )
         recyclerView.adapter = adapter
     }
