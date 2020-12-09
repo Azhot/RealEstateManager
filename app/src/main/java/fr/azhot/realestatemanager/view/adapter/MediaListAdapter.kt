@@ -8,8 +8,8 @@ import fr.azhot.realestatemanager.databinding.CellPhotoBinding
 import fr.azhot.realestatemanager.model.Photo
 
 class MediaListAdapter(
-    private val mGlide: RequestManager,
-    private var mPhotos: List<Photo>,
+    private val glide: RequestManager,
+    private var photos: List<Photo>,
 ) : RecyclerView.Adapter<MediaListAdapter.PhotoViewHolder>() {
 
 
@@ -20,30 +20,30 @@ class MediaListAdapter(
             parent,
             false
         )
-        return PhotoViewHolder(view, mGlide)
+        return PhotoViewHolder(view, glide)
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) =
-        holder.bind(mPhotos[position])
+        holder.bind(photos[position])
 
 
-    override fun getItemCount(): Int = mPhotos.count()
+    override fun getItemCount(): Int = photos.count()
 
 
     // inner class
     class PhotoViewHolder(
-        private val mBinding: CellPhotoBinding,
-        private val mGlide: RequestManager
+        private val binding: CellPhotoBinding,
+        private val glide: RequestManager
     ) :
-        RecyclerView.ViewHolder(mBinding.root) {
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(photo: Photo) {
-            mGlide
-                .load(photo.bitmap)
+            glide
+                .load(photo.uri)
                 .centerCrop()
-                .into(mBinding.photoImageView)
+                .into(binding.photoImageView)
 
-            mBinding.photoDescriptionTextView.text = photo.description
+            binding.photoDescriptionTextView.text = photo.description
         }
     }
 }

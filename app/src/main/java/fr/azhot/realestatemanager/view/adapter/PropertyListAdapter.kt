@@ -10,15 +10,22 @@ import java.text.NumberFormat
 import java.util.*
 
 class PropertyListAdapter(
-    private val mGlide: RequestManager,
-    private var mPropertyList: List<Property>,
-    private val mListener: PropertyClickListener,
+    private val glide: RequestManager,
+    private var propertyList: List<Property>,
+    private val listener: PropertyClickListener,
 ) : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
 
 
     // interface
     interface PropertyClickListener {
         fun onPropertyClickListener(property: Property)
+    }
+
+
+    // functions
+    fun setPropertyList(newPropertyList: List<Property>) {
+        propertyList = newPropertyList
+        notifyDataSetChanged()
     }
 
 
@@ -29,46 +36,40 @@ class PropertyListAdapter(
             parent,
             false
         )
-        return PropertyViewHolder(view, mGlide)
+        return PropertyViewHolder(view, glide)
     }
 
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
-        val property = mPropertyList[position]
+        val property = propertyList[position]
         holder.bind(property)
         holder.itemView.setOnClickListener {
-            mListener.onPropertyClickListener(property)
+            listener.onPropertyClickListener(property)
         }
     }
 
-    override fun getItemCount(): Int = mPropertyList.count()
+    override fun getItemCount(): Int = propertyList.count()
 
 
     // inner class
     class PropertyViewHolder(
-        private val mBinding: CellPropertyBinding,
-        private val mGlide: RequestManager
+        private val binding: CellPropertyBinding,
+        private val glide: RequestManager,
     ) :
-        RecyclerView.ViewHolder(mBinding.root) {
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(property: Property) {
-            // todo : set "no-picture"
-            if (property.photos.isNotEmpty()) {
-                mGlide
-                    .load(property.photos[0].bitmap)
-                    .centerCrop()
-                    .into(mBinding.photoImageView)
-            }
+            glide
+                .load(property.photos[0].uri)
+                .centerCrop()
+                .into(binding.photoImageView)
 
-            mBinding.typeTextView.text = property.type
-                .toString()
-                .toLowerCase(Locale.ROOT)
-                .capitalize(Locale.ROOT)
+            binding.typeTextView.text = property.detail.propertyType?.label
 
-            mBinding.cityTextView.text = property.address.city
+            binding.cityTextView.text = property.address?.city
 
             val numberFormat = NumberFormat.getCurrencyInstance(Locale.US)
             numberFormat.maximumFractionDigits = 0
-            mBinding.priceTextView.text = numberFormat.format(property.price)
+            binding.priceTextView.text = numberFormat.format(property.detail.price)
         }
     }
 }

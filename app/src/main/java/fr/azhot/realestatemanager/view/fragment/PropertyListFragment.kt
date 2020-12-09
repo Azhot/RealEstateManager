@@ -6,14 +6,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentPropertyListBinding
-import fr.azhot.realestatemanager.model.Property
-import fr.azhot.realestatemanager.repository.PropertyRepository
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
+import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModel
+import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModelFactory
 
 
 class PropertyListFragment : Fragment() {
@@ -29,7 +31,13 @@ class PropertyListFragment : Fragment() {
 
 
     // variables
-    private lateinit var mBinding: FragmentPropertyListBinding
+    private lateinit var binding: FragmentPropertyListBinding
+    private val viewModel: PropertyListFragmentViewModel by viewModels {
+        PropertyListFragmentViewModelFactory((activity?.application as RealEstateManagerApplication).detailRepository)
+    }
+    private val adapter by lazy {
+        PropertyListAdapter(Glide.with(this), listOf(), context as PropertyClickListener)
+    }
 
 
     // overridden functions
@@ -43,12 +51,10 @@ class PropertyListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        mBinding = initFragmentPropertyListBinding(layoutInflater)
-        configPropertyRecyclerView(
-            mBinding.propertyListRecyclerView,
-            PropertyRepository.populatePropertyList(requireContext())
-        )
-        return mBinding.root
+        binding = initFragmentPropertyListBinding(layoutInflater)
+        initPropertyListObserver(adapter)
+        configPropertyRecyclerView(binding.propertyListRecyclerView, adapter)
+        return binding.root
     }
 
 
@@ -56,17 +62,17 @@ class PropertyListFragment : Fragment() {
     private fun initFragmentPropertyListBinding(layoutInflater: LayoutInflater) =
         FragmentPropertyListBinding.inflate(layoutInflater)
 
+    private fun initPropertyListObserver(adapter: PropertyListAdapter) {
+        viewModel.propertyList.observe(viewLifecycleOwner, { list ->
+            adapter.setPropertyList(list)
+        })
+    }
 
     private fun configPropertyRecyclerView(
         recyclerView: RecyclerView,
-        propertyList: List<Property>
+        adapter: PropertyListAdapter
     ) {
         recyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = PropertyListAdapter(
-            Glide.with(this),
-            propertyList,
-            context as PropertyClickListener
-        )
         recyclerView.adapter = adapter
     }
 }

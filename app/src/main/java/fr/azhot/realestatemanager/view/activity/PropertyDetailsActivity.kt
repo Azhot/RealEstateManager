@@ -11,15 +11,15 @@ class PropertyDetailsActivity : AppCompatActivity() {
 
 
     // variables
-    private lateinit var mBinding: ActivityPropertyDetailsBinding
+    private lateinit var binding: ActivityPropertyDetailsBinding
 
 
     // overridden functions
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = initActivityPropertyDetailsBinding(layoutInflater)
-        launchPropertyDetailsFragment(mBinding.propertyDetailsContainerView.id)
-        setContentView(mBinding.root)
+        binding = initActivityPropertyDetailsBinding(layoutInflater)
+        launchPropertyDetailsFragment(binding.propertyDetailsContainerView.id)
+        setContentView(binding.root)
     }
 
     override fun onResume() {
