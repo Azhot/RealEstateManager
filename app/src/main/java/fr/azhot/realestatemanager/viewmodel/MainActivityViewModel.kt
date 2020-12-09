@@ -1,12 +1,30 @@
 package fr.azhot.realestatemanager.viewmodel
 
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import fr.azhot.realestatemanager.model.Property
-import fr.azhot.realestatemanager.repository.PropertyRepository
+import fr.azhot.realestatemanager.repository.DetailRepository
 
-class MainActivityViewModel : ViewModel() {
+class MainActivityViewModel(detailRepository: DetailRepository) : ViewModel() {
 
-    fun setCurrentProperty(property: Property) = PropertyRepository.setCurrentProperty(property)
+    // variables
+    val liveProperty: MutableLiveData<Property> = detailRepository.liveProperty
 
-    fun getCurrentProperty() = PropertyRepository.getCurrentProperty()
+
+    // functions
+    fun setLiveProperty(property: Property) {
+        liveProperty.value = property
+    }
+}
+
+class MainActivityViewModelFactory(private val detailRepository: DetailRepository) :
+    ViewModelProvider.Factory {
+
+    // overridden functions
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(MainActivityViewModel::class.java)) {
+            @Suppress("UNCHECKED_CAST")
+            return MainActivityViewModel(detailRepository) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
 }
