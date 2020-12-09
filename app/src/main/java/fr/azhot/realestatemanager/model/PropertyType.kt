@@ -1,11 +1,8 @@
 package fr.azhot.realestatemanager.model
 
-enum class PropertyType {
-    FLAT,
-    LOFT,
-    DUPLEX,
-    TRIPLEX,
-    PENTHOUSE,
-    HOUSE,
-    MANSION
+enum class PropertyType(val label: String) {
+    DUPLEX("Duplex"),
+    LOFT("Loft"),
+    PENTHOUSE("Penthouse"),
+    MANSION("Mansion")
 }

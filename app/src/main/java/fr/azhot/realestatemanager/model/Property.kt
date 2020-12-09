@@ -1,19 +1,29 @@
 package fr.azhot.realestatemanager.model
 
-import java.util.*
+import androidx.room.Embedded
+import androidx.room.Relation
 
 data class Property(
-    val id: Long,
-    var type: PropertyType,
-    var price: Int,
-    var squareMeters: Int,
-    var rooms: Int,
-    var description: String,
-    var photos: MutableList<Photo>,
-    var address: Address,
-    var nearbyPointsOfInterest: MutableList<Address>,
-    var sold: Boolean,
-    var entryDate: Date,
-    var saleDate: Date?,
-    var realtor: Realtor,
+    @Embedded
+    val detail: Detail,
+    @Relation(
+        parentColumn = "addressId",
+        entityColumn = "addressId"
+    )
+    val address: Address?,
+    @Relation(
+        parentColumn = "detailId",
+        entityColumn = "detailId"
+    )
+    val photos: List<Photo>,
+    @Relation(
+        parentColumn = "detailId",
+        entityColumn = "detailId"
+    )
+    val pointsOfInterest: List<PointOfInterest>?,
+    @Relation(
+        parentColumn = "realtorId",
+        entityColumn = "realtorId"
+    )
+    val realtor: Realtor?,
 )
