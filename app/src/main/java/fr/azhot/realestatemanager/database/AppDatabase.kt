@@ -45,6 +45,7 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "Database"
                 )
+                    .fallbackToDestructiveMigration()
                     .addCallback(AppDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
@@ -104,7 +105,6 @@ abstract class AppDatabase : RoomDatabase() {
                             7,
                             "Nice duplex in Paris",
                             1L,
-                            false,
                             1000L,
                             null,
                             1L,

@@ -7,17 +7,17 @@ import androidx.room.PrimaryKey
 data class Address(
     @PrimaryKey(autoGenerate = true)
     val addressId: Long,
-    var zipCode: String,
-    var city: String,
-    var roadName: String,
-    var number: String,
+    var zipCode: String?,
+    var city: String?,
+    var roadName: String?,
+    var number: String?,
     var complement: String? = null,
 ) {
     constructor(
-        zipCode: String,
-        city: String,
-        roadName: String,
-        number: String,
+        zipCode: String?,
+        city: String?,
+        roadName: String?,
+        number: String?,
         complement: String?,
     ) : this(0, zipCode, city, roadName, number, complement)
 }

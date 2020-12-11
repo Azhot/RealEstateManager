@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primaryLightColor"
+    android:orientation="vertical"
+    tools:context=".view.activity.AddPropertyActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/small_margin"
+        android:background="@drawable/ic_white_background_cornered"
+        android:orientation="vertical"
+        android:padding="@dimen/large_padding">
+
+        <Spinner
+            android:id="@+id/property_type_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
+            android:spinnerMode="dialog"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/price_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:autofillHints=""
+            android:hint="Price"
+            android:inputType="number"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/average_text_size"
+            app:backgroundTint="@color/primaryDayDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_type_spinner" />
+
+        <EditText
+            android:id="@+id/square_meter_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:autofillHints=""
+            android:hint="Square meter"
+            android:inputType="number"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/average_text_size"
+            app:backgroundTint="@color/primaryDayDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_edit_text" />
+
+        <Button
+            android:id="@+id/rooms_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/average_margin"
+            android:onClick="onClick"
+            android:text="Room(s)"
+            app:layout_constraintEnd_toStartOf="@id/rooms_text_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/square_meter_edit_text" />
+
+        <TextView
+            android:id="@+id/rooms_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@drawable/ic_white_background_with_borders"
+            android:ellipsize="end"
+            android:lines="1"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:textSize="@dimen/average_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/rooms_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/rooms_button"
+            app:layout_constraintTop_toTopOf="@id/rooms_button"
+            tools:text="1 room" />
+
+        <!-- todo: make it open a dialog -->
+        <Button
+            android:id="@+id/address_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/average_margin"
+            android:onClick="onClick"
+            android:text="Address"
+            app:layout_constraintEnd_toStartOf="@id/address_text_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rooms_button" />
+
+        <TextView
+            android:id="@+id/address_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@drawable/ic_white_background_with_borders"
+            android:ellipsize="end"
+            android:lines="1"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:textSize="@dimen/average_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/address_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/address_button"
+            app:layout_constraintTop_toTopOf="@id/address_button"
+            tools:text="Verneuil sur seine, 52 ter rue" />
+
+        <!-- todo: make it a button to open date picker dialog -->
+        <Button
+            android:id="@+id/entry_date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/average_margin"
+            android:onClick="onClick"
+            android:text="Entry date"
+            app:layout_constraintEnd_toStartOf="@id/entry_date_text_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_button" />
+
+        <TextView
+            android:id="@+id/entry_date_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@drawable/ic_white_background_with_borders"
+            android:ellipsize="end"
+            android:lines="1"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:textSize="@dimen/average_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/entry_date_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/entry_date_button"
+            app:layout_constraintTop_toTopOf="@id/entry_date_button"
+            tools:text="22 avril 2020" />
+
+        <ImageButton
+            android:id="@+id/photo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/average_margin"
+            android:background="@android:color/transparent"
+            android:contentDescription="TODO"
+            android:onClick="onClick"
+            android:src="@drawable/ic_add_a_photo_24px"
+            android:tint="@color/primaryDayColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/entry_date_button" />
+
+        <!-- todo: make it a button to open date picker dialog -->
+        <Button
+            android:id="@+id/sale_date_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/average_margin"
+            android:onClick="onClick"
+            android:text="Sale date"
+            app:layout_constraintEnd_toStartOf="@id/sale_date_text_view"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/photo_button" />
+
+        <TextView
+            android:id="@+id/sale_date_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@drawable/ic_white_background_with_borders"
+            android:ellipsize="end"
+            android:lines="1"
+            android:paddingStart="@dimen/large_padding"
+            android:paddingTop="@dimen/small_padding"
+            android:paddingEnd="@dimen/large_padding"
+            android:paddingBottom="@dimen/small_padding"
+            android:textSize="@dimen/average_text_size"
+            app:layout_constraintBottom_toBottomOf="@id/sale_date_button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/sale_date_button"
+            app:layout_constraintTop_toTopOf="@id/sale_date_button"
+            tools:text="22 avril 2020" />
+
+        <Spinner
+            android:id="@+id/realtor_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginTop="@dimen/average_margin"
+            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginBottom="@dimen/average_margin"
+            android:paddingStart="@dimen/small_padding"
+            android:paddingEnd="@dimen/small_padding"
+            android:spinnerMode="dialog"
+            app:layout_constraintEnd_toStartOf="@id/realtor_add_image_button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sale_date_button" />
+
+        <ImageButton
+            android:id="@+id/realtor_add_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/small_margin"
+            android:background="@android:color/transparent"
+            android:contentDescription="TODO"
+            android:onClick="onClick"
+            android:src="@drawable/ic_add_circle_24"
+            android:tint="@color/primaryDayColor"
+            app:layout_constraintBottom_toBottomOf="@id/realtor_spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/realtor_spinner"
+            app:layout_constraintTop_toTopOf="@id/realtor_spinner" />
+
+        <EditText
+            android:id="@+id/description_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:autofillHints=""
+            android:hint="Description"
+            android:inputType="textMultiLine"
+            android:textColorHint="@color/gray"
+            android:textSize="@dimen/average_text_size"
+            app:backgroundTint="@color/primaryDayDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/realtor_spinner" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</ScrollView>

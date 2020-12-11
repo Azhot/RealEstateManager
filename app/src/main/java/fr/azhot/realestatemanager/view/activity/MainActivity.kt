@@ -3,8 +3,11 @@ package fr.azhot.realestatemanager.view.activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuItem
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
 import fr.azhot.realestatemanager.model.Property
@@ -30,10 +33,9 @@ class MainActivity : AppCompatActivity(), PropertyClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = initActivityMainBinding(layoutInflater)
-
+        setContentView(binding.root)
         initPropertyObserver()
         launchPropertyListFragment(binding.mainContainerView.id)
-        setContentView(binding.root)
     }
 
     override fun onResume() {
@@ -51,6 +53,24 @@ class MainActivity : AppCompatActivity(), PropertyClickListener {
             intent = Intent(this, PropertyDetailsActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            // todo : startActivityForResult ?
+            R.id.add_property -> startActivity(
+                Intent(
+                    this@MainActivity,
+                    AddPropertyActivity::class.java
+                )
+            )
+        }
+        return true
     }
 
 

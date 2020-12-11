@@ -30,8 +30,7 @@ data class Detail(
     var rooms: Int?,
     var description: String?,
     var addressId: Long?,
-    var sold: Boolean = false,
-    var entryTimeStamp: Long,
+    var entryTimeStamp: Long?,
     var saleTimeStamp: Long?,
     var realtorId: Long?,
 ) {
@@ -42,8 +41,7 @@ data class Detail(
         rooms: Int?,
         description: String?,
         addressId: Long?,
-        sold: Boolean = false,
-        entryTimeStamp: Long,
+        entryTimeStamp: Long?,
         saleTimeStamp: Long?,
         realtorId: Long?,
     ) : this(0,
@@ -53,7 +51,6 @@ data class Detail(
         rooms,
         description,
         addressId,
-        sold,
         entryTimeStamp,
         saleTimeStamp,
         realtorId)

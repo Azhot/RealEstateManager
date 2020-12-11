@@ -18,8 +18,8 @@ class PropertyDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = initActivityPropertyDetailsBinding(layoutInflater)
-        launchPropertyDetailsFragment(binding.propertyDetailsContainerView.id)
         setContentView(binding.root)
+        launchPropertyDetailsFragment(binding.propertyDetailsContainerView.id)
     }
 
     override fun onResume() {

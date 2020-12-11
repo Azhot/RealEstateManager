@@ -6,4 +6,21 @@
     <string name="media_title">Media</string>
     <string name="description_title">Description</string>
 
+    <!-- menu.xml -->
+    <string name="add_property">Add property</string>
+    <string name="hint_property_type_spinner">Select a property type …</string>
+    <string name="hint_realtor_spinner">Select a realtor …</string>
+
+    <!-- number picker dialog -->
+    <string name="title_number_picker_dialog">Set the number of rooms</string>
+    <string name="set_button_number_picker_dialog">Set</string>
+    <string name="cancel_button_number_picker_dialog">Cancel</string>
+
+    <!-- add realtor dialog -->
+    <string name="title_add_realtor_dialog">Add a new realtor</string>
+    <string name="hint_first_name_add_realtor_dialog">First name</string>
+    <string name="hint_last_name_add_realtor_dialog">Last name</string>
+    <string name="add_button_add_realtor_dialog">Add</string>
+    <string name="cancel_button_add_realtor_dialog">Cancel</string>
+
 </resources>

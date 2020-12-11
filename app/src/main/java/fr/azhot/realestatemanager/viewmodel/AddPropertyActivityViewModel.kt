@@ -1,13 +1,11 @@
 package fr.azhot.realestatemanager.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.repository.*
 import kotlinx.coroutines.launch
 
-class PropertyCreateFragmentViewModel(
+class AddPropertyActivityViewModel(
     private val detailRepository: DetailRepository,
     private val addressRepository: AddressRepository,
     private val photoRepository: PhotoRepository,
@@ -16,6 +14,11 @@ class PropertyCreateFragmentViewModel(
 ) :
     ViewModel() {
 
+    // variables
+    val realtorList: LiveData<List<Realtor>> = realtorRepository.realtorList.asLiveData()
+
+
+    // functions
     fun insertDetail(detail: Detail) = viewModelScope.launch {
         detailRepository.insertDetail(detail)
     }
@@ -37,7 +40,7 @@ class PropertyCreateFragmentViewModel(
     }
 }
 
-class PropertyCreateFragmentViewModelFactory(
+class AddPropertyActivityViewModelFactory(
     private val detailRepository: DetailRepository,
     private val addressRepository: AddressRepository,
     private val photoRepository: PhotoRepository,
@@ -48,9 +51,9 @@ class PropertyCreateFragmentViewModelFactory(
 
     // overridden functions
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PropertyCreateFragmentViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(AddPropertyActivityViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return PropertyCreateFragmentViewModel(
+            return AddPropertyActivityViewModel(
                 detailRepository,
                 addressRepository,
                 photoRepository,
