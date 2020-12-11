@@ -63,7 +63,10 @@ class PropertyListAdapter(
                 .centerCrop()
                 .into(binding.photoImageView)
 
-            binding.typeTextView.text = property.detail.propertyType?.label
+            binding.typeTextView.text =
+                property.detail.propertyType.toString()
+                    .toLowerCase(Locale.ROOT)
+                    .capitalize(Locale.ROOT)
 
             binding.cityTextView.text = property.address?.city
 
