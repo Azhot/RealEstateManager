@@ -44,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
-        android:textColor="@color/fuchsia_400"
+        android:textColor="@color/primaryDayColor"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
