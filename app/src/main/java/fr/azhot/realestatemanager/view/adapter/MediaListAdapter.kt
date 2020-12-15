@@ -9,7 +9,7 @@ import fr.azhot.realestatemanager.model.Photo
 
 class MediaListAdapter(
     private val glide: RequestManager,
-    private var photos: List<Photo>,
+    var photoList: MutableList<Photo>,
 ) : RecyclerView.Adapter<MediaListAdapter.PhotoViewHolder>() {
 
 
@@ -24,11 +24,17 @@ class MediaListAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) =
-        holder.bind(photos[position])
+        holder.bind(photoList[position])
 
 
-    override fun getItemCount(): Int = photos.count()
+    override fun getItemCount(): Int = photoList.count()
 
+
+    // functions
+    fun addPhoto(photo: Photo) {
+        photoList.add(photo)
+        notifyItemChanged(itemCount)
+    }
 
     // inner class
     class PhotoViewHolder(

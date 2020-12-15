@@ -64,7 +64,7 @@ class PropertyDetailsFragment : Fragment() {
             LinearLayoutManager.HORIZONTAL,
             false
         )
-        val adapter = MediaListAdapter(Glide.with(this), property.photos)
+        val adapter = MediaListAdapter(Glide.with(this), property.photoList)
         recyclerView.adapter = adapter
     }
 }

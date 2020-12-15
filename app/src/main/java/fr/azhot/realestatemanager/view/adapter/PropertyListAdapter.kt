@@ -59,7 +59,7 @@ class PropertyListAdapter(
 
         fun bind(property: Property) {
             glide
-                .load(property.photos[0].uri)
+                .load(property.photoList[0].uri)
                 .centerCrop()
                 .into(binding.photoImageView)
 
