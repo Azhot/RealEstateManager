@@ -14,13 +14,15 @@ import fr.azhot.realestatemanager.utils.TypeConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
-@Database(entities = [
-    Detail::class,
-    Address::class,
-    Photo::class,
-    PointOfInterest::class,
-    Realtor::class,
-], version = 1, exportSchema = false)
+@Database(
+    entities = [
+        Detail::class,
+        Address::class,
+        Photo::class,
+        PointOfInterest::class,
+        Realtor::class,
+    ], version = 1, exportSchema = false
+)
 @TypeConverters(TypeConverter::class)
 abstract class AppDatabase : RoomDatabase() {
 
@@ -75,16 +77,7 @@ abstract class AppDatabase : RoomDatabase() {
                             "Paris",
                             "Rue Bidon",
                             "123",
-                        )
-                    )
-
-                    addressDao.insertAddress(
-                        Address(
-                            2L,
-                            "75116",
-                            "Paris",
-                            "Rue du café",
-                            "23",
+                            "",
                         )
                     )
 
@@ -125,8 +118,14 @@ abstract class AppDatabase : RoomDatabase() {
                         PointOfInterest(
                             1L,
                             1L,
-                            2L,
                             "Café des amis",
+                            Address(
+                                "75116",
+                                "Paris",
+                                "Rue du café",
+                                "23",
+                                "",
+                            ),
                         )
                     )
                 }

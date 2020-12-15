@@ -20,11 +20,11 @@ data class Photo(
     val photoId: Long,
     val detailId: Long,
     val uri: String,
-    val description: String?,
+    val description: String,
 ) {
     constructor(
         detailId: Long,
         uri: String,
-        description: String?,
+        description: String,
     ) : this(0, detailId, uri, description)
 }

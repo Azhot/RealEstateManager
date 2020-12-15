@@ -14,4 +14,8 @@ data class Realtor(
         firstName: String,
         lastName: String,
     ) : this(0, firstName, lastName)
+
+    override fun toString(): String {
+        return "$firstName $lastName"
+    }
 }

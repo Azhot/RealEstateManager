@@ -7,17 +7,21 @@ import androidx.room.PrimaryKey
 data class Address(
     @PrimaryKey(autoGenerate = true)
     val addressId: Long,
-    var zipCode: String?,
-    var city: String?,
-    var roadName: String?,
-    var number: String?,
-    var complement: String? = null,
+    var zipCode: String,
+    var city: String,
+    var roadName: String,
+    var number: String,
+    var complement: String,
 ) {
     constructor(
-        zipCode: String?,
-        city: String?,
-        roadName: String?,
-        number: String?,
-        complement: String?,
+        zipCode: String = "",
+        city: String = "",
+        roadName: String = "",
+        number: String = "",
+        complement: String = "",
     ) : this(0, zipCode, city, roadName, number, complement)
+
+    override fun toString(): String {
+        return "$city $number $roadName $zipCode $complement".trim()
+    }
 }
