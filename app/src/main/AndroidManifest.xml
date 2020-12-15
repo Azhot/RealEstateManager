@@ -4,6 +4,7 @@
 
     <!-- PERMISSIONS -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".RealEstateManagerApplication"
@@ -23,7 +24,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.activity.PropertyDetailsActivity" />
-        <activity android:name=".view.activity.AddPropertyActivity"/>
+        <activity android:name=".view.activity.AddPropertyActivity" />
     </application>
 
 </manifest>

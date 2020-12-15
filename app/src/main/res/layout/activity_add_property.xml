@@ -14,206 +14,260 @@
         android:layout_margin="@dimen/small_margin"
         android:background="@drawable/ic_white_background_cornered"
         android:orientation="vertical"
-        android:padding="@dimen/large_padding">
-
-        <Spinner
-            android:id="@+id/property_type_spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:paddingStart="@dimen/small_padding"
-            android:paddingEnd="@dimen/small_padding"
-            android:spinnerMode="dialog"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/price_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:autofillHints=""
-            android:hint="Price"
-            android:inputType="number"
-            android:textColorHint="@color/gray"
-            android:textSize="@dimen/average_text_size"
-            app:backgroundTint="@color/primaryDayDarkColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/property_type_spinner" />
-
-        <EditText
-            android:id="@+id/square_meter_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:autofillHints=""
-            android:hint="Square meter"
-            android:inputType="number"
-            android:textColorHint="@color/gray"
-            android:textSize="@dimen/average_text_size"
-            app:backgroundTint="@color/primaryDayDarkColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_edit_text" />
-
-        <Button
-            android:id="@+id/rooms_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/average_margin"
-            android:onClick="onClick"
-            android:text="Room(s)"
-            app:layout_constraintEnd_toStartOf="@id/rooms_text_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/square_meter_edit_text" />
-
-        <TextView
-            android:id="@+id/rooms_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:background="@drawable/ic_white_background_with_borders"
-            android:ellipsize="end"
-            android:lines="1"
-            android:paddingStart="@dimen/large_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingEnd="@dimen/large_padding"
-            android:paddingBottom="@dimen/small_padding"
-            android:textSize="@dimen/average_text_size"
-            app:layout_constraintBottom_toBottomOf="@id/rooms_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/rooms_button"
-            app:layout_constraintTop_toTopOf="@id/rooms_button"
-            tools:text="1 room" />
-
-        <!-- todo: make it open a dialog -->
-        <Button
-            android:id="@+id/address_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/average_margin"
-            android:onClick="onClick"
-            android:text="Address"
-            app:layout_constraintEnd_toStartOf="@id/address_text_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rooms_button" />
-
-        <TextView
-            android:id="@+id/address_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:background="@drawable/ic_white_background_with_borders"
-            android:ellipsize="end"
-            android:lines="1"
-            android:paddingStart="@dimen/large_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingEnd="@dimen/large_padding"
-            android:paddingBottom="@dimen/small_padding"
-            android:textSize="@dimen/average_text_size"
-            app:layout_constraintBottom_toBottomOf="@id/address_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/address_button"
-            app:layout_constraintTop_toTopOf="@id/address_button"
-            tools:text="Verneuil sur seine, 52 ter rue" />
-
-        <!-- todo: make it a button to open date picker dialog -->
-        <Button
-            android:id="@+id/entry_date_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/average_margin"
-            android:onClick="onClick"
-            android:text="Entry date"
-            app:layout_constraintEnd_toStartOf="@id/entry_date_text_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/address_button" />
-
-        <TextView
-            android:id="@+id/entry_date_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/small_margin"
-            android:background="@drawable/ic_white_background_with_borders"
-            android:ellipsize="end"
-            android:lines="1"
-            android:paddingStart="@dimen/large_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingEnd="@dimen/large_padding"
-            android:paddingBottom="@dimen/small_padding"
-            android:textSize="@dimen/average_text_size"
-            app:layout_constraintBottom_toBottomOf="@id/entry_date_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/entry_date_button"
-            app:layout_constraintTop_toTopOf="@id/entry_date_button"
-            tools:text="22 avril 2020" />
+        android:paddingStart="@dimen/small_padding"
+        android:paddingTop="@dimen/small_padding"
+        android:paddingEnd="@dimen/small_padding"
+        android:paddingBottom="@dimen/large_padding">
 
         <ImageButton
-            android:id="@+id/photo_button"
+            android:id="@+id/select_photo_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/average_margin"
             android:background="@android:color/transparent"
             android:contentDescription="TODO"
             android:onClick="onClick"
+            android:layout_margin="@dimen/small_margin"
             android:src="@drawable/ic_add_a_photo_24px"
-            android:tint="@color/primaryDayColor"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:tint="@color/secondaryDayLightColor"
+            app:layout_constraintBottom_toBottomOf="@id/photo_info_input_layout"
+            app:layout_constraintEnd_toStartOf="@id/photo_info_input_layout"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/entry_date_button" />
+            app:layout_constraintTop_toTopOf="@id/photo_info_input_layout" />
 
-        <!-- todo: make it a button to open date picker dialog -->
-        <Button
-            android:id="@+id/sale_date_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="@dimen/average_margin"
-            android:onClick="onClick"
-            android:text="Sale date"
-            app:layout_constraintEnd_toStartOf="@id/sale_date_text_view"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/photo_button" />
-
-        <TextView
-            android:id="@+id/sale_date_text_view"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/photo_info_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
-            android:background="@drawable/ic_white_background_with_borders"
-            android:ellipsize="end"
-            android:lines="1"
-            android:paddingStart="@dimen/large_padding"
-            android:paddingTop="@dimen/small_padding"
-            android:paddingEnd="@dimen/large_padding"
-            android:paddingBottom="@dimen/small_padding"
-            android:textSize="@dimen/average_text_size"
-            app:layout_constraintBottom_toBottomOf="@id/sale_date_button"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/sale_date_button"
-            app:layout_constraintTop_toTopOf="@id/sale_date_button"
-            tools:text="22 avril 2020" />
+            android:hint="Photo info"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toStartOf="@id/add_photo_button"
+            app:layout_constraintStart_toEndOf="@id/select_photo_button"
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Spinner
-            android:id="@+id/realtor_spinner"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/photo_info_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textShortMessage" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <ImageButton
+            android:id="@+id/add_photo_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:contentDescription="TODO"
+            android:onClick="onClick"
+            android:layout_margin="@dimen/small_margin"
+            android:src="@drawable/ic_add_circle_24"
+            android:tint="@color/primaryDayColor"
+            app:layout_constraintBottom_toBottomOf="@id/photo_info_input_layout"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/photo_info_input_layout"
+            app:layout_constraintTop_toTopOf="@id/photo_info_input_layout" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/media_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:layout_marginBottom="@dimen/average_margin"
-            android:paddingStart="@dimen/small_padding"
-            android:paddingEnd="@dimen/small_padding"
-            android:spinnerMode="dialog"
+            android:layout_margin="@dimen/small_margin"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/photo_info_input_layout"
+            tools:listitem="@layout/cell_photo" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/property_type_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Type"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/media_recycler_view"
+            app:startIconDrawable="@drawable/ic_property_type_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <AutoCompleteTextView
+                android:id="@+id/property_type_auto_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/price_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Price"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_type_input_layout"
+            app:startIconDrawable="@drawable/ic_dollars_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/price_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/square_meter_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Square meter"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_input_layout"
+            app:startIconDrawable="@drawable/ic_square_foot_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/square_meter_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/rooms_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Room(s)"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/square_meter_input_layout"
+            app:startIconDrawable="@drawable/ic_rooms_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <AutoCompleteTextView
+                android:id="@+id/rooms_auto_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/address_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Address"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rooms_input_layout"
+            app:startIconDrawable="@drawable/ic_address_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="textPostalAddress"
+                android:longClickable="false"
+                android:onClick="onClick" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/entry_date_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Entry date"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_input_layout"
+            app:startIconDrawable="@drawable/ic_calendar_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/entry_date_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="date"
+                android:longClickable="false"
+                android:onClick="onClick" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/sale_date_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Sale date"
+            app:endIconMode="clear_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/entry_date_input_layout"
+            app:startIconDrawable="@drawable/ic_check_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/sale_date_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                android:inputType="date"
+                android:longClickable="false"
+                android:onClick="onClick" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/realtor_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/small_margin"
+            android:hint="Realtor"
             app:layout_constraintEnd_toStartOf="@id/realtor_add_image_button"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sale_date_button" />
+            app:layout_constraintTop_toBottomOf="@id/sale_date_input_layout"
+            app:startIconDrawable="@drawable/ic_realtor_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <AutoCompleteTextView
+                android:id="@+id/realtor_auto_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="none"
+                tools:ignore="LabelFor" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
             android:id="@+id/realtor_add_image_button"
@@ -226,27 +280,45 @@
             android:onClick="onClick"
             android:src="@drawable/ic_add_circle_24"
             android:tint="@color/primaryDayColor"
-            app:layout_constraintBottom_toBottomOf="@id/realtor_spinner"
+            app:layout_constraintBottom_toBottomOf="@id/realtor_input_layout"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/realtor_spinner"
-            app:layout_constraintTop_toTopOf="@id/realtor_spinner" />
+            app:layout_constraintStart_toEndOf="@id/realtor_input_layout"
+            app:layout_constraintTop_toTopOf="@id/realtor_input_layout" />
 
-        <EditText
-            android:id="@+id/description_edit_text"
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/description_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/small_margin"
-            android:autofillHints=""
             android:hint="Description"
-            android:inputType="textMultiLine"
-            android:textColorHint="@color/gray"
-            android:textSize="@dimen/average_text_size"
-            app:backgroundTint="@color/primaryDayDarkColor"
+            app:endIconMode="clear_text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/realtor_spinner" />
+            app:layout_constraintTop_toBottomOf="@id/realtor_input_layout"
+            app:startIconDrawable="@drawable/ic_description_24"
+            app:startIconTint="@color/secondaryDayLightColor">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/description_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/create_property_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/average_margin"
+            android:onClick="onClick"
+            android:text="Create property"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/description_input_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 </ScrollView>
