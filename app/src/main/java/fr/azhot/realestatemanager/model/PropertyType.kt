@@ -8,17 +8,7 @@ enum class PropertyType {
     PENTHOUSE,
     MANSION;
 
-    companion object {
-        fun getValuesAsMutableListString(): MutableList<String> {
-            val items = mutableListOf<String>()
-            for (type in values()) {
-                items.add(
-                    type.toString()
-                        .toLowerCase(Locale.ROOT)
-                        .capitalize(Locale.ROOT)
-                )
-            }
-            return items
-        }
+    override fun toString(): String {
+        return super.toString().toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)
     }
 }

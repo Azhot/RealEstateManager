@@ -3,6 +3,7 @@ package fr.azhot.realestatemanager.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(
     tableName = "photo_table",
@@ -16,15 +17,9 @@ import androidx.room.PrimaryKey
     ]
 )
 data class Photo(
-    @PrimaryKey(autoGenerate = true)
-    val photoId: Long,
-    val detailId: Long,
+    @PrimaryKey
+    val photoId: String = UUID.randomUUID().toString(),
+    val detailId: String,
     val uri: String,
     val description: String,
-) {
-    constructor(
-        detailId: Long,
-        uri: String,
-        description: String,
-    ) : this(0, detailId, uri, description)
-}
+)

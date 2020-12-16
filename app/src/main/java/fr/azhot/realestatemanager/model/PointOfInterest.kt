@@ -4,6 +4,7 @@ import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(
     tableName = "point_of_interest_table",
@@ -17,16 +18,10 @@ import androidx.room.PrimaryKey
     ]
 )
 data class PointOfInterest(
-    @PrimaryKey(autoGenerate = true)
-    val pointOfInterestId: Long,
-    val detailId: Long,
+    @PrimaryKey
+    val pointOfInterestId: String = UUID.randomUUID().toString(),
+    val detailId: String,
     val name: String,
     @Embedded
     val address: Address,
-) {
-    constructor(
-        detailId: Long,
-        name: String,
-        address: Address,
-    ) : this(0, detailId, name, address)
-}
+)

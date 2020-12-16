@@ -6,5 +6,7 @@ import android.widget.ArrayAdapter
 class ExposedDropdownMenuAdapter(
     context: Context,
     resource: Int,
-    listString: List<String>,
-) : ArrayAdapter<String>(context, resource, listString)
+    var list: List<*>,
+) : ArrayAdapter<Any>(context, resource, list) {
+    var position: Int? = null
+}

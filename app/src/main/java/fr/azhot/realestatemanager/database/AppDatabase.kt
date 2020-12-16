@@ -72,7 +72,7 @@ abstract class AppDatabase : RoomDatabase() {
 
                     addressDao.insertAddress(
                         Address(
-                            1L,
+                            "addressId1",
                             "75116",
                             "Paris",
                             "Rue Bidon",
@@ -83,7 +83,7 @@ abstract class AppDatabase : RoomDatabase() {
 
                     realtorDao.insertRealtor(
                         Realtor(
-                            1L,
+                            "realtorId1",
                             "Thomas",
                             "Duval",
                         )
@@ -91,23 +91,23 @@ abstract class AppDatabase : RoomDatabase() {
 
                     detailDao.insertDetail(
                         Detail(
-                            1L,
+                            "detailId1",
                             PropertyType.DUPLEX,
                             1500000,
                             150,
                             7,
                             "Nice duplex in Paris",
-                            1L,
+                            "addressId1",
                             1000L,
                             null,
-                            1L,
+                            "realtorId1",
                         )
                     )
 
                     photoDao.insertPhoto(
                         Photo(
-                            1L,
-                            1L,
+                            "photoId1",
+                            "detailId1",
                             Uri.parse("android.resource:drawable" + R.drawable.thumb_living_room)
                                 .toString(),
                             "Living-room",
@@ -116,8 +116,8 @@ abstract class AppDatabase : RoomDatabase() {
 
                     pointOfInterestDao.insertPointOfInterest(
                         PointOfInterest(
-                            1L,
-                            1L,
+                            "pointOfInterestId1",
+                            "detailId1",
                             "Café des amis",
                             Address(
                                 "75116",

@@ -2,26 +2,25 @@ package fr.azhot.realestatemanager.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.*
 
 @Entity(tableName = "address_table")
 data class Address(
-    @PrimaryKey(autoGenerate = true)
-    val addressId: Long,
-    var zipCode: String,
-    var city: String,
-    var roadName: String,
-    var number: String,
-    var complement: String,
+    @PrimaryKey
+    val addressId: String = UUID.randomUUID().toString(),
+    var zipCode: String? = null,
+    var city: String? = null,
+    var roadName: String? = null,
+    var number: String? = null,
+    var complement: String? = null,
 ) {
-    constructor(
-        zipCode: String = "",
-        city: String = "",
-        roadName: String = "",
-        number: String = "",
-        complement: String = "",
-    ) : this(0, zipCode, city, roadName, number, complement)
-
     override fun toString(): String {
-        return "$city $number $roadName $zipCode $complement".trim()
+        val sb = StringBuilder()
+        city?.let { sb.append("$it, ") }
+        number?.let { sb.append("$it, ") }
+        roadName?.let { sb.append("$it, ") }
+        zipCode?.let { sb.append("$it, ") }
+        complement?.let { sb.append(it) }
+        return sb.toString()
     }
 }

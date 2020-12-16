@@ -57,7 +57,6 @@ class AddPropertyActivity : AppCompatActivity() {
     private val saleDate by lazy { Calendar.getInstance() }
     private lateinit var detail: Detail
     private lateinit var uri: Uri
-    private lateinit var realtorList: List<Realtor>
 
 
     // overridden functions
@@ -83,7 +82,7 @@ class AddPropertyActivity : AppCompatActivity() {
 
         // building the property type dropdown menu
         buildExposedMenuDropdown(
-            PropertyType.getValuesAsMutableListString(),
+            PropertyType.values().toMutableList(),
             binding.propertyTypeAutoComplete
         )
 
@@ -95,26 +94,9 @@ class AddPropertyActivity : AppCompatActivity() {
 
         // building the realtor dropdown menu
         buildExposedMenuDropdown(
-            mutableListOf(),
+            mutableListOf<Realtor>(),
             binding.realtorAutoComplete
         )
-
-        // testing purpose
-
-        binding.propertyTypeAutoComplete.setOnItemClickListener { _, _, _, _ ->
-            val propertyType = PropertyType.values()[getAdapterPosition(binding.propertyTypeAutoComplete)]
-            Toast.makeText(this, "$propertyType", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.roomsAutoComplete.setOnItemClickListener { _, _, _, _ ->
-            val rooms = getAdapterPosition(binding.roomsAutoComplete) + 1
-            Toast.makeText(this, "$rooms", Toast.LENGTH_SHORT).show()
-        }
-
-        binding.realtorAutoComplete.setOnItemClickListener { _, _, _, _ ->
-            val realtor = realtorList[getAdapterPosition(binding.realtorAutoComplete)]
-            Toast.makeText(this, "$realtor", Toast.LENGTH_SHORT).show()
-        }
 
         // init the realtor observer
         initRealtorListObserver()
@@ -190,7 +172,10 @@ class AddPropertyActivity : AppCompatActivity() {
             false
         )
         // todo : make a specific adapter with a delete button attached to each photo
-        val adapter = MediaListAdapter(Glide.with(this), mutableListOf())
+        val adapter = MediaListAdapter(
+            glide = Glide.with(this),
+            photoList = mutableListOf()
+        )
         binding.mediaRecyclerView.adapter = adapter
     }
 
@@ -198,21 +183,27 @@ class AddPropertyActivity : AppCompatActivity() {
         if (!this::detail.isInitialized) {
             detail = Detail()
         }
-        val photo =
-            Photo(detail.detailId, uri.toString(), binding.photoInfoEditText.text.toString())
+        val photo = Photo(
+            detailId = detail.detailId,
+            uri = uri.toString(),
+            description = binding.photoInfoEditText.text.toString(),
+        )
         (binding.mediaRecyclerView.adapter as MediaListAdapter).addPhoto(photo)
     }
 
     private fun buildExposedMenuDropdown(
-        listString: MutableList<String>,
+        list: MutableList<*>,
         autoCompleteTextView: AutoCompleteTextView,
     ) {
         val adapter = ExposedDropdownMenuAdapter(
-            this,
-            R.layout.exposed_dropdown_menu_item,
-            listString
+            context = this,
+            resource = R.layout.exposed_dropdown_menu_item,
+            list = list
         )
         autoCompleteTextView.setAdapter(adapter)
+        autoCompleteTextView.setOnItemClickListener { _, _, position, _ ->
+            adapter.position = position
+        }
     }
 
     private fun createRoomsListString(): MutableList<String> {
@@ -227,35 +218,54 @@ class AddPropertyActivity : AppCompatActivity() {
     }
 
     private fun buildAddressDialog(textView: TextView) {
+        // init dialog
         val builder = AlertDialog.Builder(this)
         val dialogBinding = DialogAddressBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
-        if (address.zipCode.isNotEmpty()) dialogBinding.zipCodeEditText.setText(address.zipCode)
-        if (address.city.isNotEmpty()) dialogBinding.cityEditText.setText(address.city)
-        if (address.roadName.isNotEmpty()) dialogBinding.roadNameEditText.setText(address.roadName)
-        if (address.number.isNotEmpty()) dialogBinding.numberEditText.setText(address.number)
-        if (address.complement.isNotEmpty()) dialogBinding.complementEditText.setText(address.complement)
+
+        // sets fields if address was already filled
+        address.zipCode?.let { dialogBinding.zipCodeEditText.setText(it) }
+        address.city?.let { dialogBinding.cityEditText.setText(it) }
+        address.roadName?.let { dialogBinding.roadNameEditText.setText(it) }
+        address.number?.let { dialogBinding.numberEditText.setText(it) }
+        address.complement?.let { dialogBinding.complementEditText.setText(it) }
+
         val dialog = builder.create()
+
+        // add listener for cancel button
         dialogBinding.cancelButton.setOnClickListener {
             dialog.dismiss()
         }
+
+        // add listener for set button
         dialogBinding.setButton.setOnClickListener {
-            address.zipCode = dialogBinding.zipCodeEditText.text.toString().trim()
-            address.city = dialogBinding.cityEditText.text.toString().trim()
-            address.roadName = dialogBinding.roadNameEditText.text.toString().trim()
-            address.number = dialogBinding.numberEditText.text.toString().trim()
-            address.complement = dialogBinding.complementEditText.text.toString().trim()
+            if (dialogBinding.zipCodeEditText.text.toString().isNotEmpty()) {
+                address.zipCode = dialogBinding.zipCodeEditText.text.toString().trim()
+            }
+            if (dialogBinding.cityEditText.text.toString().isNotEmpty()) {
+                address.city = dialogBinding.cityEditText.text.toString().trim()
+            }
+            if (dialogBinding.roadNameEditText.text.toString().isNotEmpty()) {
+                address.roadName = dialogBinding.roadNameEditText.text.toString().trim()
+            }
+            if (dialogBinding.numberEditText.text.toString().isNotEmpty()) {
+                address.number = dialogBinding.numberEditText.text.toString().trim()
+            }
+            if (dialogBinding.complementEditText.text.toString().isNotEmpty()) {
+                address.complement = dialogBinding.complementEditText.text.toString().trim()
+            }
             textView.text = address.toString()
             dialog.dismiss()
         }
+
         dialog.show()
     }
 
     private fun initRealtorListObserver() {
         viewModel.realtorList.observe(this, { list ->
-            realtorList = list
             val adapter = binding.realtorAutoComplete.adapter as ExposedDropdownMenuAdapter
             adapter.clear()
+            adapter.list = list
             for (realtor in list) {
                 adapter.add(realtor.toString())
             }
@@ -263,45 +273,98 @@ class AddPropertyActivity : AppCompatActivity() {
     }
 
     private fun buildAddRealtorDialog(functionOnLickAddButton: (firstName: String, lastName: String) -> (Unit)) {
+        // init dialog
         val builder = AlertDialog.Builder(this)
         val dialogBinding = DialogAddRealtorBinding.inflate(layoutInflater)
         builder.setView(dialogBinding.root)
+
         val dialog = builder.create()
+
+        // add listener for cancel button
         dialogBinding.cancelButton.setOnClickListener {
             dialog.dismiss()
         }
+
+        // add listener for add button
         dialogBinding.addButton.setOnClickListener {
             val firstName = dialogBinding.firstNameEditText.text.toString().trim()
             val lastName = dialogBinding.lastNameEditText.text.toString().trim()
             functionOnLickAddButton(firstName, lastName)
             dialog.dismiss()
         }
+
         dialog.show()
     }
 
-
-    private fun createRealtor(firstName: String, lastName: String) {
-        viewModel.insertRealtor(
-            Realtor(
-                firstName,
-                lastName,
-            )
-        )
+    private fun createRealtor(firstName: String?, lastName: String?) {
+        val realtor = Realtor().apply {
+            firstName?.let { this.firstName = it }
+            lastName?.let { this.lastName = it }
+        }
+        viewModel.insertRealtor(realtor)
     }
 
+    // todo : should only be called when detail is initialized, i.e not before a photo is added
     private fun createProperty() {
-        // todo : should only be called when detail is initialized, i.e not before a photo is added
-        detail.propertyType =
-            PropertyType.values()[getAdapterPosition(binding.propertyTypeAutoComplete)]
-        detail.price = Integer.valueOf(binding.priceEditText.text.toString())
-        detail.squareMeters = Integer.valueOf(binding.squareMeterEditText.text.toString())
-        detail.rooms = getAdapterPosition(binding.roomsAutoComplete) + 1
-        detail.description = binding.descriptionEditText.text.toString().trim()
-        detail.addressId = address.addressId
-        detail.entryTimeStamp = entryDate.timeInMillis
-        detail.saleTimeStamp = saleDate.timeInMillis
-        detail.realtorId = realtorList[getAdapterPosition(binding.realtorAutoComplete)].realtorId
+        // todo: kept for testing... to be deleted when user is forced to enter a photo to confirm creation
+        if (!this::detail.isInitialized) {
+            detail = Detail()
+        }
 
+        // set propertyType
+        (binding.propertyTypeAutoComplete.adapter as ExposedDropdownMenuAdapter).apply {
+            this.position?.let { detail.propertyType = this.list[it] as PropertyType }
+        }
+
+        // set price
+        if (binding.priceEditText.text.toString().isNotEmpty()) {
+            detail.price = Integer.valueOf(binding.priceEditText.text.toString())
+        }
+        // set squareMeters
+        if (binding.squareMeterEditText.text.toString().isNotEmpty()) {
+            detail.squareMeters = Integer.valueOf(binding.squareMeterEditText.text.toString())
+        }
+
+        // set rooms
+        (binding.roomsAutoComplete.adapter as ExposedDropdownMenuAdapter).apply {
+            this.position?.let { detail.rooms = it + 1 }
+        }
+
+        // set description
+        if (binding.descriptionEditText.text.toString().isNotEmpty()) {
+            detail.description = binding.descriptionEditText.text.toString().trim()
+        }
+
+        // set addressId
+        if (binding.addressEditText.text.toString().isNotEmpty()) {
+            detail.addressId = address.addressId
+        }
+
+        // set entryTimeStamp
+        if (binding.entryDateEditText.text.toString().isNotEmpty()) {
+            detail.entryTimeStamp = entryDate.timeInMillis
+        }
+
+        // set saleTimeStamp
+        if (binding.saleDateEditText.text.toString().isNotEmpty()) {
+            detail.saleTimeStamp = saleDate.timeInMillis
+        }
+
+        // set realtorId
+        (binding.realtorAutoComplete.adapter as ExposedDropdownMenuAdapter).apply {
+            this.position?.let { detail.realtorId = (this.list[it] as Realtor).realtorId }
+        }
+
+        // todo : for testing
+        /*
+        println(detail)
+        println(address)
+        Toast.makeText(this, "$detail", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "$address", Toast.LENGTH_SHORT).show()
+        */
+
+        // todo : to be implemented
+        /*
         viewModel.insertAddress(address)
 
         viewModel.insertDetail(detail)
@@ -309,16 +372,12 @@ class AddPropertyActivity : AppCompatActivity() {
         for (photo in (binding.mediaRecyclerView.adapter as MediaListAdapter).photoList) {
             viewModel.insertPhoto(photo)
         }
+         */
 
         /*
         for (pointOfInterest in pointsOfInterest) {
             viewModel.insertPointOfInterest(pointOfInterest)
         }
         */
-    }
-
-    private fun getAdapterPosition(autoCompleteTextView: AutoCompleteTextView): Int {
-        return (autoCompleteTextView.adapter as ExposedDropdownMenuAdapter)
-            .getPosition(autoCompleteTextView.text.toString())
     }
 }

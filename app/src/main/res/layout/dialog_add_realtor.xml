@@ -67,7 +67,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
-        android:hint="@string/cancel_button_add_realtor_dialog"
+        android:text="@string/cancel_button_add_realtor_dialog"
         android:textColor="@color/primaryDayColor"
         app:layout_constraintEnd_toStartOf="@id/add_button"
         app:layout_constraintTop_toBottomOf="@id/last_name_input_layout" />
@@ -79,7 +79,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/large_margin"
-        android:hint="@string/add_button_add_realtor_dialog"
+        android:text="@string/add_button_add_realtor_dialog"
         android:textColor="@color/primaryDayColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/last_name_input_layout" />
