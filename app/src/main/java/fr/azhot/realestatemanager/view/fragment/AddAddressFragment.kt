@@ -1,7 +1,6 @@
 package fr.azhot.realestatemanager.view.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddAddressBinding
 import fr.azhot.realestatemanager.model.Address
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
@@ -23,11 +23,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
 
     // overridden functions
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -38,15 +33,20 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+    }
+
     override fun onClick(v: View?) {
         when (v?.id) {
             binding.nextButton.id -> alertEmptyFields()
         }
     }
 
+
     // private functions
     private fun goNext() {
-        Log.d("AddAddressFragment", "goNext")
         val zipCode = if (binding.zipCodeEditText.text.toString().isNotEmpty()) {
             binding.zipCodeEditText.text.toString()
         } else null
@@ -81,7 +81,6 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     }
 
     private fun alertEmptyFields() {
-        Log.d("AddAddressFragment", "alertEmptyFields: ")
         if (binding.zipCodeEditText.text.toString().isNotEmpty()
             && binding.cityEditText.text.toString().isNotEmpty()
             && binding.roadNameEditText.text.toString().isNotEmpty()
@@ -92,13 +91,13 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         }
 
         MaterialAlertDialogBuilder(requireContext()).apply {
-            setTitle("Information missing")
-            setMessage("One or more fields are not completed, continue anyway ?")
-            setPositiveButton("Continue") { dialog, _ ->
+            setTitle(getString(R.string.alert_title))
+            setMessage(getString(R.string.alert_message))
+            setPositiveButton(getString(R.string.alert_positive)) { dialog, _ ->
                 dialog.dismiss()
                 goNext()
             }
-            setNegativeButton("Edit") { dialog, _ ->
+            setNegativeButton(getString(R.string.alert_negative)) { dialog, _ ->
                 dialog.dismiss()
             }
             create()
