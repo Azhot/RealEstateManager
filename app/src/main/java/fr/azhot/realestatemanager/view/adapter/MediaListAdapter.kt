@@ -9,7 +9,7 @@ import fr.azhot.realestatemanager.model.Photo
 
 class MediaListAdapter(
     private val glide: RequestManager,
-    var photoList: MutableList<Photo>,
+    val photoList: MutableList<Photo>,
 ) : RecyclerView.Adapter<MediaListAdapter.PhotoViewHolder>() {
 
 
@@ -26,7 +26,6 @@ class MediaListAdapter(
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) =
         holder.bind(photoList[position])
 
-
     override fun getItemCount(): Int = photoList.count()
 
 
@@ -35,6 +34,7 @@ class MediaListAdapter(
         photoList.add(photo)
         notifyItemChanged(itemCount)
     }
+
 
     // inner class
     class PhotoViewHolder(
@@ -49,7 +49,7 @@ class MediaListAdapter(
                 .centerCrop()
                 .into(binding.photoImageView)
 
-            binding.photoDescriptionTextView.text = photo.description
+            binding.photoTitleTextView.text = photo.title
         }
     }
 }

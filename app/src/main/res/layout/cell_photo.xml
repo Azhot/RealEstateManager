@@ -10,10 +10,10 @@
         android:id="@+id/photo_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:src="@drawable/thumb_living_room" />
+        tools:background="@color/primaryLightColor" />
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/photo_description_text_view"
+        android:id="@+id/photo_title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#80000000"

@@ -1,78 +1,94 @@
 package fr.azhot.realestatemanager.view.fragment
 
-import android.content.Context
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentPropertyListBinding
+import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModelFactory
 
-
-class PropertyListFragment : Fragment() {
-
-
-    // companions
-    companion object {
-        // private val TAG = PropertyListAdapter::class.simpleName
-
-        @JvmStatic
-        fun newInstance() = PropertyListFragment()
-    }
+class PropertyListFragment : Fragment(), PropertyClickListener {
 
 
     // variables
     private lateinit var binding: FragmentPropertyListBinding
+    private lateinit var navController: NavController
     private val viewModel: PropertyListFragmentViewModel by viewModels {
         PropertyListFragmentViewModelFactory((activity?.application as RealEstateManagerApplication).detailRepository)
     }
-    private val adapter by lazy {
-        PropertyListAdapter(Glide.with(this), listOf(), context as PropertyClickListener)
-    }
+    private lateinit var currentProperty: Property
 
 
     // overridden functions
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        if (context !is PropertyClickListener) {
-            throw RuntimeException("$context must implement PropertyClickListener")
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = initFragmentPropertyListBinding(layoutInflater)
-        initPropertyListObserver(adapter)
-        configPropertyRecyclerView(binding.propertyListRecyclerView, adapter)
+        setHasOptionsMenu(true)
+        binding = FragmentPropertyListBinding.inflate(layoutInflater)
+        initPropertyListObserver()
+        initPropertyObserver()
+        configPropertyRecyclerView(binding.propertyListRecyclerView)
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_property -> {
+                val action =
+                    PropertyListFragmentDirections.actionPropertyListFragmentToAddPhotoFragment()
+                navController.navigate(action)
+            }
+        }
+        return true
+    }
+
+    override fun onPropertyClickListener(property: Property) {
+        viewModel.setLiveProperty(property)
+        val action =
+            PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailsFragment()
+        navController.navigate(action)
     }
 
 
     // functions
-    private fun initFragmentPropertyListBinding(layoutInflater: LayoutInflater) =
-        FragmentPropertyListBinding.inflate(layoutInflater)
-
-    private fun initPropertyListObserver(adapter: PropertyListAdapter) {
+    private fun initPropertyListObserver() {
         viewModel.propertyList.observe(viewLifecycleOwner, { list ->
+            val adapter = binding.propertyListRecyclerView.adapter as PropertyListAdapter
             adapter.setPropertyList(list)
+        })
+    }
+
+    private fun initPropertyObserver() {
+        viewModel.liveProperty.observe(viewLifecycleOwner, { property ->
+            currentProperty = property
         })
     }
 
     private fun configPropertyRecyclerView(
         recyclerView: RecyclerView,
-        adapter: PropertyListAdapter
     ) {
         recyclerView.layoutManager = LinearLayoutManager(context)
+        val adapter = PropertyListAdapter(Glide.with(this), listOf(), this)
         recyclerView.adapter = adapter
     }
 }

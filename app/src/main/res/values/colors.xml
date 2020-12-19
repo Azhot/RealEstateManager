@@ -13,5 +13,6 @@
     <color name="primaryNightDarkColor">#4527A0</color>
     <color name="secondaryNightColor">#009688</color>
     <color name="secondaryNightDarkColor">#00695C</color>
+    <color name="standard_text">#252525</color>
 
 </resources>

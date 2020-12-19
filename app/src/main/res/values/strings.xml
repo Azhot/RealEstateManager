@@ -1,6 +1,8 @@
 <resources>
     <!-- general -->
     <string name="app_name">RealEstateManager</string>
+    <string name="error_occurred">An error has occurred. Try again.</string>
+    <string name="next">Next</string>
 
     <!-- fragment_property_details.xml -->
     <string name="media_title">Media</string>
@@ -9,7 +11,9 @@
     <!-- menu.xml -->
     <string name="add_property">Add property</string>
 
-    <!-- AddPropertyActivity -->
+    <!-- nav_graph.xml -->
+    <string name="property_list">My property list</string>
+    <string name="property_detail">Property detail</string>
     <string name="new_property">New property</string>
 
     <!-- dialog_add_realtor.xml -->
@@ -18,5 +22,32 @@
     <string name="hint_last_name_add_realtor_dialog">Last name</string>
     <string name="add_button_add_realtor_dialog">Add</string>
     <string name="cancel_button_add_realtor_dialog">Cancel</string>
+
+    <!-- Add photo fragment -->
+    <string name="add_photo_fragment_title">Start by adding photos of the property …</string>
+    <string name="photo_title">Photo title</string>
+    <string name="select_photo">Select photo</string>
+    <string name="add_photo">Add photo</string>
+
+    <!-- Add detail fragment -->
+    <string name="add_detail_fragment_title">… and finally complete the property\'s detail.</string>
+    <string name="type">Type</string>
+    <string name="price">Price</string>
+    <string name="square_meter">Square meter</string>
+    <string name="rooms">Room(s)</string>
+    <string name="address">Address</string>
+    <string name="entry_date">Entry date</string>
+    <string name="sale_date">Sale date</string>
+    <string name="realtor">Realtor</string>
+    <string name="description">Description</string>
+    <string name="create">Create</string>
+
+    <!-- Add detail fragment -->
+    <string name="add_address_fragment_title">… then set the property\'s address detail …</string>
+    <string name="zip_code">Zip code</string>
+    <string name="city">City</string>
+    <string name="road_name">Road name</string>
+    <string name="number">Number</string>
+    <string name="complement">Complement</string>
 
 </resources>

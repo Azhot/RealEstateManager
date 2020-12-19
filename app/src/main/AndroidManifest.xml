@@ -16,7 +16,9 @@
         android:theme="@style/Theme.RealEstateManager">
 
         <!-- ACTIVITIES -->
-        <activity android:name=".view.activity.MainActivity">
+        <activity
+            android:name=".view.activity.MainActivity"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/propertyListFragment">
+
+    <fragment
+        android:id="@+id/propertyListFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.PropertyListFragment"
+        android:label="@string/property_list"
+        tools:layout="@layout/fragment_property_list">
+        <action
+            android:id="@+id/action_propertyListFragment_to_propertyDetailsFragment"
+            app:destination="@id/propertyDetailsFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+        <action
+            android:id="@+id/action_propertyListFragment_to_addPhotoFragment"
+            app:destination="@id/addPhotoFragment"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/slide_out_up"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down" />
+    </fragment>
+    <fragment
+        android:id="@+id/propertyDetailsFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragment"
+        android:label="@string/property_detail"
+        tools:layout="@layout/fragment_property_details">
+        <action
+            android:id="@+id/action_propertyDetailsFragment_to_addPhotoFragment"
+            app:destination="@id/addPhotoFragment"
+            app:enterAnim="@anim/slide_in_down"
+            app:exitAnim="@anim/slide_out_up"
+            app:popEnterAnim="@anim/slide_in_up"
+            app:popExitAnim="@anim/slide_out_down" />
+    </fragment>
+    <fragment
+        android:id="@+id/addPhotoFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.AddPhotoFragment"
+        android:label="@string/new_property"
+        tools:layout="@layout/fragment_add_photo">
+        <action
+            android:id="@+id/action_addPhotoFragment_to_addAddressFragment"
+            app:destination="@id/addAddressFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/addAddressFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.AddAddressFragment"
+        android:label="@string/new_property"
+        tools:layout="@layout/fragment_add_address">
+        <action
+            android:id="@+id/action_addAddressFragment_to_addDetailFragment"
+            app:destination="@id/addDetailFragment"
+            app:enterAnim="@anim/slide_in_left"
+            app:exitAnim="@anim/slide_out_right"
+            app:popEnterAnim="@anim/slide_in_right"
+            app:popExitAnim="@anim/slide_out_left" />
+    </fragment>
+    <fragment
+        android:id="@+id/addDetailFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.AddDetailFragment"
+        android:label="@string/new_property"
+        tools:layout="@layout/fragment_add_detail" />
+</navigation>

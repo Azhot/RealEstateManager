@@ -7,7 +7,16 @@ import fr.azhot.realestatemanager.repository.DetailRepository
 class PropertyListFragmentViewModel(detailRepository: DetailRepository) :
     ViewModel() {
 
+    // variables
+    // todo : point de débug to check data incoming
     val propertyList: LiveData<List<Property>> = detailRepository.propertyList.asLiveData()
+    val liveProperty: MutableLiveData<Property> = detailRepository.liveProperty
+
+
+    // functions
+    fun setLiveProperty(property: Property) {
+        liveProperty.value = property
+    }
 }
 
 class PropertyListFragmentViewModelFactory(private val detailRepository: DetailRepository) :

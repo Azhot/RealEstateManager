@@ -1,14 +1,15 @@
 package fr.azhot.realestatemanager.view.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailsBinding
 import fr.azhot.realestatemanager.model.Property
@@ -31,6 +32,7 @@ class PropertyDetailsFragment : Fragment() {
 
     // variables
     private lateinit var binding: FragmentPropertyDetailsBinding
+    private lateinit var navController: NavController
     private val viewModel: PropertyDetailsFragmentViewModel by viewModels {
         PropertyDetailsFragmentViewModelFactory((activity?.application as RealEstateManagerApplication).detailRepository)
     }
@@ -42,16 +44,34 @@ class PropertyDetailsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = initFragmentPropertyDetailsBinding(layoutInflater)
+        setHasOptionsMenu(true)
+        binding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
         initPropertyObserver(binding.mediaRecyclerView)
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navController = Navigation.findNavController(view)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.add_property -> {
+                val action =
+                    PropertyDetailsFragmentDirections.actionPropertyDetailsFragmentToAddPhotoFragment()
+                navController.navigate(action)
+            }
+        }
+        return true
+    }
+
 
     // functions
-    private fun initFragmentPropertyDetailsBinding(layoutInflater: LayoutInflater) =
-        FragmentPropertyDetailsBinding.inflate(layoutInflater)
-
     private fun initPropertyObserver(recyclerView: RecyclerView) {
         viewModel.liveProperty.observe(viewLifecycleOwner, { property ->
             configMediaRecyclerView(recyclerView, property)

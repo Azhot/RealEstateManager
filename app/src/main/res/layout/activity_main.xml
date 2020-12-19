@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryLightColor"
     tools:context=".view.activity.MainActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/main_container_view"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/small_margin"
+        android:layout_height="match_parent"
         android:background="@drawable/ic_white_background_cornered"
-        android:paddingTop="@dimen/average_padding"
-        android:paddingBottom="@dimen/average_padding"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/nav_graph" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
