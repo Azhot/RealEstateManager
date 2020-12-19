@@ -88,7 +88,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener {
     }
 
     private fun observePhotoList() {
-        sharedViewModel.mutableListPhoto.observe(viewLifecycleOwner) {
+        sharedViewModel.mutablePhotoList.observe(viewLifecycleOwner) {
             photoList = it
         }
     }

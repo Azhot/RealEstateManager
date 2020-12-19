@@ -2,8 +2,6 @@ package fr.azhot.realestatemanager.view.fragment
 
 import android.Manifest
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.core.content.ContextCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -20,16 +17,12 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddPhotoBinding
 import fr.azhot.realestatemanager.model.Photo
 import fr.azhot.realestatemanager.utils.*
 import fr.azhot.realestatemanager.view.adapter.MediaListAdapter
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
-import java.util.*
 
 
 class AddPhotoFragment : Fragment(), View.OnClickListener {
@@ -177,7 +170,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener {
     }
 
     private fun navigateNext() {
-        sharedViewModel.mutableListPhoto.value =
+        sharedViewModel.mutablePhotoList.value =
             (binding.mediaRecyclerView.adapter as MediaListAdapter).photoList
         val action = AddPhotoFragmentDirections.actionAddPhotoFragmentToAddAddressFragment()
         navController.navigate(action)
