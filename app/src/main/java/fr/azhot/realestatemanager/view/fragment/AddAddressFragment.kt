@@ -50,6 +50,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         val zipCode = if (binding.zipCodeEditText.text.toString().isNotEmpty()) {
             binding.zipCodeEditText.text.toString()
         } else null
+
         val city = if (binding.cityEditText.text.toString().isNotEmpty()) {
             binding.cityEditText.text.toString()
         } else null
@@ -74,7 +75,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             complement = complement,
         )
 
-        sharedViewModel.mutableAddress.value = address
+        sharedViewModel.liveAddress.value = address
 
         val action = AddAddressFragmentDirections.actionAddAddressFragmentToAddDetailFragment()
         navController.navigate(action)

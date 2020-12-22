@@ -48,7 +48,7 @@
     <string name="road_name">Road name</string>
     <string name="number">Number</string>
     <string name="complement">Complement</string>
-    <string name="alert_title">Information missing</string>
+    <string name="alert_title">Information might be missing…</string>
     <string name="alert_message">One or more important fields are not completed, continue anyway ?</string>
     <string name="alert_positive">Continue</string>
     <string name="alert_negative">Edit</string>
