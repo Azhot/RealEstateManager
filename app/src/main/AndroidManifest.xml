@@ -6,6 +6,10 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
+    <!-- FEATURES -->
+    <uses-feature android:name="android.hardware.camera"
+        android:required="false" />
+
     <application
         android:name=".RealEstateManagerApplication"
         android:allowBackup="true"
@@ -25,8 +29,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.activity.PropertyDetailsActivity" />
-        <activity android:name=".view.activity.AddPropertyActivity" />
+        
+        <provider
+            android:authorities="fr.azhot.realestatemanager.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/fileprovider" />
+        </provider>
+
     </application>
 
 </manifest>

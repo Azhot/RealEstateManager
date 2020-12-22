@@ -68,5 +68,15 @@
         android:id="@+id/addDetailFragment"
         android:name="fr.azhot.realestatemanager.view.fragment.AddDetailFragment"
         android:label="@string/new_property"
-        tools:layout="@layout/fragment_add_detail" />
+        tools:layout="@layout/fragment_add_detail">
+        <action
+            android:id="@+id/action_addDetailFragment_to_propertyListFragment"
+            app:destination="@id/propertyListFragment"
+            app:enterAnim="@anim/slide_in_up"
+            app:exitAnim="@anim/slide_out_down"
+            app:popEnterAnim="@anim/slide_in_down"
+            app:popExitAnim="@anim/slide_out_up"
+            app:popUpTo="@id/propertyListFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

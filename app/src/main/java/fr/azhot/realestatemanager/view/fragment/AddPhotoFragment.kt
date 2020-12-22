@@ -2,7 +2,11 @@ package fr.azhot.realestatemanager.view.fragment
 
 import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.INVISIBLE
@@ -10,6 +14,8 @@ import android.view.View.VISIBLE
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
+import androidx.core.net.toUri
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,24 +25,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddPhotoBinding
-import fr.azhot.realestatemanager.model.Photo
 import fr.azhot.realestatemanager.utils.*
-import fr.azhot.realestatemanager.view.adapter.MediaListAdapter
+import fr.azhot.realestatemanager.view.adapter.PhotoMapListAdapter
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
+import java.io.File
 
 
-class AddPhotoFragment : Fragment(), View.OnClickListener {
+class AddPhotoFragment : Fragment(), View.OnClickListener, PhotoMapListAdapter.OnDeleteListener {
 
     // variables
     private lateinit var binding: FragmentAddPhotoBinding
     private lateinit var navController: NavController
+    private lateinit var fromCameraFile: File
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
-
-    // todo : prompt also camera intent when clicking select photo
-
-    // todo : optional : make a specific adapter with a delete button attached to each photo
-    // todo : remember to [checkEnableNextButton] is user deletes all photos (if (photoList.size == 0))
 
     // overridden functions
     override fun onCreateView(
@@ -46,9 +48,12 @@ class AddPhotoFragment : Fragment(), View.OnClickListener {
     ): View {
         binding = FragmentAddPhotoBinding.inflate(inflater)
         binding.photoTitleEditText.doAfterTextChanged { checkEnableAddButton() }
-        binding.selectPhotoEditText.setOnClickListener(this)
-        binding.addPhotoButton.setOnClickListener(this)
-        configPhotoListRecyclerView()
+        binding.selectPhotoButton.setOnClickListener(this)
+        binding.photoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = PhotoMapListAdapter(Glide.with(this), mutableMapOf(), this@AddPhotoFragment)
+        }
+        observePhotoList()
         binding.nextButton.setOnClickListener(this)
         return binding.root
     }
@@ -84,19 +89,26 @@ class AddPhotoFragment : Fragment(), View.OnClickListener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SELECTED_PHOTO
-            && resultCode == RESULT_OK
-            && data != null
-            && data.data != null
-        ) {
-            binding.selectPhotoEditText.setText(data.data.toString())
-            checkEnableAddButton()
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                RC_SELECT_PHOTO -> {
+                    val uri =
+                        if (data != null && data.data != null) data.data!! else fromCameraFile.toUri()
+                    createBitmapWithGlide(
+                        Glide.with(requireContext()),
+                        PHOTO_WIDTH,
+                        PHOTO_HEIGHT,
+                        uri,
+                        ::addPhoto
+                    )
+                }
+            }
         }
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            binding.selectPhotoEditText.id -> {
+            binding.selectPhotoButton.id -> {
                 if (checkAndRequestPermission(
                         this,
                         RC_READ_EXTERNAL_STORAGE_PERMISSION,
@@ -106,72 +118,73 @@ class AddPhotoFragment : Fragment(), View.OnClickListener {
                     selectPhoto()
                 }
             }
-            binding.addPhotoButton.id -> addPhoto()
             binding.nextButton.id -> navigateNext()
         }
     }
 
-
-    // private functions
-    private fun configPhotoListRecyclerView() {
-        binding.mediaRecyclerView.layoutManager = LinearLayoutManager(
-            context,
-            LinearLayoutManager.HORIZONTAL,
-            false
-        )
-        val adapter = MediaListAdapter(Glide.with(this), mutableListOf())
-        binding.mediaRecyclerView.adapter = adapter
-    }
-
-    private fun selectPhoto() {
-        val intent = Intent().apply {
-            type = PICK_IMAGE_MIME
-            action = Intent.ACTION_GET_CONTENT
+    override fun OnDeletePhoto(bitmap: Bitmap) {
+        (binding.photoRecyclerView.adapter as PhotoMapListAdapter).apply {
+            photoMap.remove(bitmap)
+            notifyDataSetChanged()
         }
-        startActivityForResult(
-            Intent.createChooser(intent, getString(R.string.select_photo)), RC_SELECTED_PHOTO
-        )
-    }
-
-    private fun checkEnableAddButton() {
-        binding.addPhotoButton.isEnabled = binding.selectPhotoEditText.text.toString().isNotEmpty()
-                && binding.photoTitleEditText.text.toString().isNotEmpty()
-        if (binding.addPhotoButton.isEnabled) {
-            binding.addPhotoButton
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.primaryDayColor))
-            binding.addPhotoButton.setIconTintResource(R.color.primaryDayColor)
-
-        } else {
-            binding.addPhotoButton
-                .setTextColor(ContextCompat.getColor(requireContext(), R.color.gray))
-            binding.addPhotoButton.setIconTintResource(R.color.gray)
-        }
-    }
-
-    private fun addPhoto() {
-        val photo = Photo(
-            uri = binding.selectPhotoEditText.text.toString(),
-            title = binding.photoTitleEditText.text.toString()
-        )
-        (binding.mediaRecyclerView.adapter as MediaListAdapter).addPhoto(photo)
-        binding.selectPhotoEditText.text?.clear()
-        binding.photoTitleEditText.text?.clear()
-        checkEnableAddButton()
         checkEnableNextButton()
     }
 
-    private fun checkEnableNextButton() {
-        binding.nextButton.isEnabled = binding.mediaRecyclerView.adapter?.itemCount != 0
-        if (binding.nextButton.isEnabled) {
-            binding.nextButton.visibility = VISIBLE
-        } else {
-            binding.nextButton.visibility = INVISIBLE
+
+    // private functions
+    private fun observePhotoList() {
+        sharedViewModel.livePhotoMap.observe(viewLifecycleOwner) {
+            (binding.photoRecyclerView.adapter as PhotoMapListAdapter).photoMap = it
+            checkEnableNextButton()
         }
     }
 
+    private fun selectPhoto() {
+        fromCameraFile =
+            createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+        val fileProvider =
+            FileProvider.getUriForFile(requireContext(), FILE_PROVIDER_AUTHORITY, fromCameraFile)
+        val fromCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+            putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+        }
+        val fromGallery =
+            Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
+                type = PICK_IMAGE_MIME
+            }
+        val chooser = Intent.createChooser(fromGallery, getString(R.string.select_photo)).apply {
+            putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(fromCamera))
+        }
+
+        if (requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
+            startActivityForResult(chooser, RC_SELECT_PHOTO)
+        } else {
+            startActivityForResult(fromGallery, RC_SELECT_PHOTO)
+        }
+    }
+
+    private fun checkEnableAddButton() {
+        binding.selectPhotoButton.isEnabled =
+            binding.photoTitleEditText.text.toString().isNotEmpty()
+        val color =
+            if (binding.selectPhotoButton.isEnabled) R.color.primaryDayColor else R.color.gray
+        binding.selectPhotoButton.setTextColor(ContextCompat.getColor(requireContext(), color))
+        binding.selectPhotoButton.setIconTintResource(color)
+    }
+
+    private fun addPhoto(bitmap: Bitmap) {
+        if (fromCameraFile.exists()) fromCameraFile.delete()
+        sharedViewModel.livePhotoMap += Pair(bitmap, binding.photoTitleEditText.text.toString())
+        binding.photoTitleEditText.text?.clear()
+        checkEnableNextButton()
+        checkEnableAddButton()
+    }
+
+    private fun checkEnableNextButton() {
+        binding.nextButton.isEnabled = binding.photoRecyclerView.adapter?.itemCount != 0
+        binding.nextButton.visibility = if (binding.nextButton.isEnabled) VISIBLE else INVISIBLE
+    }
+
     private fun navigateNext() {
-        sharedViewModel.mutablePhotoList.value =
-            (binding.mediaRecyclerView.adapter as MediaListAdapter).photoList
         val action = AddPhotoFragmentDirections.actionAddPhotoFragmentToAddAddressFragment()
         navController.navigate(action)
     }

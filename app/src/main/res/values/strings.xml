@@ -27,7 +27,6 @@
     <string name="add_photo_fragment_title">Start by adding photos of the property …</string>
     <string name="photo_title">Photo title</string>
     <string name="select_photo">Select photo</string>
-    <string name="add_photo">Add photo</string>
 
     <!-- Add detail fragment -->
     <string name="add_detail_fragment_title">… and finally complete the property\'s detail.</string>

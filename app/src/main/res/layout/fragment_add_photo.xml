@@ -47,47 +47,23 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/select_photo_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/average_margin"
-            android:hint="@string/select_photo"
-            app:boxBackgroundColor="@color/white"
-            app:layout_constraintEnd_toStartOf="@id/add_photo_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/photo_title_input_layout"
-            app:startIconDrawable="@drawable/ic_add_a_photo_24px"
-            app:startIconTint="@color/primaryLightColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/select_photo_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="textUri"
-                android:longClickable="false" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/add_photo_button"
+            android:id="@+id/select_photo_button"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/add_photo"
+            android:layout_marginTop="@dimen/small_margin"
+            android:text="@string/select_photo"
             android:textColor="@color/primaryDayColor"
-            app:icon="@drawable/ic_add_24"
-            app:iconTint="@color/primaryDayColor"
-            app:layout_constraintBottom_toBottomOf="@id/select_photo_input_layout"
+            app:icon="@drawable/ic_add_a_photo_24px"
+            app:iconPadding="@dimen/large_padding"
+            app:iconTint="@color/primaryLightColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/select_photo_input_layout"
-            app:layout_constraintTop_toTopOf="@id/select_photo_input_layout" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/photo_title_input_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/media_recycler_view"
+            android:id="@+id/photo_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
@@ -96,7 +72,7 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/select_photo_input_layout"
+            app:layout_constraintTop_toBottomOf="@id/select_photo_button"
             app:spanCount="4"
             tools:listitem="@layout/cell_photo" />
 
@@ -113,7 +89,7 @@
             app:iconGravity="end"
             app:iconTint="@color/primaryDayColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/media_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@id/photo_recycler_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
