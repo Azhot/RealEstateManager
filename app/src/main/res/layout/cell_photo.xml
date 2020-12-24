@@ -10,7 +10,7 @@
         android:id="@+id/photo_image_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:background="@color/primaryLightColor" />
+        tools:background="@color/primaryDayLightColor" />
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/photo_title_text_view"

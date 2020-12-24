@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:animateLayoutChanges="true"
     android:paddingBottom="@dimen/large_padding">
 
     <TextView
         android:id="@+id/title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryLightColor"
+        android:background="@color/primaryDayLightColor"
         android:gravity="center"
         android:padding="@dimen/large_padding"
         android:text="@string/title_new_realtor_dialog"
@@ -29,7 +30,9 @@
         android:hint="@string/hint_first_name_add_realtor_dialog"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_text_view">
+        app:layout_constraintTop_toBottomOf="@id/title_text_view"
+        app:startIconDrawable="@drawable/ic_text_snippet_24"
+        app:startIconTint="@color/primaryDayLightColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/first_name_edit_text"
@@ -50,7 +53,9 @@
         android:hint="@string/hint_last_name_add_realtor_dialog"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/first_name_input_layout">
+        app:layout_constraintTop_toBottomOf="@id/first_name_input_layout"
+        app:startIconDrawable="@drawable/ic_text_snippet_24"
+        app:startIconTint="@color/primaryDayLightColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/last_name_edit_text"
@@ -79,8 +84,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/large_margin"
+        android:enabled="false"
         android:text="@string/add_button_add_realtor_dialog"
-        android:textColor="@color/primaryDayColor"
+        android:textColor="@color/gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/last_name_input_layout" />
 

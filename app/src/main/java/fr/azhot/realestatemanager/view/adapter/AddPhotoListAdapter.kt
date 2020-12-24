@@ -5,23 +5,23 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.RequestManager
-import fr.azhot.realestatemanager.databinding.CellPhotoMapBinding
+import fr.azhot.realestatemanager.databinding.CellAddPhotoBinding
 
-class PhotoMapListAdapter(
+class AddPhotoListAdapter(
     private val glide: RequestManager,
-    photoMap: MutableMap<Bitmap, String>,
-    private val onDeleteListener: OnDeleteListener
-) : RecyclerView.Adapter<PhotoMapListAdapter.PhotoMapViewHolder>() {
+    bitmapStringMutableMap: MutableMap<Bitmap, String>,
+    private val onDeletePhotoListener: OnDeletePhotoListener
+) : RecyclerView.Adapter<AddPhotoListAdapter.PhotoMapViewHolder>() {
 
 
     // listeners
-    interface OnDeleteListener {
-        fun OnDeletePhoto(bitmap: Bitmap)
+    interface OnDeletePhotoListener {
+        fun onDeletePhoto(bitmap: Bitmap)
     }
 
 
     // variables
-    var photoMap: MutableMap<Bitmap, String> = photoMap
+    var bitmapStringMutableMap: MutableMap<Bitmap, String> = bitmapStringMutableMap
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -30,25 +30,25 @@ class PhotoMapListAdapter(
 
     // overridden functions
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoMapViewHolder {
-        val view = CellPhotoMapBinding.inflate(
+        val view = CellAddPhotoBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return PhotoMapViewHolder(view, glide, onDeleteListener)
+        return PhotoMapViewHolder(view, glide, onDeletePhotoListener)
     }
 
     override fun onBindViewHolder(holder: PhotoMapViewHolder, position: Int) =
-        holder.bind(photoMap.entries.elementAt(position))
+        holder.bind(bitmapStringMutableMap.entries.elementAt(position))
 
-    override fun getItemCount(): Int = photoMap.count()
+    override fun getItemCount(): Int = bitmapStringMutableMap.count()
 
 
     // inner class
     class PhotoMapViewHolder(
-        private val binding: CellPhotoMapBinding,
+        private val binding: CellAddPhotoBinding,
         private val glide: RequestManager,
-        private val onDeleteListener: OnDeleteListener
+        private val onDeletePhotoListener: OnDeletePhotoListener
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -60,7 +60,7 @@ class PhotoMapListAdapter(
             binding.photoTitleTextView.text = entry.value
 
             binding.deleteButton.setOnClickListener() {
-                onDeleteListener.OnDeletePhoto(entry.key)
+                onDeletePhotoListener.onDeletePhoto(entry.key)
             }
         }
     }

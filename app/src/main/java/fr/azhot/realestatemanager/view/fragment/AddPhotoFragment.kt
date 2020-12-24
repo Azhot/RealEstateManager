@@ -26,12 +26,13 @@ import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddPhotoBinding
 import fr.azhot.realestatemanager.utils.*
-import fr.azhot.realestatemanager.view.adapter.PhotoMapListAdapter
+import fr.azhot.realestatemanager.view.adapter.AddPhotoListAdapter
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 import java.io.File
 
 
-class AddPhotoFragment : Fragment(), View.OnClickListener, PhotoMapListAdapter.OnDeleteListener {
+class AddPhotoFragment : Fragment(), View.OnClickListener,
+    AddPhotoListAdapter.OnDeletePhotoListener {
 
     // variables
     private lateinit var binding: FragmentAddPhotoBinding
@@ -49,9 +50,9 @@ class AddPhotoFragment : Fragment(), View.OnClickListener, PhotoMapListAdapter.O
         binding = FragmentAddPhotoBinding.inflate(inflater)
         binding.photoTitleEditText.doAfterTextChanged { checkEnableAddButton() }
         binding.selectPhotoButton.setOnClickListener(this)
-        binding.photoRecyclerView.apply {
+        binding.addPhotoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = PhotoMapListAdapter(Glide.with(this), mutableMapOf(), this@AddPhotoFragment)
+            adapter = AddPhotoListAdapter(Glide.with(this), mutableMapOf(), this@AddPhotoFragment)
         }
         observePhotoList()
         binding.nextButton.setOnClickListener(this)
@@ -87,6 +88,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener, PhotoMapListAdapter.O
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    // todo : resultCode = 0
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -122,9 +124,9 @@ class AddPhotoFragment : Fragment(), View.OnClickListener, PhotoMapListAdapter.O
         }
     }
 
-    override fun OnDeletePhoto(bitmap: Bitmap) {
-        (binding.photoRecyclerView.adapter as PhotoMapListAdapter).apply {
-            photoMap.remove(bitmap)
+    override fun onDeletePhoto(bitmap: Bitmap) {
+        (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).apply {
+            bitmapStringMutableMap.remove(bitmap)
             notifyDataSetChanged()
         }
         checkEnableNextButton()
@@ -134,12 +136,14 @@ class AddPhotoFragment : Fragment(), View.OnClickListener, PhotoMapListAdapter.O
     // private functions
     private fun observePhotoList() {
         sharedViewModel.livePhotoMap.observe(viewLifecycleOwner) {
-            (binding.photoRecyclerView.adapter as PhotoMapListAdapter).photoMap = it
+            (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).bitmapStringMutableMap =
+                it
             checkEnableNextButton()
         }
     }
 
     private fun selectPhoto() {
+        // todo : question to Virgile : camera will crash on a Kitkat running device...
         fromCameraFile =
             createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
         val fileProvider =
@@ -173,14 +177,14 @@ class AddPhotoFragment : Fragment(), View.OnClickListener, PhotoMapListAdapter.O
 
     private fun addPhoto(bitmap: Bitmap) {
         if (fromCameraFile.exists()) fromCameraFile.delete()
-        sharedViewModel.livePhotoMap += Pair(bitmap, binding.photoTitleEditText.text.toString())
+        sharedViewModel.livePhotoMap += (bitmap to binding.photoTitleEditText.text.toString())
         binding.photoTitleEditText.text?.clear()
         checkEnableNextButton()
         checkEnableAddButton()
     }
 
     private fun checkEnableNextButton() {
-        binding.nextButton.isEnabled = binding.photoRecyclerView.adapter?.itemCount != 0
+        binding.nextButton.isEnabled = binding.addPhotoRecyclerView.adapter?.itemCount != 0
         binding.nextButton.visibility = if (binding.nextButton.isEnabled) VISIBLE else INVISIBLE
     }
 

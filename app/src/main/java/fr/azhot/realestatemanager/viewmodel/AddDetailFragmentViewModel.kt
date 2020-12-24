@@ -3,9 +3,10 @@ package fr.azhot.realestatemanager.viewmodel
 import androidx.lifecycle.*
 import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.repository.*
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
-class AddPropertyActivityViewModel(
+class AddDetailFragmentViewModel(
     private val detailRepository: DetailRepository,
     private val addressRepository: AddressRepository,
     private val photoRepository: PhotoRepository,
@@ -19,28 +20,28 @@ class AddPropertyActivityViewModel(
 
 
     // functions
-    fun insertDetail(detail: Detail) = viewModelScope.launch {
+    fun insertDetail(detail: Detail) = viewModelScope.launch((IO)) {
         detailRepository.insertDetail(detail)
     }
 
-    fun insertAddress(address: Address) = viewModelScope.launch {
+    fun insertAddress(address: Address) = viewModelScope.launch(IO) {
         addressRepository.insertAddress(address)
     }
 
-    fun insertPhoto(photo: Photo) = viewModelScope.launch {
+    fun insertPhoto(photo: Photo) = viewModelScope.launch(IO) {
         photoRepository.insertPhoto(photo)
     }
 
-    fun insertPointOfInterest(pointOfInterest: PointOfInterest) = viewModelScope.launch {
+    fun insertPointOfInterest(pointOfInterest: PointOfInterest) = viewModelScope.launch(IO) {
         pointOfInterestRepository.insertPointOfInterest(pointOfInterest)
     }
 
-    fun insertRealtor(realtor: Realtor) = viewModelScope.launch {
+    fun insertRealtor(realtor: Realtor) = viewModelScope.launch(IO) {
         realtorRepository.insertRealtor(realtor)
     }
 }
 
-class AddPropertyActivityViewModelFactory(
+class AddDetailFragmentViewModelFactory(
     private val detailRepository: DetailRepository,
     private val addressRepository: AddressRepository,
     private val photoRepository: PhotoRepository,
@@ -51,9 +52,9 @@ class AddPropertyActivityViewModelFactory(
 
     // overridden functions
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AddPropertyActivityViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(AddDetailFragmentViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return AddPropertyActivityViewModel(
+            return AddDetailFragmentViewModel(
                 detailRepository,
                 addressRepository,
                 photoRepository,

@@ -15,12 +15,12 @@ data class Address(
     var complement: String? = null,
 ) {
     override fun toString(): String {
-        val sb = StringBuilder()
-        city?.let { sb.append("$it, ") }
-        number?.let { sb.append("$it, ") }
-        roadName?.let { sb.append("$it, ") }
-        zipCode?.let { sb.append("$it, ") }
-        complement?.let { sb.append(it) }
-        return sb.toString()
+        val string = StringBuilder().run {
+            for (i in arrayOf(city, number, roadName, zipCode, complement)) {
+                if (i != null) append("$i, ")
+            }
+            toString()
+        }
+        return if (string.isNotEmpty()) string.substring(0, string.length-2) else string
     }
 }

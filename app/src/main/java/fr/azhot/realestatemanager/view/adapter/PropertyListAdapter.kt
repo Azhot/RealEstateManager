@@ -63,16 +63,21 @@ class PropertyListAdapter(
                 .centerCrop()
                 .into(binding.photoImageView)
 
-            binding.typeTextView.text =
-                property.detail.propertyType.toString()
-                    .toLowerCase(Locale.ROOT)
-                    .capitalize(Locale.ROOT)
+            property.detail.propertyType?.let {
+                binding.typeTextView.text =
+                    it.toString().toLowerCase(Locale.ROOT).capitalize(Locale.ROOT)
+            }
 
-            binding.cityTextView.text = property.address?.city
+            property.address?.let {
+                binding.cityTextView.text = it.city
+            }
 
-            val numberFormat = NumberFormat.getCurrencyInstance(Locale.US)
-            numberFormat.maximumFractionDigits = 0
-            binding.priceTextView.text = numberFormat.format(property.detail.price)
+            property.detail.price?.let {
+                binding.priceTextView.text = NumberFormat.getCurrencyInstance(Locale.US).run {
+                    maximumFractionDigits = 0
+                    format(it)
+                }
+            }
         }
     }
 }

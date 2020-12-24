@@ -8,14 +8,15 @@ import java.util.*
 data class Realtor(
     @PrimaryKey
     val realtorId: String = UUID.randomUUID().toString(),
-    var firstName: String? = null,
-    var lastName: String? = null,
+    var firstName: String,
+    var lastName: String,
 ) {
 
     override fun toString(): String {
-        val sb = StringBuilder()
-        firstName?.let { sb.append("$it ") }
-        lastName?.let { sb.append(it) }
+        val sb = StringBuilder().apply {
+            append("$firstName ")
+            append(lastName)
+        }
         return sb.toString().trim()
     }
 }

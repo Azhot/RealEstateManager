@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     tools:context=".view.fragment.AddPhotoFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -37,7 +38,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/page_title"
             app:startIconDrawable="@drawable/ic_text_snippet_24"
-            app:startIconTint="@color/primaryLightColor">
+            app:startIconTint="@color/primaryDayLightColor">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/photo_title_edit_text"
@@ -57,13 +58,13 @@
             android:textColor="@color/primaryDayColor"
             app:icon="@drawable/ic_add_a_photo_24px"
             app:iconPadding="@dimen/large_padding"
-            app:iconTint="@color/primaryLightColor"
+            app:iconTint="@color/primaryDayLightColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/photo_title_input_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/photo_recycler_view"
+            android:id="@+id/add_photo_recycler_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large_margin"
@@ -89,7 +90,7 @@
             app:iconGravity="end"
             app:iconTint="@color/primaryDayColor"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/photo_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@id/add_photo_recycler_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

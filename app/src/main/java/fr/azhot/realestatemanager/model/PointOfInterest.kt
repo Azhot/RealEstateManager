@@ -20,7 +20,7 @@ import java.util.*
 data class PointOfInterest(
     @PrimaryKey
     val pointOfInterestId: String = UUID.randomUUID().toString(),
-    val detailId: String,
+    val detailId: String? = null,
     val name: String,
     @Embedded
     val address: Address,

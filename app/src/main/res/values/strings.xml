@@ -18,14 +18,14 @@
 
     <!-- dialog_add_realtor.xml -->
     <string name="title_new_realtor_dialog">Add a new realtor</string>
-    <string name="hint_first_name_add_realtor_dialog">First name</string>
-    <string name="hint_last_name_add_realtor_dialog">Last name</string>
+    <string name="hint_first_name_add_realtor_dialog">First name *</string>
+    <string name="hint_last_name_add_realtor_dialog">Last name *</string>
     <string name="add_button_add_realtor_dialog">Add</string>
     <string name="cancel_button_add_realtor_dialog">Cancel</string>
 
     <!-- Add photo fragment -->
     <string name="add_photo_fragment_title">Start by adding photos of the property …</string>
-    <string name="photo_title">Photo title</string>
+    <string name="photo_title">Photo title *</string>
     <string name="select_photo">Select photo</string>
 
     <!-- Add detail fragment -->
@@ -34,6 +34,7 @@
     <string name="price">Price</string>
     <string name="square_meter">Square meter</string>
     <string name="rooms">Room(s)</string>
+    <string name="points_of_interest">Point(s) of interest</string>
     <string name="address">Address</string>
     <string name="entry_date">Entry date</string>
     <string name="sale_date">Sale date</string>
@@ -41,7 +42,7 @@
     <string name="description">Description</string>
     <string name="create">Create</string>
 
-    <!-- Add detail fragment -->
+    <!-- Add address fragment -->
     <string name="add_address_fragment_title">… then set the property\'s address detail …</string>
     <string name="zip_code">Zip code</string>
     <string name="city">City</string>
@@ -52,5 +53,9 @@
     <string name="alert_message">One or more important fields are not completed, continue anyway ?</string>
     <string name="alert_positive">Continue</string>
     <string name="alert_negative">Edit</string>
+
+    <!-- dialog_add_point_of_interest.xml -->
+    <string name="add_a_point_of_interest">Add a point of interest</string>
+    <string name="name">Name *</string>
 
 </resources>

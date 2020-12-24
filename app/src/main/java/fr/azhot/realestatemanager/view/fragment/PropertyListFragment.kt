@@ -3,11 +3,11 @@ package fr.azhot.realestatemanager.view.fragment
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
@@ -17,6 +17,7 @@ import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModelFactory
+import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 
 class PropertyListFragment : Fragment(), PropertyClickListener {
 
@@ -27,7 +28,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     private val viewModel: PropertyListFragmentViewModel by viewModels {
         PropertyListFragmentViewModelFactory((activity?.application as RealEstateManagerApplication).detailRepository)
     }
-    private lateinit var currentProperty: Property
+    private val sharedViewModel: SharedViewModel by activityViewModels()
 
 
     // overridden functions
@@ -36,9 +37,12 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     ): View {
         setHasOptionsMenu(true)
         binding = FragmentPropertyListBinding.inflate(layoutInflater)
-        initPropertyListObserver()
-        initPropertyObserver()
-        configPropertyRecyclerView(binding.propertyListRecyclerView)
+        resetSharedData()
+        observePropertyList()
+        binding.propertyListRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = PropertyListAdapter(Glide.with(this), emptyList(), this@PropertyListFragment)
+        }
         return binding.root
     }
 
@@ -63,7 +67,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     }
 
     override fun onPropertyClickListener(property: Property) {
-        viewModel.setLiveProperty(property)
+        sharedViewModel.liveProperty.value = property
         val action =
             PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailsFragment()
         navController.navigate(action)
@@ -71,24 +75,13 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
 
     // functions
-    private fun initPropertyListObserver() {
+    private fun resetSharedData() {
+        sharedViewModel.livePhotoMap.value?.clear()
+    }
+
+    private fun observePropertyList() {
         viewModel.propertyList.observe(viewLifecycleOwner, { list ->
-            val adapter = binding.propertyListRecyclerView.adapter as PropertyListAdapter
-            adapter.setPropertyList(list)
+            (binding.propertyListRecyclerView.adapter as PropertyListAdapter).setPropertyList(list)
         })
-    }
-
-    private fun initPropertyObserver() {
-        viewModel.liveProperty.observe(viewLifecycleOwner, { property ->
-            currentProperty = property
-        })
-    }
-
-    private fun configPropertyRecyclerView(
-        recyclerView: RecyclerView,
-    ) {
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        val adapter = PropertyListAdapter(Glide.with(this), listOf(), this)
-        recyclerView.adapter = adapter
     }
 }

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:padding="@dimen/average_padding"
     tools:context=".view.fragment.PropertyDetailsFragment">
 
@@ -30,8 +31,8 @@
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/description_title_text_view"
         android:layout_width="match_parent"
-        android:layout_marginTop="@dimen/large_margin"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/large_margin"
         android:text="@string/description_title"
         android:textSize="@dimen/large_text_size"
         android:textStyle="bold"

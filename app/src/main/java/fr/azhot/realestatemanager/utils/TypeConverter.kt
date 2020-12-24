@@ -6,12 +6,12 @@ import fr.azhot.realestatemanager.model.PropertyType
 class TypeConverter {
 
     @TypeConverter
-    fun fromPropertyType(propertyType: PropertyType): String {
-        return propertyType.name
+    fun fromPropertyType(propertyType: PropertyType?): String? {
+        return propertyType?.name
     }
 
     @TypeConverter
-    fun toPropertyType(name: String): PropertyType {
-        return PropertyType.valueOf(name)
+    fun toPropertyType(name: String?): PropertyType? {
+        return name?.let { PropertyType.valueOf(name) }
     }
 }
