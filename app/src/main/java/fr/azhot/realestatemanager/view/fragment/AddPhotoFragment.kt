@@ -2,8 +2,12 @@ package fr.azhot.realestatemanager.view.fragment
 
 import android.Manifest
 import android.content.Intent
+import android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION
+import android.content.Intent.FLAG_GRANT_WRITE_URI_PERMISSION
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -88,7 +92,6 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
-    // todo : resultCode = 0
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK) {
@@ -143,13 +146,16 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     }
 
     private fun selectPhoto() {
-        // todo : question to Virgile : camera will crash on a Kitkat running device...
         fromCameraFile =
             createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
-        val fileProvider =
-            FileProvider.getUriForFile(requireContext(), FILE_PROVIDER_AUTHORITY, fromCameraFile)
+        val uri = if (Build.VERSION_CODES.N <= Build.VERSION.SDK_INT)
+            FileProvider.getUriForFile(
+                requireContext(), FILE_PROVIDER_AUTHORITY, fromCameraFile
+            ) else Uri.fromFile(fromCameraFile)
         val fromCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, fileProvider)
+            putExtra(MediaStore.EXTRA_OUTPUT, uri)
+            addFlags(FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(FLAG_GRANT_WRITE_URI_PERMISSION)
         }
         val fromGallery =
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
