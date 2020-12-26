@@ -106,6 +106,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                     }
                     job.join()
                     withContext(Main) {
+                        makeSnackBar(binding.root, getString(R.string.new_property_created), requireContext())
                         val action =
                             AddDetailFragmentDirections.actionAddDetailFragmentToPropertyListFragment()
                         navController.navigate(action)
@@ -124,9 +125,18 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
 
     // private functions
-    // todo : découper
     private fun setUpWidgets() {
-        // property dropdown menu
+        buildPropertyTypeDropdownMenu()
+        binding.addPointOfInterestButton.setOnClickListener(this)
+        buildPointOfInterestRecyclerView()
+        binding.entryDateEditText.setOnClickListener(this)
+        binding.saleDateEditText.setOnClickListener(this)
+        buildRealtorDropdownMenu()
+        binding.createRealtorImageButton.setOnClickListener(this)
+        binding.createPropertyButton.setOnClickListener(this)
+    }
+
+    private fun buildPropertyTypeDropdownMenu() {
         binding.propertyTypeAutoComplete.apply {
             val adapter = ExposedDropdownMenuAdapter(
                 requireContext(),
@@ -139,14 +149,16 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                 currentPropertyType = adapter.getItem(position) as PropertyType
             }
         }
-        binding.addPointOfInterestButton.setOnClickListener(this)
+    }
+
+    private fun buildPointOfInterestRecyclerView() {
         binding.pointOfInterestRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
             adapter = PointOfInterestListAdapter(mutableListOf(), this@AddDetailFragment)
         }
-        binding.entryDateEditText.setOnClickListener(this)
-        binding.saleDateEditText.setOnClickListener(this)
-        // realtor dropdown menu
+    }
+
+    private fun buildRealtorDropdownMenu() {
         binding.realtorAutoComplete.apply {
             val adapter = ExposedDropdownMenuAdapter(
                 requireContext(),
@@ -158,8 +170,6 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                 currentRealtor = adapter.getItem(position) as Realtor
             }
         }
-        binding.createRealtorImageButton.setOnClickListener(this)
-        binding.createPropertyButton.setOnClickListener(this)
     }
 
     private fun observeRealtorList() {
@@ -282,18 +292,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             (adapter as ExposedDropdownMenuAdapter).apply {
                 for (item in list) {
                     if (item.toString() == realtor.toString()) {
-                        Snackbar
-                            .make(
-                                binding.root,
-                                "${item.toString()} already exists.",
-                                Snackbar.LENGTH_SHORT
-                            ).setBackgroundTint(
-                                ContextCompat.getColor(
-                                    context,
-                                    R.color.secondaryDayColor
-                                )
-                            )
-                            .show()
+                        makeSnackBar(binding.root, context.getString(R.string.realtor_already_exists, item), requireContext())
                         return
                     }
                 }
@@ -301,6 +300,12 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             }
             viewModel.insertRealtor(realtor)
         }
+    }
+
+    private fun makeSnackBar(view: View, string: String, context: Context) {
+        Snackbar.make(view, string, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(ContextCompat.getColor(context, R.color.secondaryDayColor))
+            .show()
     }
 
     private fun updateButtonColor(button: Button) {
