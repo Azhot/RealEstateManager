@@ -11,7 +11,7 @@ import java.util.*
 
 class PropertyListAdapter(
     private val glide: RequestManager,
-    private var propertyList: List<Property>,
+    propertyList: List<Property>,
     private val listener: PropertyClickListener,
 ) : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
 
@@ -22,11 +22,12 @@ class PropertyListAdapter(
     }
 
 
-    // functions
-    fun setPropertyList(newPropertyList: List<Property>) {
-        propertyList = newPropertyList
-        notifyDataSetChanged()
-    }
+    // variables
+    var propertyList: List<Property> = propertyList
+        set(value) {
+            field = value
+            notifyDataSetChanged()
+        }
 
 
     // overridden functions

@@ -17,15 +17,6 @@ import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 class PropertyDetailsFragment : Fragment() {
 
 
-    // companions
-    companion object {
-        // private val TAG = PropertyDetailsFragment::class.simpleName
-
-        @JvmStatic
-        fun newInstance() = PropertyDetailsFragment()
-    }
-
-
     // variables
     private lateinit var binding: FragmentPropertyDetailsBinding
     private lateinit var navController: NavController
@@ -52,10 +43,18 @@ class PropertyDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
+        navController = Navigation.findNavController(requireActivity(), R.id.main_container_view)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (activity?.resources?.getBoolean(R.bool.isLandscape) == true) {
+            navController.navigateUp()
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.menu, menu)
     }
 

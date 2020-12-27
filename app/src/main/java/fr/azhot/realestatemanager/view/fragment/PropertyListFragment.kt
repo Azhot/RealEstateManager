@@ -48,11 +48,21 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
+        navController = Navigation.findNavController(requireActivity(), R.id.main_container_view)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
         inflater.inflate(R.menu.menu, menu)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (activity?.resources?.getBoolean(R.bool.isLandscape) == true && sharedViewModel.liveProperty.value != null) {
+            childFragmentManager.beginTransaction()
+                .replace(binding.detailsContainerView!!.id, PropertyDetailsFragment())
+                .commit()
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -67,10 +77,18 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     }
 
     override fun onPropertyClickListener(property: Property) {
+        if (activity?.resources?.getBoolean(R.bool.isLandscape) == false) {
+            val action =
+                PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailsFragment()
+            navController.navigate(action)
+        } else {
+            if (property == sharedViewModel.liveProperty.value) return
+            childFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+                .replace(binding.detailsContainerView!!.id, PropertyDetailsFragment())
+                .commit()
+        }
         sharedViewModel.liveProperty.value = property
-        val action =
-            PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailsFragment()
-        navController.navigate(action)
     }
 
 
@@ -81,7 +99,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
     private fun observePropertyList() {
         viewModel.propertyList.observe(viewLifecycleOwner, { list ->
-            (binding.propertyListRecyclerView.adapter as PropertyListAdapter).setPropertyList(list)
+            (binding.propertyListRecyclerView.adapter as PropertyListAdapter).propertyList = list
         })
     }
 }

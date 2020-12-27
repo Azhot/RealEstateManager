@@ -31,13 +31,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (binding.secondaryContainerView != null) {
-            // todo : deal with config changes here
-        }
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             android.R.id.home -> navController.navigateUp()
