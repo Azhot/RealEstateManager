@@ -23,6 +23,7 @@ import androidx.core.net.toUri
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,8 +32,8 @@ import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddPhotoBinding
 import fr.azhot.realestatemanager.utils.*
 import fr.azhot.realestatemanager.view.adapter.AddPhotoListAdapter
+import fr.azhot.realestatemanager.viewmodel.AddPhotoFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
-import java.io.File
 
 
 class AddPhotoFragment : Fragment(), View.OnClickListener,
@@ -41,7 +42,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     // variables
     private lateinit var binding: FragmentAddPhotoBinding
     private lateinit var navController: NavController
-    private lateinit var fromCameraFile: File
+    private val viewModel: AddPhotoFragmentViewModel by viewModels()
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
 
@@ -98,8 +99,8 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
             when (requestCode) {
                 RC_SELECT_PHOTO -> {
                     val uri =
-                        if (data != null && data.data != null) data.data!! else fromCameraFile.toUri()
-                    createBitmapWithGlide(
+                        if (data != null && data.data != null) data.data!! else viewModel.liveCameraFile.value?.toUri()
+                    if (uri != null) createBitmapWithGlide(
                         Glide.with(requireContext()),
                         PHOTO_WIDTH,
                         PHOTO_HEIGHT,
@@ -146,27 +147,35 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     }
 
     private fun selectPhoto() {
-        fromCameraFile =
-            createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
-        val uri = if (Build.VERSION_CODES.N <= Build.VERSION.SDK_INT)
-            FileProvider.getUriForFile(
-                requireContext(), FILE_PROVIDER_AUTHORITY, fromCameraFile
-            ) else Uri.fromFile(fromCameraFile)
-        val fromCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-            putExtra(MediaStore.EXTRA_OUTPUT, uri)
-            addFlags(FLAG_GRANT_READ_URI_PERMISSION)
-            addFlags(FLAG_GRANT_WRITE_URI_PERMISSION)
-        }
         val fromGallery =
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
                 type = PICK_IMAGE_MIME
             }
-        val chooser = Intent.createChooser(fromGallery, getString(R.string.select_photo)).apply {
-            putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(fromCamera))
-        }
 
         if (requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            startActivityForResult(chooser, RC_SELECT_PHOTO)
+            viewModel.liveCameraFile.value =
+                createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+                    .also { cameraFile ->
+
+                        val uri = if (Build.VERSION_CODES.N <= Build.VERSION.SDK_INT)
+                            FileProvider.getUriForFile(
+                                requireContext(), FILE_PROVIDER_AUTHORITY, cameraFile
+                            ) else Uri.fromFile(cameraFile)
+
+                        val fromCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                            putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                            addFlags(FLAG_GRANT_READ_URI_PERMISSION)
+                            addFlags(FLAG_GRANT_WRITE_URI_PERMISSION)
+                        }
+
+                        val chooser =
+                            Intent.createChooser(fromGallery, getString(R.string.select_photo))
+                                .apply {
+                                    putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(fromCamera))
+                                }
+
+                        startActivityForResult(chooser, RC_SELECT_PHOTO)
+                    }
         } else {
             startActivityForResult(fromGallery, RC_SELECT_PHOTO)
         }
@@ -182,7 +191,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     }
 
     private fun addPhoto(bitmap: Bitmap) {
-        if (fromCameraFile.exists()) fromCameraFile.delete()
+        viewModel.liveCameraFile.value?.delete()
         sharedViewModel.livePhotoMap += (bitmap to binding.photoTitleEditText.text.toString())
         binding.photoTitleEditText.text?.clear()
         checkEnableNextButton()

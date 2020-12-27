@@ -4,7 +4,6 @@ import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import fr.azhot.realestatemanager.model.Address
-import fr.azhot.realestatemanager.model.Photo
 import fr.azhot.realestatemanager.model.Property
 
 class SharedViewModel : ViewModel() {
