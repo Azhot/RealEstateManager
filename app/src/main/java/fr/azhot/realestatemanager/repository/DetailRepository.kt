@@ -10,8 +10,7 @@ class DetailRepository(private val detailDao: DetailDao) {
 
     // variables
     val propertyList: Flow<List<Property>> = detailDao.getPropertyList()
-    // todo: remove dependency ?
-    val liveProperty: MutableLiveData<Property> = MutableLiveData()
+
 
     // functions
     suspend fun insertDetail(detail: Detail) {
