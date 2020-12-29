@@ -28,8 +28,8 @@ fun createBitmapWithGlide(
 ) {
 
     val requestOptions = RequestOptions()
-        .fitCenter()
         .override(width, height)
+        .centerCrop()
 
     glide
         .asBitmap()
