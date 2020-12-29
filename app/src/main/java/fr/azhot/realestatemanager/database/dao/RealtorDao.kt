@@ -1,7 +1,6 @@
 package fr.azhot.realestatemanager.database.dao
 
 import androidx.room.*
-import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.model.Realtor
 import kotlinx.coroutines.flow.Flow
 

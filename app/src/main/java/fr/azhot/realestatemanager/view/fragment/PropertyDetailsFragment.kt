@@ -35,7 +35,10 @@ class PropertyDetailsFragment : Fragment(), MediaListAdapter.OnPhotoClickListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.property_detail)
+        }
         setHasOptionsMenu(true)
         binding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
         binding.mediaRecyclerView.apply {

@@ -60,7 +60,7 @@ class AddPhotoListAdapter(
 
             binding.photoTitleTextView.text = entry.value
 
-            binding.deleteButton.setOnClickListener() {
+            binding.deleteButton.setOnClickListener {
                 onDeletePhotoListener.onDeletePhoto(entry.key)
             }
         }

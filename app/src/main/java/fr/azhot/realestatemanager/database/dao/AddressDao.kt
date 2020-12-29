@@ -2,7 +2,6 @@ package fr.azhot.realestatemanager.database.dao
 
 import androidx.room.*
 import fr.azhot.realestatemanager.model.Address
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AddressDao {

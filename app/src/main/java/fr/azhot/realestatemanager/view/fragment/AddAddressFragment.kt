@@ -29,7 +29,10 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.new_property)
+        }
         binding = FragmentAddAddressBinding.inflate(inflater)
         binding.nextButton.setOnClickListener(this)
         return binding.root

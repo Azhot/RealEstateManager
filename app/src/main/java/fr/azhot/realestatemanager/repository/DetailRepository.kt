@@ -1,6 +1,5 @@
 package fr.azhot.realestatemanager.repository
 
-import androidx.lifecycle.MutableLiveData
 import fr.azhot.realestatemanager.database.dao.DetailDao
 import fr.azhot.realestatemanager.model.Detail
 import fr.azhot.realestatemanager.model.Property

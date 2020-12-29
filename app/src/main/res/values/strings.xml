@@ -7,6 +7,7 @@
     <!-- fragment_property_details.xml -->
     <string name="media_title">Media</string>
     <string name="description_title">Description</string>
+    <string name="surface">Surface</string>
 
     <!-- menu.xml -->
     <string name="add_property">Add property</string>

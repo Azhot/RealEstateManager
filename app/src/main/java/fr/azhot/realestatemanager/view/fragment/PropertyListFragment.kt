@@ -37,7 +37,10 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(false)
+            title = getString(R.string.property_list)
+        }
         setHasOptionsMenu(true)
         binding = FragmentPropertyListBinding.inflate(layoutInflater)
         resetSharedData()

@@ -1,6 +1,9 @@
 package fr.azhot.realestatemanager.viewmodel
 
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.asLiveData
 import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.repository.DetailRepository
 

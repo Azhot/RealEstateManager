@@ -21,6 +21,6 @@ data class Address(
             }
             toString()
         }
-        return if (string.isNotEmpty()) string.substring(0, string.length-2) else string
+        return if (string.isNotEmpty()) string.substring(0, string.length - 2) else string
     }
 }

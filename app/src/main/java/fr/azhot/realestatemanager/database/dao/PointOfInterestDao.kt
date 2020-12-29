@@ -2,7 +2,6 @@ package fr.azhot.realestatemanager.database.dao
 
 import androidx.room.*
 import fr.azhot.realestatemanager.model.PointOfInterest
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PointOfInterestDao {

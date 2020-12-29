@@ -70,7 +70,10 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.new_property)
+        }
         binding = FragmentAddDetailBinding.inflate(inflater)
         setUpWidgets()
         observeRealtorList()
@@ -108,7 +111,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                     }
                     job.join()
                     withContext(Main) {
-                        makeSnackBar(binding.root, getString(R.string.new_property_created), requireContext())
+                        makeSnackBar(
+                            binding.root,
+                            getString(R.string.new_property_created),
+                            requireContext()
+                        )
                         val action =
                             AddDetailFragmentDirections.actionAddDetailFragmentToPropertyListFragment()
                         navController.navigate(action)
@@ -294,7 +301,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             (adapter as ExposedDropdownMenuAdapter).apply {
                 for (item in list) {
                     if (item.toString() == realtor.toString()) {
-                        makeSnackBar(binding.root, context.getString(R.string.realtor_already_exists, item), requireContext())
+                        makeSnackBar(
+                            binding.root,
+                            context.getString(R.string.realtor_already_exists, item),
+                            requireContext()
+                        )
                         return
                     }
                 }

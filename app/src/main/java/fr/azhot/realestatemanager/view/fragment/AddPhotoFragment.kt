@@ -53,7 +53,10 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(true)
+            title = getString(R.string.new_property)
+        }
         binding = FragmentAddPhotoBinding.inflate(inflater)
         binding.photoTitleEditText.doAfterTextChanged { checkEnableAddButton() }
         binding.selectPhotoButton.setOnClickListener(this)
