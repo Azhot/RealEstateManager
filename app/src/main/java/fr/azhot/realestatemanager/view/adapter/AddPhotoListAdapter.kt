@@ -4,11 +4,10 @@ import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.databinding.CellAddPhotoBinding
 
 class AddPhotoListAdapter(
-    private val glide: RequestManager,
     bitmapStringMutableMap: MutableMap<Bitmap, String>,
     private val onDeletePhotoListener: OnDeletePhotoListener
 ) : RecyclerView.Adapter<AddPhotoListAdapter.PhotoMapViewHolder>() {
@@ -35,7 +34,7 @@ class AddPhotoListAdapter(
             parent,
             false
         )
-        return PhotoMapViewHolder(view, glide, onDeletePhotoListener)
+        return PhotoMapViewHolder(view, onDeletePhotoListener)
     }
 
     override fun onBindViewHolder(holder: PhotoMapViewHolder, position: Int) =
@@ -47,13 +46,15 @@ class AddPhotoListAdapter(
     // inner class
     class PhotoMapViewHolder(
         private val binding: CellAddPhotoBinding,
-        private val glide: RequestManager,
         private val onDeletePhotoListener: OnDeletePhotoListener
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
+        // todo: add onclicklistener to open image
+
         fun bind(entry: Map.Entry<Bitmap, String>) {
-            glide.load(entry.key)
+            Glide.with(itemView)
+                .load(entry.key)
                 .centerCrop()
                 .into(binding.photoImageView)
 

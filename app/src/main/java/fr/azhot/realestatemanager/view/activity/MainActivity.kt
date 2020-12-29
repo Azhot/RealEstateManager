@@ -4,14 +4,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
-import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
-import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
 
 
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
+class MainActivity : AppCompatActivity() {
 
 
     // variables
@@ -28,7 +26,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navHostFragment =
             supportFragmentManager.findFragmentById(binding.mainContainerView.id) as NavHostFragment
         navController = navHostFragment.findNavController()
-        navController.addOnDestinationChangedListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -36,20 +33,5 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             android.R.id.home -> navController.navigateUp()
         }
         return super.onOptionsItemSelected(item)
-    }
-
-    override fun onDestinationChanged(
-        controller: NavController,
-        destination: NavDestination,
-        arguments: Bundle?
-    ) {
-        supportActionBar?.title = destination.label
-        when (destination.id) {
-            R.id.propertyListFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            R.id.propertyDetailsFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            R.id.addPhotoFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            R.id.addAddressFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            R.id.addDetailFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        }
     }
 }

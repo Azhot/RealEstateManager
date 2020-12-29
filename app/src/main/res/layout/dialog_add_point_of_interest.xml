@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:animateLayoutChanges="true"
     android:paddingBottom="@dimen/large_padding">
 
     <TextView
@@ -14,8 +13,8 @@
         android:gravity="center"
         android:padding="@dimen/large_padding"
         android:text="@string/add_a_point_of_interest"
+        android:textAppearance="?attr/textAppearanceHeadline6"
         android:textColor="@color/white"
-        android:textSize="@dimen/average_text_size"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -175,7 +174,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/average_margin"
-        android:layout_marginEnd="@dimen/large_margin"
+        android:layout_marginEnd="@dimen/very_large_margin"
         android:enabled="false"
         android:text="@string/add_button_add_realtor_dialog"
         android:textColor="@color/gray"

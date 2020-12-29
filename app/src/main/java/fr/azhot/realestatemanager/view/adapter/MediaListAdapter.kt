@@ -3,14 +3,20 @@ package fr.azhot.realestatemanager.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.databinding.CellPhotoBinding
 import fr.azhot.realestatemanager.model.Photo
 
 class MediaListAdapter(
-    private val glide: RequestManager,
     photoList: MutableList<Photo>,
-) : RecyclerView.Adapter<MediaListAdapter.PhotoViewHolder>() {
+    private val onPhotoClickListener: OnPhotoClickListener
+) :
+    RecyclerView.Adapter<MediaListAdapter.PhotoViewHolder>() {
+
+    // interfaces
+    interface OnPhotoClickListener {
+        fun onPhotoClick(photo: Photo)
+    }
 
 
     // variables
@@ -28,24 +34,27 @@ class MediaListAdapter(
             parent,
             false
         )
-        return PhotoViewHolder(view, glide)
+        return PhotoViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) =
-        holder.bind(photoList[position])
+    override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
+        holder.apply {
+            bind(photoList[position])
+            itemView.setOnClickListener {
+                onPhotoClickListener.onPhotoClick(photoList[position])
+            }
+        }
+    }
 
     override fun getItemCount(): Int = photoList.count()
 
 
     // inner class
-    class PhotoViewHolder(
-        private val binding: CellPhotoBinding,
-        private val glide: RequestManager
-    ) :
+    class PhotoViewHolder(private val binding: CellPhotoBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(photo: Photo) {
-            glide
+            Glide.with(itemView)
                 .load(photo.uri)
                 .centerCrop()
                 .into(binding.photoImageView)

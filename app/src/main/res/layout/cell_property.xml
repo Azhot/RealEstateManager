@@ -6,51 +6,57 @@
     android:layout_height="wrap_content"
     android:background="@drawable/ic_white_background_with_bottom_border">
 
-    <androidx.appcompat.widget.AppCompatImageView
+    <ImageView
         android:id="@+id/photo_image_view"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:contentDescription="@null"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:background="@drawable/thumb_living_room" />
+        tools:background="@color/primaryDayDarkColor" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/type_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
-        android:textSize="@dimen/average_text_size"
-        android:textStyle="bold"
+        android:textAppearance="?attr/textAppearanceHeadline6"
+        android:textColor="@color/primaryDayDarkColor"
         app:layout_constraintBottom_toTopOf="@id/city_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/photo_image_view"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Flat" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/city_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
-        android:textSize="@dimen/average_text_size"
+        android:paddingStart="@dimen/very_small_padding"
+        android:paddingEnd="0dp"
+        android:textAppearance="?attr/textAppearanceBody1"
+        android:textColor="@android:color/darker_gray"
         app:layout_constraintBottom_toTopOf="@id/price_text_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/photo_image_view"
         app:layout_constraintTop_toBottomOf="@id/type_text_view"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="Manhattan" />
 
-    <androidx.appcompat.widget.AppCompatTextView
+    <TextView
         android:id="@+id/price_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
+        android:textAppearance="?attr/textAppearanceHeadline5"
         android:textColor="@color/primaryDayColor"
-        android:textSize="@dimen/large_text_size"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/photo_image_view"
         app:layout_constraintTop_toBottomOf="@id/city_text_view"
+        app:layout_constraintVertical_chainStyle="packed"
         tools:text="$17,870,000" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

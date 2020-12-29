@@ -3,9 +3,8 @@ package fr.azhot.realestatemanager.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.azhot.realestatemanager.databinding.CellPointOfInterestBinding
+import fr.azhot.realestatemanager.databinding.CellAddPointOfInterestBinding
 import fr.azhot.realestatemanager.model.PointOfInterest
-import java.lang.StringBuilder
 
 class PointOfInterestListAdapter(
     pointOfInterestList: MutableList<PointOfInterest>,
@@ -29,7 +28,7 @@ class PointOfInterestListAdapter(
 
     // overridden functions
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PointOfInterestViewHolder {
-        val view = CellPointOfInterestBinding.inflate(
+        val view = CellAddPointOfInterestBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
@@ -45,7 +44,7 @@ class PointOfInterestListAdapter(
 
     // inner class
     class PointOfInterestViewHolder(
-        private val binding: CellPointOfInterestBinding,
+        private val binding: CellAddPointOfInterestBinding,
         private val onDeletePointOfInterestListener: OnDeletePointOfInterestListener
     ) :
         RecyclerView.ViewHolder(binding.root) {

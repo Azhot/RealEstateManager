@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:animateLayoutChanges="true"
     tools:context=".view.fragment.AddAddressFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -13,7 +12,6 @@
         android:layout_margin="@dimen/average_margin"
         android:paddingBottom="@dimen/large_padding">
 
-
         <TextView
             android:id="@+id/page_title"
             android:layout_width="match_parent"
@@ -21,8 +19,8 @@
             android:gravity="center"
             android:padding="@dimen/very_large_padding"
             android:text="@string/add_address_fragment_title"
-            android:textAppearance="@style/title_text"
-            android:textColor="@null"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="@color/primaryDayDarkColor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginTop="@dimen/very_large_margin"
             android:layout_marginEnd="@dimen/average_margin"
             android:hint="@string/zip_code"
             app:endIconMode="clear_text"
@@ -147,9 +145,9 @@
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="64dp"
-            android:layout_marginTop="@dimen/large_margin"
+            android:layout_marginTop="@dimen/very_large_margin"
             android:text="@string/next"
-            android:textAppearance="@style/title_text"
+            android:textAppearance="@style/next_button"
             android:textColor="@null"
             app:icon="@drawable/ic_navigate_next_24"
             app:iconGravity="end"

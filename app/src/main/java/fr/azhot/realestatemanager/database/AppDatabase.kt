@@ -1,18 +1,17 @@
 package fr.azhot.realestatemanager.database
 
 import android.content.Context
-import android.net.Uri
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.database.dao.*
 import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.utils.TypeConverter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.*
 
 @Database(
     entities = [
@@ -81,11 +80,30 @@ abstract class AppDatabase : RoomDatabase() {
                         )
                     )
 
+                    addressDao.insertAddress(
+                        Address(
+                            "addressId2",
+                            "78480",
+                            "Verneuil-sur-seine",
+                            "Rue du Hameau",
+                            "52",
+                            "TER",
+                        )
+                    )
+
                     realtorDao.insertRealtor(
                         Realtor(
                             "realtorId1",
                             "Thomas",
                             "Duval",
+                        )
+                    )
+
+                    realtorDao.insertRealtor(
+                        Realtor(
+                            "realtorId2",
+                            "François",
+                            "Jouvelot",
                         )
                     )
 
@@ -98,9 +116,33 @@ abstract class AppDatabase : RoomDatabase() {
                             7,
                             "Nice duplex in Paris",
                             "addressId1",
-                            1000L,
+                            Calendar.getInstance().run {
+                                this.set(2020, 12, 10)
+                                timeInMillis
+                            },
                             null,
                             "realtorId1",
+                        )
+                    )
+
+                    detailDao.insertDetail(
+                        Detail(
+                            "detailId2",
+                            PropertyType.MANSION,
+                            800000,
+                            100,
+                            5,
+                            "Impressive mansion in the Paris suburban area.",
+                            "addressId2",
+                            Calendar.getInstance().run {
+                                this.set(2020, 12, 15)
+                                timeInMillis
+                            },
+                            Calendar.getInstance().run {
+                                this.set(2020, 12, 25)
+                                timeInMillis
+                            },
+                            "realtorId2",
                         )
                     )
 
@@ -108,8 +150,52 @@ abstract class AppDatabase : RoomDatabase() {
                         Photo(
                             "photoId1",
                             "detailId1",
-                            Uri.parse("android.resource:drawable" + R.drawable.thumb_living_room)
-                                .toString(),
+                            "https://static.cotemaison.fr/medias_11931/w_600,h_600,c_fill,g_north/v1566200335/amenager-un-salon-cosy-en-multipliant-les-assises_6109137.jpg",
+                            "Living-room",
+                        )
+                    )
+
+                    photoDao.insertPhoto(
+                        Photo(
+                            "photoId2",
+                            "detailId1",
+                            "https://www.nouvomeuble.com/boutique/images_produits/chambre-a-coucher-design-blanc_zd1-z.jpg",
+                            "Bed-room",
+                        )
+                    )
+
+                    photoDao.insertPhoto(
+                        Photo(
+                            "photoId3",
+                            "detailId1",
+                            "https://www.sundgau-energies.com/public/donnees/cms/sources/pages/bg-sdb-mobile.jpg",
+                            "Bath-room",
+                        )
+                    )
+
+                    photoDao.insertPhoto(
+                        Photo(
+                            "photoId4",
+                            "detailId2",
+                            "https://www.nouvomeuble.com/boutique/images_produits/chambre-a-coucher-design-blanc_zd1-z.jpg",
+                            "Bed-room",
+                        )
+                    )
+
+                    photoDao.insertPhoto(
+                        Photo(
+                            "photoId5",
+                            "detailId2",
+                            "https://www.sundgau-energies.com/public/donnees/cms/sources/pages/bg-sdb-mobile.jpg",
+                            "Bath-room",
+                        )
+                    )
+
+                    photoDao.insertPhoto(
+                        Photo(
+                            "photoId6",
+                            "detailId2",
+                            "https://static.cotemaison.fr/medias_11931/w_600,h_600,c_fill,g_north/v1566200335/amenager-un-salon-cosy-en-multipliant-les-assises_6109137.jpg",
                             "Living-room",
                         )
                     )
@@ -128,6 +214,22 @@ abstract class AppDatabase : RoomDatabase() {
                             ),
                         )
                     )
+
+                    pointOfInterestDao.insertPointOfInterest(
+                        PointOfInterest(
+                            "pointOfInterestId1",
+                            "detailId2",
+                            "Hopital",
+                            Address(
+                                "78300",
+                                "Poissy",
+                                "Rue du Champ-Gaillard",
+                                "10",
+                                "",
+                            ),
+                        )
+                    )
+
                 }
             }
         }

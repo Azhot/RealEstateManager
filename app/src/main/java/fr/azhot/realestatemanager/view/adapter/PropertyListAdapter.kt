@@ -3,14 +3,13 @@ package fr.azhot.realestatemanager.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.RequestManager
+import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.databinding.CellPropertyBinding
 import fr.azhot.realestatemanager.model.Property
 import java.text.NumberFormat
 import java.util.*
 
 class PropertyListAdapter(
-    private val glide: RequestManager,
     propertyList: List<Property>,
     private val listener: PropertyClickListener,
 ) : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
@@ -37,7 +36,7 @@ class PropertyListAdapter(
             parent,
             false
         )
-        return PropertyViewHolder(view, glide)
+        return PropertyViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
@@ -52,14 +51,11 @@ class PropertyListAdapter(
 
 
     // inner class
-    class PropertyViewHolder(
-        private val binding: CellPropertyBinding,
-        private val glide: RequestManager,
-    ) :
+    class PropertyViewHolder(private val binding: CellPropertyBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(property: Property) {
-            glide
+            Glide.with(itemView)
                 .load(property.photoList[0].uri)
                 .centerCrop()
                 .into(binding.photoImageView)

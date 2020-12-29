@@ -5,11 +5,13 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/propertyListFragment">
 
+    <!-- Property List Fragment -->
     <fragment
         android:id="@+id/propertyListFragment"
         android:name="fr.azhot.realestatemanager.view.fragment.PropertyListFragment"
         android:label="@string/property_list"
         tools:layout="@layout/fragment_property_list">
+
         <action
             android:id="@+id/action_propertyListFragment_to_propertyDetailsFragment"
             app:destination="@id/propertyDetailsFragment"
@@ -17,6 +19,7 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+
         <action
             android:id="@+id/action_propertyListFragment_to_addPhotoFragment"
             app:destination="@id/addPhotoFragment"
@@ -24,12 +27,16 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_up"
             app:popExitAnim="@anim/slide_out_down" />
+
     </fragment>
+
+    <!-- Property Details Fragment -->
     <fragment
         android:id="@+id/propertyDetailsFragment"
         android:name="fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragment"
         android:label="@string/property_detail"
         tools:layout="@layout/fragment_property_details">
+
         <action
             android:id="@+id/action_propertyDetailsFragment_to_addPhotoFragment"
             app:destination="@id/addPhotoFragment"
@@ -37,12 +44,16 @@
             app:exitAnim="@anim/slide_out_up"
             app:popEnterAnim="@anim/slide_in_up"
             app:popExitAnim="@anim/slide_out_down" />
+
     </fragment>
+
+    <!-- Add Photo Fragment -->
     <fragment
         android:id="@+id/addPhotoFragment"
         android:name="fr.azhot.realestatemanager.view.fragment.AddPhotoFragment"
         android:label="@string/new_property"
         tools:layout="@layout/fragment_add_photo">
+
         <action
             android:id="@+id/action_addPhotoFragment_to_addAddressFragment"
             app:destination="@id/addAddressFragment"
@@ -50,12 +61,16 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+
     </fragment>
+
+    <!-- Add Address Fragment -->
     <fragment
         android:id="@+id/addAddressFragment"
         android:name="fr.azhot.realestatemanager.view.fragment.AddAddressFragment"
         android:label="@string/new_property"
         tools:layout="@layout/fragment_add_address">
+
         <action
             android:id="@+id/action_addAddressFragment_to_addDetailFragment"
             app:destination="@id/addDetailFragment"
@@ -63,12 +78,16 @@
             app:exitAnim="@anim/slide_out_right"
             app:popEnterAnim="@anim/slide_in_right"
             app:popExitAnim="@anim/slide_out_left" />
+
     </fragment>
+
+    <!-- Add Detail Fragment -->
     <fragment
         android:id="@+id/addDetailFragment"
         android:name="fr.azhot.realestatemanager.view.fragment.AddDetailFragment"
         android:label="@string/new_property"
         tools:layout="@layout/fragment_add_detail">
+
         <action
             android:id="@+id/action_addDetailFragment_to_propertyListFragment"
             app:destination="@id/propertyListFragment"
@@ -78,5 +97,7 @@
             app:popExitAnim="@anim/slide_out_up"
             app:popUpTo="@id/propertyListFragment"
             app:popUpToInclusive="true" />
+
     </fragment>
+
 </navigation>

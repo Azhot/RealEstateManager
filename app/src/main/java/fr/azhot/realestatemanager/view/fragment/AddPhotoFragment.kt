@@ -16,6 +16,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -52,12 +53,13 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = FragmentAddPhotoBinding.inflate(inflater)
         binding.photoTitleEditText.doAfterTextChanged { checkEnableAddButton() }
         binding.selectPhotoButton.setOnClickListener(this)
         binding.addPhotoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = AddPhotoListAdapter(Glide.with(this), mutableMapOf(), this@AddPhotoFragment)
+            adapter = AddPhotoListAdapter(mutableMapOf(), this@AddPhotoFragment)
         }
         observePhotoList()
         binding.nextButton.setOnClickListener(this)

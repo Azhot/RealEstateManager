@@ -2,13 +2,13 @@ package fr.azhot.realestatemanager.view.fragment
 
 import android.os.Bundle
 import android.view.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentPropertyListBinding
@@ -18,6 +18,7 @@ import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClick
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModelFactory
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
+import kotlin.properties.Delegates
 
 class PropertyListFragment : Fragment(), PropertyClickListener {
 
@@ -25,6 +26,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     // variables
     private lateinit var binding: FragmentPropertyListBinding
     private lateinit var navController: NavController
+    private var isLandscapeMode by Delegates.notNull<Boolean>()
     private val viewModel: PropertyListFragmentViewModel by viewModels {
         PropertyListFragmentViewModelFactory((activity?.application as RealEstateManagerApplication).detailRepository)
     }
@@ -35,13 +37,14 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         setHasOptionsMenu(true)
         binding = FragmentPropertyListBinding.inflate(layoutInflater)
         resetSharedData()
         observePropertyList()
         binding.propertyListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = PropertyListAdapter(Glide.with(this), emptyList(), this@PropertyListFragment)
+            adapter = PropertyListAdapter(emptyList(), this@PropertyListFragment)
         }
         return binding.root
     }
@@ -58,7 +61,8 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
     override fun onResume() {
         super.onResume()
-        if (activity?.resources?.getBoolean(R.bool.isLandscape) == true && sharedViewModel.liveProperty.value != null) {
+        isLandscapeMode = activity?.resources?.getBoolean(R.bool.isLandscape) == true
+        if (isLandscapeMode && sharedViewModel.liveProperty.value != null) {
             childFragmentManager.beginTransaction()
                 .replace(binding.detailsContainerView!!.id, PropertyDetailsFragment())
                 .commit()
@@ -77,16 +81,16 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     }
 
     override fun onPropertyClickListener(property: Property) {
-        if (activity?.resources?.getBoolean(R.bool.isLandscape) == false) {
-            val action =
-                PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailsFragment()
-            navController.navigate(action)
-        } else {
+        if (isLandscapeMode) {
             if (property == sharedViewModel.liveProperty.value) return
             childFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
                 .replace(binding.detailsContainerView!!.id, PropertyDetailsFragment())
                 .commit()
+        } else {
+            val action =
+                PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailsFragment()
+            navController.navigate(action)
         }
         sharedViewModel.liveProperty.value = property
     }
