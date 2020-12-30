@@ -17,7 +17,7 @@ data class Address(
     override fun toString(): String {
         val string = StringBuilder().run {
             for (i in arrayOf(city, number, roadName, zipCode, complement)) {
-                if (i != null) append("$i, ")
+                if (i?.isNotEmpty() == true) append("$i, ")
             }
             toString()
         }
