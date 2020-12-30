@@ -5,10 +5,13 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
@@ -28,8 +31,8 @@ import fr.azhot.realestatemanager.databinding.FragmentAddDetailBinding
 import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.utils.buildMaterialDatePicker
 import fr.azhot.realestatemanager.utils.storeBitmap
+import fr.azhot.realestatemanager.view.adapter.AddPointOfInterestListAdapter
 import fr.azhot.realestatemanager.view.adapter.ExposedDropdownMenuAdapter
-import fr.azhot.realestatemanager.view.adapter.PointOfInterestListAdapter
 import fr.azhot.realestatemanager.viewmodel.AddDetailFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.AddDetailFragmentViewModelFactory
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
@@ -39,10 +42,11 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.NumberFormat
 import java.util.*
 
 class AddDetailFragment : Fragment(), View.OnClickListener,
-    PointOfInterestListAdapter.OnDeletePointOfInterestListener {
+    AddPointOfInterestListAdapter.OnDeletePointOfInterestListener {
 
     // variables
     private lateinit var binding: FragmentAddDetailBinding
@@ -126,7 +130,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     }
 
     override fun onDeletePointOfInterest(pointOfInterest: PointOfInterest) {
-        (binding.pointOfInterestRecyclerView.adapter as PointOfInterestListAdapter).apply {
+        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
             pointOfInterestList.remove(pointOfInterest)
             notifyDataSetChanged()
         }
@@ -136,6 +140,9 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     // private functions
     private fun setUpWidgets() {
         buildPropertyTypeDropdownMenu()
+        configNumberEditText(binding.priceEditText)
+        configNumberEditText(binding.squareMeterEditText)
+        configNumberEditText(binding.roomsEditText)
         binding.addPointOfInterestButton.setOnClickListener(this)
         buildPointOfInterestRecyclerView()
         binding.entryDateEditText.setOnClickListener(this)
@@ -160,10 +167,37 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
     }
 
+    private fun configNumberEditText(editText: EditText) {
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s?.isNotEmpty() == true) {
+                    editText.removeTextChangedListener(this)
+                    editText.setText(
+                        NumberFormat.getInstance(Locale.US).run {
+                            maximumFractionDigits = 0
+                            format(Integer.valueOf(s.toString().replace(",", "")))
+                        }
+                    )
+                    editText.text?.length?.let { length ->
+                        editText.setSelection(length)
+                    }
+                    editText.addTextChangedListener(this)
+                }
+            }
+
+        })
+    }
+
     private fun buildPointOfInterestRecyclerView() {
         binding.pointOfInterestRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = PointOfInterestListAdapter(mutableListOf(), this@AddDetailFragment)
+            adapter = AddPointOfInterestListAdapter(mutableListOf(), this@AddDetailFragment)
         }
     }
 
@@ -243,18 +277,21 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         number: String?,
         complement: String?,
     ) {
-        val address = Address(
-            zipCode = zipCode,
-            city = city,
-            roadName = roadName,
-            number = number,
-            complement = complement
-        )
-        val pointOfInterest = PointOfInterest(
-            name = name,
-            address = address
-        )
-        (binding.pointOfInterestRecyclerView.adapter as PointOfInterestListAdapter).apply {
+        val pointOfInterest =
+            if (zipCode != null || city != null || roadName != null || number != null || complement != null) {
+                val address = Address(
+                    zipCode = zipCode,
+                    city = city,
+                    roadName = roadName,
+                    number = number,
+                    complement = complement
+                )
+                PointOfInterest(name = name, address = address)
+            } else {
+                PointOfInterest(name = name)
+            }
+
+        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
             pointOfInterestList.add(pointOfInterest)
             notifyDataSetChanged()
         }
@@ -298,7 +335,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     private fun insertRealtor(firstName: String, lastName: String) {
         val realtor = Realtor(firstName = firstName, lastName = lastName)
         binding.realtorAutoComplete.apply {
-            (adapter as ExposedDropdownMenuAdapter).apply {
+            (adapter as ExposedDropdownMenuAdapter).run {
                 for (item in list) {
                     if (item.toString() == realtor.toString()) {
                         makeSnackBar(
@@ -398,9 +435,10 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
 
         // insert points of interest to the database
-        (binding.pointOfInterestRecyclerView.adapter as PointOfInterestListAdapter)
+        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter)
             .pointOfInterestList.apply {
                 for (pointOfInterest in this) {
+                    pointOfInterest.detailId = detail.detailId
                     viewModel.insertPointOfInterest(pointOfInterest)
                 }
             }
