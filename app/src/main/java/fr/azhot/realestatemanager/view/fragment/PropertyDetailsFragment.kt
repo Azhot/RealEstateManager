@@ -3,6 +3,7 @@ package fr.azhot.realestatemanager.view.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -12,20 +13,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailsBinding
 import fr.azhot.realestatemanager.model.Photo
+import fr.azhot.realestatemanager.model.PointOfInterest
+import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.utils.PHOTO_EXTRA
 import fr.azhot.realestatemanager.view.activity.OpenPhotoActivity
-import fr.azhot.realestatemanager.view.adapter.MediaListAdapter
+import fr.azhot.realestatemanager.view.adapter.PhotoListAdapter
+import fr.azhot.realestatemanager.view.adapter.PointOfInterestListAdapter
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
-import kotlin.properties.Delegates
+import java.text.NumberFormat
+import java.text.SimpleDateFormat
+import java.util.*
 
 
-class PropertyDetailsFragment : Fragment(), MediaListAdapter.OnPhotoClickListener {
+class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener {
 
 
     // variables
     private lateinit var binding: FragmentPropertyDetailsBinding
     private lateinit var navController: NavController
-    private var isLandscapeMode by Delegates.notNull<Boolean>()
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
 
@@ -35,19 +40,8 @@ class PropertyDetailsFragment : Fragment(), MediaListAdapter.OnPhotoClickListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.property_detail)
-        }
-        setHasOptionsMenu(true)
-        binding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
-        binding.mediaRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = MediaListAdapter(mutableListOf(), this@PropertyDetailsFragment)
-        }
-        sharedViewModel.liveProperty.observe(viewLifecycleOwner) { property ->
-            (binding.mediaRecyclerView.adapter as MediaListAdapter).photoList = property.photoList
-        }
+        configUIComponents()
+        observeLiveProperty()
         return binding.root
     }
 
@@ -58,8 +52,8 @@ class PropertyDetailsFragment : Fragment(), MediaListAdapter.OnPhotoClickListene
 
     override fun onResume() {
         super.onResume()
-        isLandscapeMode = activity?.resources?.getBoolean(R.bool.isLandscape) == true
-        if (isLandscapeMode) {
+        if (activity?.resources?.getBoolean(R.bool.isLandscape) == true) {
+            updateActionBar(true)
             navController.navigateUp()
         }
     }
@@ -71,19 +65,125 @@ class PropertyDetailsFragment : Fragment(), MediaListAdapter.OnPhotoClickListene
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.add_property -> {
-                val action =
-                    PropertyDetailsFragmentDirections.actionPropertyDetailsFragmentToAddPhotoFragment()
-                navController.navigate(action)
-            }
+            R.id.add_property -> startAddNewProperty()
         }
         return true
     }
 
     override fun onPhotoClick(photo: Photo) {
+        startOpenPhotoActivity(photo)
+    }
+
+
+    // functions
+    private fun configUIComponents() {
+        updateActionBar(activity?.resources?.getBoolean(R.bool.isLandscape) == true)
+        setHasOptionsMenu(true)
+        binding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
+        buildPhotoRecyclerView()
+        buildPointOfInterestRecyclerView()
+    }
+
+    private fun updateActionBar(isLandscapeMode: Boolean) {
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(!isLandscapeMode)
+            title =
+                if (isLandscapeMode) getString(R.string.property_list) else getString(R.string.property_detail)
+        }
+    }
+
+    private fun buildPhotoRecyclerView() {
+        binding.photoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = PhotoListAdapter(mutableListOf(), this@PropertyDetailsFragment)
+        }
+    }
+
+    private fun buildPointOfInterestRecyclerView() {
+        binding.pointOfInterestRecyclerView.apply {
+            val layoutManager = object : LinearLayoutManager(context, VERTICAL, false) {
+                override fun canScrollVertically(): Boolean = false
+            }
+            this.layoutManager = layoutManager
+            adapter = PointOfInterestListAdapter(mutableListOf())
+        }
+    }
+
+    private fun observeLiveProperty() {
+        sharedViewModel.liveProperty.observe(viewLifecycleOwner) { property ->
+            setUpWidgets(property)
+        }
+    }
+
+    private fun setUpWidgets(property: Property) {
+        (binding.photoRecyclerView.adapter as PhotoListAdapter).photoList = property.photoList
+        binding.descriptionTextView.text = property.detail.description
+            ?: getString(R.string.not_provided)
+        loadNumberTextView(property.detail.price, binding.priceTextView, null)
+        binding.propertyTypeTextView.text = property.detail.propertyType?.toString()
+            ?: getString(R.string.not_provided)
+        loadNumberTextView(property.detail.squareMeters, binding.squareMeterTextView, "m²")
+        loadNumberTextView(property.detail.rooms, binding.roomsTextView, null)
+        binding.addressTextView.text = if (property.address?.toString()
+                ?.isNotEmpty() == true
+        ) property.address?.toString() else null
+            ?: getString(R.string.not_provided)
+        loadTimeStampTextView(property.detail.entryTimeStamp, binding.entryDateTextView)
+        loadTimeStampTextView(property.detail.saleTimeStamp, binding.saleDateTextView)
+        binding.realtorTextView.text = property.realtor?.toString()
+            ?: getString(R.string.not_provided)
+        loadPointOfInterestList(property)
+    }
+
+    private fun loadNumberTextView(number: Int?, textView: TextView, suffix: String?) {
+        textView.text = if (number == null) {
+            getString(R.string.not_provided)
+        } else {
+            NumberFormat.getInstance(Locale.US).run {
+                maximumFractionDigits = 0
+                format(number)
+            } + if (suffix != null) " $suffix" else ""
+        }
+    }
+
+    private fun loadTimeStampTextView(timeStamp: Long?, textView: TextView) {
+        textView.text = if (timeStamp == null) {
+            getString(R.string.not_provided)
+        } else {
+            SimpleDateFormat("dd-MMM-yyyy", Locale.ROOT)
+                .format(
+                    Date().apply {
+                        time = timeStamp
+                        toString()
+                    }
+                )
+        }
+    }
+
+    private fun loadPointOfInterestList(property: Property) {
+        (binding.pointOfInterestRecyclerView.adapter as PointOfInterestListAdapter).pointOfInterestList =
+            if (property.pointOfInterestList?.isNotEmpty() == true) {
+                property.pointOfInterestList
+            } else {
+                mutableListOf(
+                    PointOfInterest(
+                        pointOfInterestId = "",
+                        name = getString(R.string.not_provided)
+                    )
+                )
+            }
+    }
+
+    private fun startOpenPhotoActivity(photo: Photo) {
         startActivity(Intent(context, OpenPhotoActivity::class.java).apply {
             putExtra(PHOTO_EXTRA, photo)
         })
         activity?.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+    }
+
+    private fun startAddNewProperty() {
+        val action =
+            PropertyDetailsFragmentDirections.actionPropertyDetailsFragmentToAddPhotoFragment()
+        navController.navigate(action)
     }
 }

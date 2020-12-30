@@ -3,19 +3,11 @@ package fr.azhot.realestatemanager.view.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import fr.azhot.realestatemanager.databinding.CellAddPointOfInterestBinding
+import fr.azhot.realestatemanager.databinding.CellPointOfInterestBinding
 import fr.azhot.realestatemanager.model.PointOfInterest
 
-class PointOfInterestListAdapter(
-    pointOfInterestList: MutableList<PointOfInterest>,
-    private val onDeletePointOfInterestListener: OnDeletePointOfInterestListener
-) : RecyclerView.Adapter<PointOfInterestListAdapter.PointOfInterestViewHolder>() {
-
-
-    // interfaces
-    interface OnDeletePointOfInterestListener {
-        fun onDeletePointOfInterest(pointOfInterest: PointOfInterest)
-    }
+class PointOfInterestListAdapter(pointOfInterestList: MutableList<PointOfInterest>) :
+    RecyclerView.Adapter<PointOfInterestListAdapter.PointOfInterestViewHolder>() {
 
 
     // variables
@@ -28,12 +20,12 @@ class PointOfInterestListAdapter(
 
     // overridden functions
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PointOfInterestViewHolder {
-        val view = CellAddPointOfInterestBinding.inflate(
+        val view = CellPointOfInterestBinding.inflate(
             LayoutInflater.from(parent.context),
             parent,
             false
         )
-        return PointOfInterestViewHolder(view, onDeletePointOfInterestListener)
+        return PointOfInterestViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: PointOfInterestViewHolder, position: Int) =
@@ -43,23 +35,13 @@ class PointOfInterestListAdapter(
 
 
     // inner class
-    class PointOfInterestViewHolder(
-        private val binding: CellAddPointOfInterestBinding,
-        private val onDeletePointOfInterestListener: OnDeletePointOfInterestListener
-    ) :
+    class PointOfInterestViewHolder(private val binding: CellPointOfInterestBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(pointOfInterest: PointOfInterest) {
             binding.pointOfInterest.text = StringBuilder().run {
-                append(pointOfInterest.name)
-                if (pointOfInterest.address.toString().isNotEmpty()) {
-                    append(": ")
-                    append(pointOfInterest.address.toString())
-                }
+                append(pointOfInterest.toString())
                 toString()
-            }
-            binding.deleteButton.setOnClickListener {
-                onDeletePointOfInterestListener.onDeletePointOfInterest(pointOfInterest)
             }
         }
     }

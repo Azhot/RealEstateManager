@@ -215,21 +215,22 @@ abstract class AppDatabase : RoomDatabase() {
                         )
                     )
 
-                    pointOfInterestDao.insertPointOfInterest(
-                        PointOfInterest(
-                            "pointOfInterestId1",
-                            "detailId2",
-                            "Hopital",
-                            Address(
-                                "78300",
-                                "Poissy",
-                                "Rue du Champ-Gaillard",
-                                "10",
-                                "",
-                            ),
+                    for (i in 2..8) {
+                        pointOfInterestDao.insertPointOfInterest(
+                            PointOfInterest(
+                                "pointOfInterestId$i",
+                                "detailId2",
+                                "Hopital${i-1}",
+                                Address(
+                                    "78300",
+                                    "Poissy",
+                                    "Rue du Champ-Gaillard",
+                                    "10",
+                                    "",
+                                ),
+                            )
                         )
-                    )
-
+                    }
                 }
             }
         }

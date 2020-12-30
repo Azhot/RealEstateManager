@@ -4,6 +4,7 @@
     <color name="blackTransparentBackground">#80000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#B4B4B4</color>
+    <color name="lightGray">#EBEBEB</color>
     <color name="primaryDayColor">#00838f</color>
     <color name="primaryDayLightColor">#4fb3bf</color>
     <color name="primaryDayDarkColor">#005662</color>

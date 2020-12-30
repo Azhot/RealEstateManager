@@ -37,12 +37,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(false)
-            title = getString(R.string.property_list)
-        }
-        setHasOptionsMenu(true)
-        binding = FragmentPropertyListBinding.inflate(layoutInflater)
+        configUIComponents()
         resetSharedData()
         observePropertyList()
         binding.propertyListRecyclerView.apply {
@@ -64,6 +59,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
     override fun onResume() {
         super.onResume()
+        updateActionBar()
         isLandscapeMode = activity?.resources?.getBoolean(R.bool.isLandscape) == true
         if (isLandscapeMode && sharedViewModel.liveProperty.value != null) {
             childFragmentManager.beginTransaction()
@@ -100,6 +96,18 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
 
     // functions
+    private fun configUIComponents() {
+        setHasOptionsMenu(true)
+        binding = FragmentPropertyListBinding.inflate(layoutInflater)
+    }
+
+    private fun updateActionBar() {
+        (activity as AppCompatActivity).supportActionBar?.apply {
+            setDisplayHomeAsUpEnabled(false)
+            title = getString(R.string.property_list)
+        }
+    }
+
     private fun resetSharedData() {
         sharedViewModel.livePhotoMap.value?.clear()
     }

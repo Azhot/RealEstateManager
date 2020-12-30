@@ -20,8 +20,16 @@ import java.util.*
 data class PointOfInterest(
     @PrimaryKey
     val pointOfInterestId: String = UUID.randomUUID().toString(),
-    val detailId: String? = null,
+    var detailId: String? = null,
     val name: String,
     @Embedded
-    val address: Address,
-)
+    val address: Address? = null,
+) {
+    override fun toString(): String {
+        return if (address != null) {
+            "$name: $address"
+        } else {
+            name
+        }
+    }
+}

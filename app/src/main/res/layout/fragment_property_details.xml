@@ -9,10 +9,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="@dimen/average_padding"
-        android:paddingTop="@dimen/average_padding"
-        android:paddingEnd="@dimen/average_padding"
-        android:paddingBottom="@dimen/large_padding">
+        android:padding="@dimen/large_padding">
 
         <TextView
             android:id="@+id/media_title_text_view"
@@ -25,10 +22,12 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/media_recycler_view"
+            android:id="@+id/photo_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_small_margin"
             android:layout_marginTop="@dimen/average_margin"
+            android:layout_marginEnd="@dimen/very_small_margin"
             android:orientation="horizontal"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintStart_toStartOf="parent"
@@ -44,13 +43,15 @@
             android:textAppearance="?attr/textAppearanceHeadline5"
             android:textColor="@color/primaryDayDarkColor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/media_recycler_view" />
+            app:layout_constraintTop_toBottomOf="@id/photo_recycler_view" />
 
         <TextView
             android:id="@+id/description_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_small_margin"
             android:layout_marginTop="@dimen/average_margin"
+            android:layout_marginEnd="@dimen/very_small_margin"
             android:textAppearance="?attr/textAppearanceBody1"
             app:layout_constraintTop_toBottomOf="@id/description_title_text_view"
             tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut convallis nisl at risus tincidunt luctus. Proin erat purus, maximus vitae eros a, lobortis tristique felis." />
@@ -59,28 +60,79 @@
             android:id="@+id/start_constraint_layout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
+            android:layout_marginStart="@dimen/very_small_margin"
             android:layout_marginTop="@dimen/very_large_margin"
-            android:layout_marginEnd="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/very_small_margin"
             app:layout_constraintEnd_toStartOf="@id/end_constraint_layout"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/description_text_view">
 
             <TextView
-                android:id="@+id/square_meter_title_text_view"
+                android:id="@+id/price_title_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/average_padding"
-                android:text="@string/surface"
+                android:text="@string/price"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/primaryDayDarkColor"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_square_meters_24"
+                app:drawableStartCompat="@drawable/ic_dollars_24"
                 app:drawableTint="@color/primaryDayDarkColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/price_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/price_title_text_view"
+                tools:text="$1,500,000" />
+
+            <TextView
+                android:id="@+id/property_type_title_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_margin"
+                android:drawablePadding="@dimen/average_padding"
+                android:text="@string/type"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/primaryDayDarkColor"
+                app:drawableStartCompat="@drawable/ic_property_type_24"
+                app:drawableTint="@color/primaryDayDarkColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/price_text_view" />
+
+            <TextView
+                android:id="@+id/property_type_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:textAppearance="?attr/textAppearanceBody1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/property_type_title_text_view"
+                tools:text="Duplex" />
+
+            <TextView
+                android:id="@+id/square_meter_title_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/large_margin"
+                android:drawablePadding="@dimen/average_padding"
+                android:text="@string/surface"
+                android:textAppearance="?attr/textAppearanceBody1"
+                android:textColor="@color/primaryDayDarkColor"
+                app:drawableStartCompat="@drawable/ic_square_meters_24"
+                app:drawableTint="@color/primaryDayDarkColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/property_type_text_view" />
 
             <TextView
                 android:id="@+id/square_meter_text_view"
@@ -102,7 +154,6 @@
                 android:text="@string/rooms"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/primaryDayDarkColor"
-                android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_rooms_24"
                 app:drawableTint="@color/primaryDayDarkColor"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -120,21 +171,32 @@
                 app:layout_constraintTop_toBottomOf="@id/rooms_title_text_view"
                 tools:text="750 sq m" />
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/end_constraint_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/average_margin"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/start_constraint_layout"
+            app:layout_constraintTop_toTopOf="@id/start_constraint_layout">
+
             <TextView
                 android:id="@+id/entry_date_title_text_view"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_margin"
                 android:drawablePadding="@dimen/average_padding"
                 android:text="@string/entry_date"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/primaryDayDarkColor"
-                android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_calendar_24"
                 app:drawableTint="@color/primaryDayDarkColor"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rooms__text_view" />
+                app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/entry_date_text_view"
@@ -156,7 +218,6 @@
                 android:text="@string/sale_date"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/primaryDayDarkColor"
-                android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_calendar_24"
                 app:drawableTint="@color/primaryDayDarkColor"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -183,7 +244,6 @@
                 android:text="@string/realtor"
                 android:textAppearance="?attr/textAppearanceBody1"
                 android:textColor="@color/primaryDayDarkColor"
-                android:textStyle="bold"
                 app:drawableStartCompat="@drawable/ic_realtor_24"
                 app:drawableTint="@color/primaryDayDarkColor"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -201,82 +261,71 @@
                 app:layout_constraintTop_toBottomOf="@id/realtor_title_text_view"
                 tools:text="François Jouvelot" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/end_constraint_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/small_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/start_constraint_layout"
-            app:layout_constraintTop_toTopOf="@id/start_constraint_layout">
-
-            <TextView
-                android:id="@+id/address_title_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawablePadding="@dimen/average_padding"
-                android:text="@string/address"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="@color/primaryDayDarkColor"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_zip_code_24"
-                app:drawableTint="@color/primaryDayDarkColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/address_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                android:textAppearance="?attr/textAppearanceBody1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address_title_text_view"
-                tools:text="52 ter rue du hameau\n78480\nVerneuil-sur-seine" />
-
             <ImageButton
                 android:id="@+id/static_maps_image_button"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginTop="@dimen/large_margin"
+                android:background="@drawable/ic_map_24"
                 android:contentDescription="@null"
-                app:layout_constraintStart_toStartOf="@id/address_text_view"
-                app:layout_constraintTop_toBottomOf="@id/address_text_view"
-                tools:background="@color/primaryDayDarkColor" />
-
-            <TextView
-                android:id="@+id/point_of_interest_title_text_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/large_margin"
-                android:drawablePadding="@dimen/average_padding"
-                android:text="@string/points_of_interest"
-                android:textAppearance="?attr/textAppearanceBody1"
-                android:textColor="@color/primaryDayDarkColor"
-                android:textStyle="bold"
-                app:drawableStartCompat="@drawable/ic_address_24"
-                app:drawableTint="@color/primaryDayDarkColor"
+                app:backgroundTint="@color/lightGray"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/static_maps_image_button" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/point_of_interest_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="36dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/point_of_interest_title_text_view"
-                tools:listitem="@layout/cell_point_of_interest" />
+                app:layout_constraintTop_toBottomOf="@id/realtor_text_view" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/address_title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_small_margin"
+            android:layout_marginEnd="@dimen/very_small_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/address"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/primaryDayDarkColor"
+            app:drawableStartCompat="@drawable/ic_zip_code_24"
+            app:drawableTint="@color/primaryDayDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/end_constraint_layout" />
+
+        <TextView
+            android:id="@+id/address_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:textAppearance="?attr/textAppearanceBody1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_title_text_view"
+            tools:text="52 ter rue du hameau\n78480\nVerneuil-sur-seine" />
+
+        <TextView
+            android:id="@+id/point_of_interest_title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/large_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/points_of_interest"
+            android:textAppearance="?attr/textAppearanceBody1"
+            android:textColor="@color/primaryDayDarkColor"
+            app:drawableStartCompat="@drawable/ic_address_24"
+            app:drawableTint="@color/primaryDayDarkColor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_text_view" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/point_of_interest_recycler_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/point_of_interest_title_text_view"
+            tools:listitem="@layout/cell_point_of_interest" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

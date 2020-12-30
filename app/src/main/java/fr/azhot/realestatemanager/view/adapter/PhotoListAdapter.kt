@@ -7,11 +7,11 @@ import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.databinding.CellPhotoBinding
 import fr.azhot.realestatemanager.model.Photo
 
-class MediaListAdapter(
+class PhotoListAdapter(
     photoList: MutableList<Photo>,
     private val onPhotoClickListener: OnPhotoClickListener
 ) :
-    RecyclerView.Adapter<MediaListAdapter.PhotoViewHolder>() {
+    RecyclerView.Adapter<PhotoListAdapter.PhotoViewHolder>() {
 
     // interfaces
     interface OnPhotoClickListener {
