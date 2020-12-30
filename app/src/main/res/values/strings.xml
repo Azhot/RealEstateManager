@@ -12,6 +12,8 @@
 
     <!-- menu.xml -->
     <string name="add_property">Add property</string>
+    <string name="edit_property">Edit property</string>
+    <string name="search_property">Search property</string>
 
     <!-- nav_graph.xml -->
     <string name="property_list">My property list</string>

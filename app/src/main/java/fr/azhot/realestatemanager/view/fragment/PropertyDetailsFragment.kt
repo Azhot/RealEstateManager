@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.*
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -53,21 +52,8 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
     override fun onResume() {
         super.onResume()
         if (activity?.resources?.getBoolean(R.bool.isLandscape) == true) {
-            updateActionBar(true)
             navController.navigateUp()
         }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu, menu)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add_property -> startAddNewProperty()
-        }
-        return true
     }
 
     override fun onPhotoClick(photo: Photo) {
@@ -77,19 +63,9 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
 
     // functions
     private fun configUIComponents() {
-        updateActionBar(activity?.resources?.getBoolean(R.bool.isLandscape) == true)
-        setHasOptionsMenu(true)
         binding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
         buildPhotoRecyclerView()
         buildPointOfInterestRecyclerView()
-    }
-
-    private fun updateActionBar(isLandscapeMode: Boolean) {
-        (activity as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(!isLandscapeMode)
-            title =
-                if (isLandscapeMode) getString(R.string.property_list) else getString(R.string.property_detail)
-        }
     }
 
     private fun buildPhotoRecyclerView() {
@@ -179,11 +155,5 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
             putExtra(PHOTO_EXTRA, photo)
         })
         activity?.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
-    }
-
-    private fun startAddNewProperty() {
-        val action =
-            PropertyDetailsFragmentDirections.actionPropertyDetailsFragmentToAddPhotoFragment()
-        navController.navigate(action)
     }
 }

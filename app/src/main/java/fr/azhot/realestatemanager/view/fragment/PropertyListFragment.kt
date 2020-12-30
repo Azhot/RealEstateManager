@@ -2,7 +2,6 @@ package fr.azhot.realestatemanager.view.fragment
 
 import android.os.Bundle
 import android.view.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -52,31 +51,14 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
         navController = Navigation.findNavController(requireActivity(), R.id.main_container_view)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu, menu)
-    }
-
     override fun onResume() {
         super.onResume()
-        updateActionBar()
         isLandscapeMode = activity?.resources?.getBoolean(R.bool.isLandscape) == true
         if (isLandscapeMode && sharedViewModel.liveProperty.value != null) {
             childFragmentManager.beginTransaction()
                 .replace(binding.detailsContainerView!!.id, PropertyDetailsFragment())
                 .commit()
         }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.add_property -> {
-                val action =
-                    PropertyListFragmentDirections.actionPropertyListFragmentToAddPhotoFragment()
-                navController.navigate(action)
-            }
-        }
-        return true
     }
 
     override fun onPropertyClickListener(property: Property) {
@@ -97,15 +79,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
     // functions
     private fun configUIComponents() {
-        setHasOptionsMenu(true)
         binding = FragmentPropertyListBinding.inflate(layoutInflater)
-    }
-
-    private fun updateActionBar() {
-        (activity as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(false)
-            title = getString(R.string.property_list)
-        }
     }
 
     private fun resetSharedData() {
