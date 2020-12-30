@@ -401,13 +401,13 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                 propertyType = currentPropertyType
             // set price
             if (binding.priceEditText.text.toString().isNotEmpty())
-                price = Integer.valueOf(binding.priceEditText.text.toString())
+                price = Integer.valueOf(binding.priceEditText.text.toString().replace(",", ""))
             // set squareMeters
             if (binding.squareMeterEditText.text.toString().isNotEmpty())
-                squareMeters = Integer.valueOf(binding.squareMeterEditText.text.toString())
+                squareMeters = Integer.valueOf(binding.squareMeterEditText.text.toString().replace(",", ""))
             // set rooms
             if (binding.roomsEditText.text.toString().isNotEmpty())
-                rooms = Integer.valueOf(binding.roomsEditText.text.toString())
+                rooms = Integer.valueOf(binding.roomsEditText.text.toString().replace(",", ""))
             // set description
             if (binding.descriptionEditText.text.toString().isNotEmpty())
                 description = binding.descriptionEditText.text.toString()
