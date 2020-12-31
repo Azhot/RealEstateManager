@@ -3,6 +3,7 @@ package fr.azhot.realestatemanager.view.activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -12,6 +13,7 @@ import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
 import fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragmentDirections
 import fr.azhot.realestatemanager.view.fragment.PropertyListFragmentDirections
+import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
@@ -19,32 +21,37 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     // variables
     private lateinit var binding: ActivityMainBinding
-    private lateinit var navHostFragment: NavHostFragment
+    private lateinit var menu: Menu
     private lateinit var navController: NavController
+    private val sharedViewModel: SharedViewModel by viewModels()
 
 
     // overridden functions
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        initVariables()
+        observeLiveProperty()
         setContentView(binding.root)
-        navHostFragment =
-            supportFragmentManager.findFragmentById(binding.mainContainerView.id) as NavHostFragment
-        navController = navHostFragment.findNavController()
-        navController.addOnDestinationChangedListener(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menu?.clear()
-        menuInflater.inflate(
-            when (navController.currentDestination?.id) {
-                R.id.propertyListFragment -> R.menu.menu_property_list
-                R.id.propertyDetailsFragment -> R.menu.menu_property_details
-                else -> return false
-            },
-            menu
-        )
-        return true
+        menu?.let {
+            it.clear()
+            this.menu = it
+            menuInflater.inflate(
+                when (navController.currentDestination?.id) {
+                    R.id.propertyListFragment -> R.menu.menu_property_list
+                    R.id.propertyDetailsFragment -> R.menu.menu_property_details
+                    else -> return false
+                },
+                this.menu
+            )
+            if (resources.getBoolean(R.bool.isLandscape) && sharedViewModel.liveProperty.value == null) {
+                this.menu.findItem(R.id.edit_property)?.isVisible = false
+            }
+            return true
+        }
+        return false
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -71,13 +78,24 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
     }
 
-    override fun onBackPressed() {
-        invalidateOptionsMenu()
-        super.onBackPressed()
-    }
-
 
     // functions
+    private fun initVariables() {
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(binding.mainContainerView.id) as NavHostFragment
+        navController = navHostFragment.findNavController()
+        navController.addOnDestinationChangedListener(this)
+    }
+
+    private fun observeLiveProperty() {
+        sharedViewModel.liveProperty.observe(this) { property ->
+            if (resources.getBoolean(R.bool.isLandscape) && property != null && this::menu.isInitialized) {
+                menu.findItem(R.id.edit_property)?.isVisible = true
+            }
+        }
+    }
+
     private fun startAddNewProperty() {
         when (navController.currentDestination?.id) {
             R.id.propertyListFragment -> PropertyListFragmentDirections.actionPropertyListFragmentToAddPhotoFragment()
