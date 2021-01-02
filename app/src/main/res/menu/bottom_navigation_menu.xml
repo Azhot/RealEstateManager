@@ -1,0 +1,18 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/propertyListFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_list_24"
+        android:orderInCategory="1"
+        android:title="@string/property_list"
+        app:iconTint="@color/white" />
+    <item
+        android:id="@+id/propertyDetailsFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_assignment_24"
+        android:orderInCategory="2"
+        android:title="@string/property_details"
+        app:iconTint="@color/white" />
+
+</menu>

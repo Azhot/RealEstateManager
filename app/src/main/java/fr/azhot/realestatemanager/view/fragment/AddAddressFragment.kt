@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -29,11 +28,8 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.new_property)
-        }
         binding = FragmentAddAddressBinding.inflate(inflater)
+        binding.previousButton.setOnClickListener(this)
         binding.nextButton.setOnClickListener(this)
         return binding.root
     }
@@ -46,6 +42,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             binding.nextButton.id -> alertEmptyFields()
+            binding.previousButton.id -> activity?.onBackPressed()
         }
     }
 

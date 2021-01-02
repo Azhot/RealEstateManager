@@ -1,96 +1,134 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragment.AddPhotoFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/average_margin"
-        android:paddingBottom="@dimen/large_padding">
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/page_title"
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/very_large_padding"
-            android:text="@string/add_photo_fragment_title"
-            android:textAppearance="?attr/textAppearanceHeadline5"
-            android:textColor="@color/primaryDayDarkColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_margin="@dimen/average_margin"
+            android:paddingBottom="@dimen/large_padding">
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/photo_title_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/very_large_margin"
-            android:hint="@string/photo_title"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/page_title"
-            app:startIconDrawable="@drawable/ic_text_snippet_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/photo_title_edit_text"
+            <TextView
+                android:id="@+id/page_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textShortMessage" />
+                android:gravity="center"
+                android:padding="@dimen/very_large_padding"
+                android:text="@string/add_photo_fragment_title"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textColor="@color/primaryDayDarkColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/photo_title_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/very_large_margin"
+                android:hint="@string/photo_title"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/page_title"
+                app:startIconDrawable="@drawable/ic_text_snippet_24"
+                app:startIconTint="@color/primaryDayLightColor">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/select_photo_button"
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/photo_title_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textShortMessage" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/select_photo_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin"
+                android:text="@string/select_photo"
+                android:textColor="@color/primaryDayColor"
+                app:icon="@drawable/ic_add_a_photo_24px"
+                app:iconPadding="@dimen/large_padding"
+                app:iconTint="@color/primaryDayLightColor"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/photo_title_input_layout" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/add_photo_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/very_large_margin"
+                android:layout_marginBottom="@dimen/very_large_margin"
+                android:orientation="horizontal"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/select_photo_button"
+                app:spanCount="4"
+                tools:listitem="@layout/cell_photo" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:theme="@style/BottomNavigationBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/previous_button"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin"
-            android:text="@string/select_photo"
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/previous"
+            android:textAppearance="?attr/textAppearanceHeadline6"
             android:textColor="@color/primaryDayColor"
-            app:icon="@drawable/ic_add_a_photo_24px"
-            app:iconPadding="@dimen/large_padding"
-            app:iconTint="@color/primaryDayLightColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/photo_title_input_layout" />
+            app:icon="@drawable/ic_navigate_before_24"
+            app:iconGravity="start"
+            app:iconPadding="0dp"
+            app:iconTint="@color/primaryDayColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/add_photo_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/very_large_margin"
-            android:layout_marginBottom="@dimen/very_large_margin"
-            android:orientation="horizontal"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/select_photo_button"
-            app:spanCount="4"
-            tools:listitem="@layout/cell_photo" />
-
-        <com.google.android.material.button.MaterialButton
+        <Button
             android:id="@+id/next_button"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="64dp"
-            android:layout_marginTop="@dimen/very_large_margin"
+            android:layout_height="?attr/actionBarSize"
             android:text="@string/next"
-            android:textAppearance="@style/next_button"
-            android:textColor="@null"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/primaryDayColor"
             app:icon="@drawable/ic_navigate_next_24"
             app:iconGravity="end"
+            app:iconPadding="0dp"
             app:iconTint="@color/primaryDayColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/add_photo_recycler_view" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

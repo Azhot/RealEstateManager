@@ -6,10 +6,4 @@
         <item name="android:textColor">@color/primaryDayDarkColor</item>
         <item name="fontFamily">sans-serif-medium</item>
     </style>
-
-    <style name="TransparentActionBar" parent="Widget.AppCompat.Light.ActionBar.Solid">
-        <item name="android:background">@null</item>
-        <!-- Support library compatibility -->
-        <item name="background">@null</item>
-    </style>
 </resources>

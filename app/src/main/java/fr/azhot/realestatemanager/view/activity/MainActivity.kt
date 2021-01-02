@@ -1,14 +1,22 @@
 package fr.azhot.realestatemanager.view.activity
 
 import android.os.Bundle
+import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.GravityCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
 import fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragmentDirections
@@ -32,6 +40,29 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         initVariables()
         observeLiveProperty()
         setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+        navController.addOnDestinationChangedListener(this)
+
+        // todo : save in livedata the details as they are created and re-fill edittexts
+        // todo : implement nav drawer
+
+        val toggle = ActionBarDrawerToggle(
+            this,
+            binding.drawerLayout,
+            binding.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        binding.drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+            return
+        }
+        super.onBackPressed()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -40,8 +71,8 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             this.menu = it
             menuInflater.inflate(
                 when (navController.currentDestination?.id) {
-                    R.id.propertyListFragment -> R.menu.menu_property_list
-                    R.id.propertyDetailsFragment -> R.menu.menu_property_details
+                    R.id.propertyListFragment -> R.menu.property_list_menu
+                    R.id.propertyDetailsFragment -> R.menu.property_details_menu
                     else -> return false
                 },
                 this.menu
@@ -56,7 +87,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            android.R.id.home -> onBackPressed()
             R.id.add_property -> startAddNewProperty()
         }
         return super.onOptionsItemSelected(item)
@@ -69,12 +99,21 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     ) {
         invalidateOptionsMenu()
         supportActionBar?.title = destination.label
+        val toolbarTitle = binding.toolbar.getChildAt(0) as TextView
+        toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f)
         when (destination.id) {
-            R.id.propertyListFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            R.id.propertyDetailsFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            R.id.addPhotoFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            R.id.addAddressFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            R.id.addDetailFragment -> supportActionBar?.setDisplayHomeAsUpEnabled(true)
+            R.id.propertyListFragment -> {
+                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_bold)
+                binding.bottomNavigation?.visibility = VISIBLE
+            }
+            R.id.propertyDetailsFragment -> {
+                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_regular)
+                binding.bottomNavigation?.visibility = VISIBLE
+            }
+            else -> {
+                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_regular)
+                binding.bottomNavigation?.visibility = GONE
+            }
         }
     }
 
@@ -85,13 +124,18 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         val navHostFragment =
             supportFragmentManager.findFragmentById(binding.mainContainerView.id) as NavHostFragment
         navController = navHostFragment.findNavController()
-        navController.addOnDestinationChangedListener(this)
+        binding.bottomNavigation?.let { NavigationUI.setupWithNavController(it, navController) }
+        binding.bottomNavigation?.menu?.findItem(R.id.propertyDetailsFragment)?.isVisible = false
     }
 
     private fun observeLiveProperty() {
         sharedViewModel.liveProperty.observe(this) { property ->
-            if (resources.getBoolean(R.bool.isLandscape) && property != null && this::menu.isInitialized) {
-                menu.findItem(R.id.edit_property)?.isVisible = true
+            if (property != null) {
+                binding.bottomNavigation?.menu?.findItem(R.id.propertyDetailsFragment)?.isVisible =
+                    true
+                if (resources.getBoolean(R.bool.isLandscape) && this::menu.isInitialized) {
+                    menu.findItem(R.id.edit_property)?.isVisible = true
+                }
             }
         }
     }

@@ -5,9 +5,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="gray">#B4B4B4</color>
     <color name="lightGray">#EBEBEB</color>
-    <color name="primaryDayColor">#00838f</color>
-    <color name="primaryDayLightColor">#4fb3bf</color>
-    <color name="primaryDayDarkColor">#005662</color>
+    <color name="primaryDayColor">#6002ee</color>
+    <color name="primaryDayLightColor">#9c47ff</color>
+    <color name="primaryDayDarkColor">#0000ba</color>
     <color name="secondaryDayColor">#0d47a1</color>
     <color name="secondaryDayLightColor">#5472d3</color>
     <color name="secondaryDayDarkColor">#002171</color>

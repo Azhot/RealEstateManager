@@ -3,20 +3,20 @@
     <string name="app_name">RealEstateManager</string>
     <string name="error_occurred">An error has occurred. Try again.</string>
     <string name="next">Next</string>
+    <string name="previous">Previous</string>
 
-    <!-- fragment_property_details.xml -->
+    <!-- Property detail fragment -->
     <string name="media_title">Media</string>
     <string name="description_title">Description</string>
     <string name="surface">Surface</string>
     <string name="not_provided">-</string>
 
-    <!-- menu.xml -->
+    <!-- Menus -->
     <string name="add_property">Add property</string>
     <string name="edit_property">Edit property</string>
     <string name="search_property">Search property</string>
 
     <!-- nav_graph.xml -->
-    <string name="property_list">My property list</string>
     <string name="property_detail">Property detail</string>
     <string name="new_property">New property</string>
 
@@ -63,5 +63,13 @@
     <!-- dialog_add_point_of_interest.xml -->
     <string name="add_a_point_of_interest">Add a point of interest</string>
     <string name="name">Name *</string>
+
+    <!-- Navigation drawer -->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Bottom navigation view -->
+    <string name="property_list">Property list</string>
+    <string name="property_details">Property details</string>
 
 </resources>

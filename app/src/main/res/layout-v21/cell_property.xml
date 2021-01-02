@@ -9,7 +9,8 @@
     android:layout_marginEnd="@dimen/small_margin"
     android:layout_marginBottom="@dimen/very_small_margin"
     android:background="@drawable/ic_white_background_with_corner"
-    android:padding="@dimen/small_padding">
+    android:elevation="2dp"
+    android:padding="@dimen/average_padding">
 
     <ImageView
         android:id="@+id/photo_image_view"

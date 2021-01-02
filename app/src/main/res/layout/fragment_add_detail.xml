@@ -1,301 +1,339 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.fragment.AddDetailFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/average_margin"
-        android:paddingBottom="@dimen/large_padding">
-
-        <TextView
-            android:id="@+id/page_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="@dimen/very_large_padding"
-            android:text="@string/add_detail_fragment_title"
-            android:textAppearance="?attr/textAppearanceHeadline5"
-            android:textColor="@color/primaryDayDarkColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/property_type_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/very_large_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:hint="@string/type"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/page_title"
-            app:startIconDrawable="@drawable/ic_property_type_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <AutoCompleteTextView
-                android:id="@+id/property_type_auto_complete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                tools:ignore="LabelFor" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/price_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:hint="@string/price"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/property_type_input_layout"
-            app:startIconDrawable="@drawable/ic_dollars_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/price_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/square_meter_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:hint="@string/square_meter"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/price_input_layout"
-            app:startIconDrawable="@drawable/ic_square_foot_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/square_meter_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/rooms_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:hint="@string/rooms"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/square_meter_input_layout"
-            app:startIconDrawable="@drawable/ic_rooms_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/rooms_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="number" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/bottom_nav"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/point_of_interest_constraint_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:background="@drawable/ic_white_background_with_borders"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rooms_input_layout">
+            android:layout_margin="@dimen/average_margin"
+            android:paddingBottom="@dimen/large_padding">
 
-            <Button
-                android:id="@+id/add_point_of_interest_button"
-                style="?android:attr/borderlessButtonStyle"
+            <TextView
+                android:id="@+id/page_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:padding="10dp"
-                android:text="@string/points_of_interest"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                android:textColor="@color/mtrl_indicator_text_color"
-                android:textSize="16sp"
-                app:icon="@drawable/ic_address_24"
-                app:iconPadding="18dp"
-                app:iconTint="@color/primaryDayLightColor"
+                android:gravity="center"
+                android:padding="@dimen/very_large_padding"
+                android:text="@string/add_detail_fragment_title"
+                android:textAppearance="?attr/textAppearanceHeadline5"
+                android:textColor="@color/primaryDayDarkColor"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/point_of_interest_recycler_view"
-                android:layout_width="0dp"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/property_type_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="12dp"
-                android:layout_marginEnd="@dimen/small_margin"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/very_large_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:hint="@string/type"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/add_point_of_interest_button"
-                tools:listitem="@layout/cell_add_point_of_interest" />
+                app:layout_constraintTop_toBottomOf="@id/page_title"
+                app:startIconDrawable="@drawable/ic_property_type_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <AutoCompleteTextView
+                    android:id="@+id/property_type_auto_complete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/price_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:hint="@string/price"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/property_type_input_layout"
+                app:startIconDrawable="@drawable/ic_dollars_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/price_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/square_meter_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:hint="@string/square_meter"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/price_input_layout"
+                app:startIconDrawable="@drawable/ic_square_foot_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/square_meter_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/rooms_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:hint="@string/rooms"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/square_meter_input_layout"
+                app:startIconDrawable="@drawable/ic_rooms_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/rooms_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/point_of_interest_constraint_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:background="@drawable/ic_white_background_with_borders"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rooms_input_layout">
+
+                <Button
+                    android:id="@+id/add_point_of_interest_button"
+                    style="?android:attr/borderlessButtonStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:padding="10dp"
+                    android:text="@string/points_of_interest"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+                    android:textColor="@color/mtrl_indicator_text_color"
+                    android:textSize="16sp"
+                    app:icon="@drawable/ic_address_24"
+                    app:iconPadding="18dp"
+                    app:iconTint="@color/primaryDayLightColor"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/point_of_interest_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="@dimen/small_margin"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/add_point_of_interest_button"
+                    tools:listitem="@layout/cell_add_point_of_interest" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/entry_date_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:hint="@string/entry_date"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/point_of_interest_constraint_layout"
+                app:startIconDrawable="@drawable/ic_calendar_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/entry_date_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="date"
+                    android:longClickable="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/sale_date_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:hint="@string/sale_date"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/entry_date_input_layout"
+                app:startIconDrawable="@drawable/ic_check_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/sale_date_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false"
+                    android:inputType="date"
+                    android:longClickable="false" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/realtor_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/small_margin"
+                android:hint="@string/realtor"
+                app:layout_constraintEnd_toStartOf="@id/create_realtor_image_button"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sale_date_input_layout"
+                app:startIconDrawable="@drawable/ic_realtor_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <AutoCompleteTextView
+                    android:id="@+id/realtor_auto_complete"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    tools:ignore="LabelFor" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <ImageButton
+                android:id="@+id/create_realtor_image_button"
+                android:layout_width="wrap_content"
+                android:layout_height="84dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:background="@android:color/transparent"
+                android:contentDescription="@null"
+                android:src="@drawable/ic_add_circle_24"
+                android:tint="@color/primaryDayColor"
+                app:layout_constraintBottom_toBottomOf="@id/realtor_input_layout"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/realtor_input_layout"
+                app:layout_constraintTop_toTopOf="@id/realtor_input_layout" />
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/description_input_layout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/average_margin"
+                android:layout_marginTop="@dimen/average_margin"
+                android:layout_marginEnd="@dimen/average_margin"
+                android:layout_marginBottom="@dimen/average_margin"
+                android:hint="@string/description"
+                app:endIconMode="clear_text"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/realtor_input_layout"
+                app:startIconDrawable="@drawable/ic_description_24"
+                app:startIconTint="@color/primaryDayLightColor">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/description_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textMultiLine" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/entry_date_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:hint="@string/entry_date"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/point_of_interest_constraint_layout"
-            app:startIconDrawable="@drawable/ic_calendar_24"
-            app:startIconTint="@color/primaryDayLightColor">
+    </androidx.core.widget.NestedScrollView>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/entry_date_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="date"
-                android:longClickable="false" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_nav"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:theme="@style/BottomNavigationBar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/sale_date_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:hint="@string/sale_date"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/entry_date_input_layout"
-            app:startIconDrawable="@drawable/ic_check_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/sale_date_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
-                android:inputType="date"
-                android:longClickable="false" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/realtor_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/small_margin"
-            android:hint="@string/realtor"
-            app:layout_constraintEnd_toStartOf="@id/create_realtor_image_button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sale_date_input_layout"
-            app:startIconDrawable="@drawable/ic_realtor_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <AutoCompleteTextView
-                android:id="@+id/realtor_auto_complete"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="none"
-                tools:ignore="LabelFor" />
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <ImageButton
-            android:id="@+id/create_realtor_image_button"
+        <Button
+            android:id="@+id/previous_button"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="84dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:background="@android:color/transparent"
-            android:contentDescription="@null"
-            android:src="@drawable/ic_add_circle_24"
-            android:tint="@color/primaryDayColor"
-            app:layout_constraintBottom_toBottomOf="@id/realtor_input_layout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/realtor_input_layout"
-            app:layout_constraintTop_toTopOf="@id/realtor_input_layout" />
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/description_input_layout"
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/average_margin"
-            android:layout_marginTop="@dimen/average_margin"
-            android:layout_marginEnd="@dimen/average_margin"
-            android:layout_marginBottom="@dimen/average_margin"
-            android:hint="@string/description"
-            app:endIconMode="clear_text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/realtor_input_layout"
-            app:startIconDrawable="@drawable/ic_description_24"
-            app:startIconTint="@color/primaryDayLightColor">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/description_edit_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inputType="textMultiLine" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:layout_height="?attr/actionBarSize"
+            android:text="@string/previous"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/primaryDayColor"
+            app:icon="@drawable/ic_navigate_before_24"
+            app:iconGravity="start"
+            app:iconPadding="0dp"
+            app:iconTint="@color/primaryDayColor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <Button
             android:id="@+id/create_property_button"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="64dp"
-            android:layout_marginTop="@dimen/very_large_margin"
+            android:layout_height="?attr/actionBarSize"
             android:text="@string/create"
-            android:textAppearance="@style/next_button"
-            android:textColor="@null"
+            android:textAppearance="?attr/textAppearanceHeadline6"
+            android:textColor="@color/primaryDayColor"
             app:icon="@drawable/ic_navigate_next_24"
             app:iconGravity="end"
+            app:iconPadding="0dp"
             app:iconTint="@color/primaryDayColor"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/description_input_layout" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -310,4 +348,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>

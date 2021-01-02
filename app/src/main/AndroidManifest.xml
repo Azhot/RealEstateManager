@@ -26,7 +26,7 @@
         <activity
             android:name=".view.activity.MainActivity"
             android:theme="@style/Theme.RealEstateManager"
-            android:windowSoftInputMode="adjustResize">
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -36,7 +36,7 @@
 
         <activity
             android:name=".view.activity.OpenPhotoActivity"
-            android:theme="@style/Theme.RealEstateManager.TransparentActionBar" />
+            android:theme="@style/Theme.RealEstateManager.OpenPhoto" />
 
         <!-- PROVIDERS -->
         <provider

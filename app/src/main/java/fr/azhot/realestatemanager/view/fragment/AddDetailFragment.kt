@@ -12,7 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.core.widget.doAfterTextChanged
@@ -74,10 +73,6 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        (activity as AppCompatActivity).supportActionBar?.apply {
-            setDisplayHomeAsUpEnabled(true)
-            title = getString(R.string.new_property)
-        }
         binding = FragmentAddDetailBinding.inflate(inflater)
         setUpWidgets()
         observeRealtorList()
@@ -126,6 +121,8 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                     }
                 }
             }
+
+            binding.previousButton.id -> activity?.onBackPressed()
         }
     }
 
@@ -149,6 +146,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         binding.saleDateEditText.setOnClickListener(this)
         buildRealtorDropdownMenu()
         binding.createRealtorImageButton.setOnClickListener(this)
+        binding.previousButton.setOnClickListener(this)
         binding.createPropertyButton.setOnClickListener(this)
     }
 
@@ -371,6 +369,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     }
 
     private fun showProgressBar() {
+        binding.previousButton.isEnabled = false
         binding.createPropertyButton.apply {
             alpha = 1f
             isEnabled = false
@@ -404,7 +403,8 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                 price = Integer.valueOf(binding.priceEditText.text.toString().replace(",", ""))
             // set squareMeters
             if (binding.squareMeterEditText.text.toString().isNotEmpty())
-                squareMeters = Integer.valueOf(binding.squareMeterEditText.text.toString().replace(",", ""))
+                squareMeters =
+                    Integer.valueOf(binding.squareMeterEditText.text.toString().replace(",", ""))
             // set rooms
             if (binding.roomsEditText.text.toString().isNotEmpty())
                 rooms = Integer.valueOf(binding.roomsEditText.text.toString().replace(",", ""))
