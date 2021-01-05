@@ -43,8 +43,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setSupportActionBar(binding.toolbar)
         navController.addOnDestinationChangedListener(this)
 
-        // todo : save in livedata the details as they are created and re-fill edittexts
         // todo : implement nav drawer
+        // todo : add static map
+        // todo : search
+        // todo : status bar white color
 
         val toggle = ActionBarDrawerToggle(
             this,
