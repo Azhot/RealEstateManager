@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.AddDetailFragment">
 
-    <androidx.core.widget.NestedScrollView
+    <ScrollView
         android:id="@+id/scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -42,7 +42,6 @@
                 android:layout_marginStart="@dimen/average_margin"
                 android:layout_marginTop="@dimen/very_large_margin"
                 android:layout_marginEnd="@dimen/average_margin"
-                android:hint="@string/type"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/page_title"
@@ -53,8 +52,8 @@
                     android:id="@+id/property_type_auto_complete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    tools:ignore="LabelFor" />
+                    android:hint="@string/type"
+                    android:inputType="none" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -138,6 +137,7 @@
                 android:layout_marginTop="@dimen/average_margin"
                 android:layout_marginEnd="@dimen/average_margin"
                 android:background="@drawable/ic_white_background_with_borders"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rooms_input_layout">
 
@@ -293,7 +293,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.core.widget.NestedScrollView>
+    </ScrollView>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottom_nav"

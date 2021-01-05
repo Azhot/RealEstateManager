@@ -1,29 +1,27 @@
 package fr.azhot.realestatemanager.utils
 
-import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.datepicker.MaterialDatePicker
-import java.util.*
 
 /**
  * Builds and shows a MaterialDatePicker.
- * The date picked is then set to a TextView.
+ * The date picked is then parsed as a [Long] corresponding to the time in milliseconds.
  *
- * @param supportFragmentManager the parent Context
- * @param calendar the Calendar instance to be set
- * @param textView the TextView which text is to be set
+ * @param supportFragmentManager The FragmentManager this dialog fragment will be added to.
+ * @param initTimeInMillis The time to set to the picker on initialization.
+ * @param functionToCall The function to be called to perform additional processing with the set date.
  */
 fun buildMaterialDatePicker(
     supportFragmentManager: FragmentManager,
-    calendar: Calendar,
-    textView: TextView,
+    initTimeInMillis: Long,
+    functionToCall: (selectedTimeInMillis: Long) -> (Unit),
 ): MaterialDatePicker<Long> {
-    val builder = MaterialDatePicker.Builder.datePicker()
-    builder.setSelection(calendar.timeInMillis)
-    val picker = builder.build()
-    picker.addOnPositiveButtonClickListener { selection ->
-        calendar.timeInMillis = selection
-        textView.text = picker.headerText
+    val picker = MaterialDatePicker.Builder.datePicker().run {
+        setSelection(initTimeInMillis)
+        build()
+    }
+    picker.addOnPositiveButtonClickListener { selectedTimeInMillis ->
+        functionToCall(selectedTimeInMillis)
     }
     picker.show(supportFragmentManager, picker.toString())
     return picker

@@ -36,8 +36,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        configUIComponents()
-        resetSharedData()
+        setUpWidgets()
         observePropertyList()
         binding.propertyListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
@@ -78,12 +77,8 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
 
 
     // functions
-    private fun configUIComponents() {
+    private fun setUpWidgets() {
         binding = FragmentPropertyListBinding.inflate(layoutInflater)
-    }
-
-    private fun resetSharedData() {
-        sharedViewModel.livePhotoMap.value?.clear()
     }
 
     private fun observePropertyList() {

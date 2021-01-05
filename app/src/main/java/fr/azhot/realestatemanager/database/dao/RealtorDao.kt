@@ -10,6 +10,9 @@ interface RealtorDao {
     @Query("SELECT * FROM realtor_table")
     fun getRealtorList(): Flow<List<Realtor>>
 
+    @Query("SELECT * FROM realtor_table WHERE realtorId = :realtorId")
+    suspend fun getRealtorById(realtorId: String): Realtor
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertRealtor(realtor: Realtor)
 

@@ -4,7 +4,9 @@ import androidx.lifecycle.*
 import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.repository.*
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AddDetailFragmentViewModel(
     private val detailRepository: DetailRepository,
@@ -39,6 +41,14 @@ class AddDetailFragmentViewModel(
     fun insertRealtor(realtor: Realtor) = viewModelScope.launch(IO) {
         realtorRepository.insertRealtor(realtor)
     }
+
+    fun getRealtorById(realtorId: String, doSomethingWithRealtor: (Realtor) -> Unit) =
+        viewModelScope.launch(IO) {
+            val realtor = realtorRepository.getRealtorById(realtorId)
+            withContext(Main) {
+                doSomethingWithRealtor(realtor)
+            }
+        }
 }
 
 class AddDetailFragmentViewModelFactory(

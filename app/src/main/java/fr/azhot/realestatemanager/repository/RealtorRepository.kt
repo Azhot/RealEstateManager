@@ -11,6 +11,10 @@ class RealtorRepository(private val realtorDao: RealtorDao) {
 
 
     // functions
+    suspend fun getRealtorById(realtorId: String): Realtor {
+        return realtorDao.getRealtorById(realtorId)
+    }
+
     suspend fun insertRealtor(realtor: Realtor) {
         realtorDao.insertRealtor(realtor)
     }

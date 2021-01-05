@@ -53,15 +53,9 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddPhotoBinding.inflate(inflater)
-        binding.photoTitleEditText.doAfterTextChanged { checkEnableAddButton() }
-        binding.selectPhotoButton.setOnClickListener(this)
-        binding.addPhotoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = AddPhotoListAdapter(mutableMapOf(), this@AddPhotoFragment)
-        }
+        setUpAddPhotoRecyclerView()
+        setUpListeners()
         observePhotoList()
-        binding.previousButton.setOnClickListener(this)
-        binding.nextButton.setOnClickListener(this)
         return binding.root
     }
 
@@ -140,6 +134,20 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
 
 
     // private functions
+    private fun setUpListeners() {
+        binding.photoTitleEditText.doAfterTextChanged { checkEnableAddButton() }
+        binding.selectPhotoButton.setOnClickListener(this)
+        binding.previousButton.setOnClickListener(this)
+        binding.nextButton.setOnClickListener(this)
+    }
+
+    private fun setUpAddPhotoRecyclerView() {
+        binding.addPhotoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = AddPhotoListAdapter(mutableMapOf(), this@AddPhotoFragment)
+        }
+    }
+
     private fun observePhotoList() {
         sharedViewModel.livePhotoMap.observe(viewLifecycleOwner) {
             (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).bitmapStringMutableMap =

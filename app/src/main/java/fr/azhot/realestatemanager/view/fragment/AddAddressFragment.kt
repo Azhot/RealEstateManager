@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -11,7 +12,6 @@ import androidx.navigation.Navigation
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddAddressBinding
-import fr.azhot.realestatemanager.model.Address
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 
 class AddAddressFragment : Fragment(), View.OnClickListener {
@@ -29,8 +29,9 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddAddressBinding.inflate(inflater)
-        binding.previousButton.setOnClickListener(this)
-        binding.nextButton.setOnClickListener(this)
+        loadDataIfExisting()
+        setUpListeners()
+        setUpAddressTextWatchers()
         return binding.root
     }
 
@@ -48,48 +49,51 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
 
     // private functions
-    private fun goNext() {
-        val zipCode = if (binding.zipCodeEditText.text.toString().isNotEmpty()) {
-            binding.zipCodeEditText.text.toString()
-        } else null
+    private fun setUpListeners() {
+        binding.previousButton.setOnClickListener(this)
+        binding.nextButton.setOnClickListener(this)
+    }
 
-        val city = if (binding.cityEditText.text.toString().isNotEmpty()) {
-            binding.cityEditText.text.toString()
-        } else null
+    private fun loadDataIfExisting() {
+        sharedViewModel.liveAddress.value?.run {
+            zipCode?.let { binding.zipCodeEditText.setText(it) }
+            city?.let { binding.cityEditText.setText(it) }
+            roadName?.let { binding.roadNameEditText.setText(it) }
+            number?.let { binding.numberEditText.setText(it) }
+            complement?.let { binding.complementEditText.setText(it) }
+        }
+    }
 
-        val roadName = if (binding.roadNameEditText.text.toString().isNotEmpty()) {
-            binding.roadNameEditText.text.toString()
-        } else null
-
-        val number = if (binding.numberEditText.text.toString().isNotEmpty()) {
-            binding.numberEditText.text.toString()
-        } else null
-
-        val complement = if (binding.complementEditText.text.toString().isNotEmpty()) {
-            binding.complementEditText.text.toString()
-        } else null
-
-        val address = Address(
-            zipCode = zipCode,
-            city = city,
-            roadName = roadName,
-            number = number,
-            complement = complement,
-        )
-
-        sharedViewModel.liveAddress.value = address
-
-        val action = AddAddressFragmentDirections.actionAddAddressFragmentToAddDetailFragment()
-        navController.navigate(action)
+    private fun setUpAddressTextWatchers() {
+        binding.zipCodeEditText.doAfterTextChanged { editable ->
+            sharedViewModel.liveAddress.value?.zipCode =
+                if (editable?.isNotEmpty() == true) editable.toString() else null
+        }
+        binding.cityEditText.doAfterTextChanged { editable ->
+            sharedViewModel.liveAddress.value?.city =
+                if (editable?.isNotEmpty() == true) editable.toString() else null
+        }
+        binding.roadNameEditText.doAfterTextChanged { editable ->
+            sharedViewModel.liveAddress.value?.roadName =
+                if (editable?.isNotEmpty() == true) editable.toString() else null
+        }
+        binding.numberEditText.doAfterTextChanged { editable ->
+            sharedViewModel.liveAddress.value?.number =
+                if (editable?.isNotEmpty() == true) editable.toString() else null
+        }
+        binding.complementEditText.doAfterTextChanged { editable ->
+            sharedViewModel.liveAddress.value?.complement =
+                if (editable?.isNotEmpty() == true) editable.toString() else null
+        }
     }
 
     private fun alertEmptyFields() {
-        if (binding.zipCodeEditText.text.toString().isNotEmpty()
-            && binding.cityEditText.text.toString().isNotEmpty()
-            && binding.roadNameEditText.text.toString().isNotEmpty()
-            && binding.numberEditText.text.toString().isNotEmpty()
+        if (binding.zipCodeEditText.text?.isNotEmpty() == true
+            && binding.cityEditText.text?.isNotEmpty() == true
+            && binding.roadNameEditText.text?.isNotEmpty() == true
+            && binding.numberEditText.text?.isNotEmpty() == true
         ) {
-            goNext()
+            navigateNext()
             return
         }
 
@@ -98,7 +102,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             setMessage(getString(R.string.alert_message))
             setPositiveButton(getString(R.string.alert_positive)) { dialog, _ ->
                 dialog.dismiss()
-                goNext()
+                navigateNext()
             }
             setNegativeButton(getString(R.string.alert_negative)) { dialog, _ ->
                 dialog.dismiss()
@@ -106,5 +110,10 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
             create()
             show()
         }
+    }
+
+    private fun navigateNext() {
+        val action = AddAddressFragmentDirections.actionAddAddressFragmentToAddDetailFragment()
+        navController.navigate(action)
     }
 }

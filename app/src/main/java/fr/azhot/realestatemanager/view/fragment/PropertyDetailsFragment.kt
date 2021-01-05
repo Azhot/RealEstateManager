@@ -15,12 +15,12 @@ import fr.azhot.realestatemanager.model.Photo
 import fr.azhot.realestatemanager.model.PointOfInterest
 import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.utils.PHOTO_EXTRA
+import fr.azhot.realestatemanager.utils.formatTimeStamp
 import fr.azhot.realestatemanager.view.activity.OpenPhotoActivity
 import fr.azhot.realestatemanager.view.adapter.PhotoListAdapter
 import fr.azhot.realestatemanager.view.adapter.PointOfInterestListAdapter
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 import java.text.NumberFormat
-import java.text.SimpleDateFormat
 import java.util.*
 
 
@@ -39,7 +39,7 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        configUIComponents()
+        setUpWidgets()
         observeLiveProperty()
         return binding.root
     }
@@ -62,7 +62,7 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
 
 
     // functions
-    private fun configUIComponents() {
+    private fun setUpWidgets() {
         binding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
         buildPhotoRecyclerView()
         buildPointOfInterestRecyclerView()
@@ -126,13 +126,7 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
         textView.text = if (timeStamp == null) {
             getString(R.string.not_provided)
         } else {
-            SimpleDateFormat("dd-MMM-yyyy", Locale.ROOT)
-                .format(
-                    Date().apply {
-                        time = timeStamp
-                        toString()
-                    }
-                )
+            formatTimeStamp(timeStamp)
         }
     }
 

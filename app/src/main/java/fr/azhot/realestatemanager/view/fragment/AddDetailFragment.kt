@@ -10,6 +10,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import androidx.core.content.ContextCompat
@@ -28,17 +29,15 @@ import fr.azhot.realestatemanager.databinding.DialogAddPointOfInterestBinding
 import fr.azhot.realestatemanager.databinding.DialogAddRealtorBinding
 import fr.azhot.realestatemanager.databinding.FragmentAddDetailBinding
 import fr.azhot.realestatemanager.model.*
-import fr.azhot.realestatemanager.utils.buildMaterialDatePicker
-import fr.azhot.realestatemanager.utils.storeBitmap
+import fr.azhot.realestatemanager.utils.*
 import fr.azhot.realestatemanager.view.adapter.AddPointOfInterestListAdapter
 import fr.azhot.realestatemanager.view.adapter.ExposedDropdownMenuAdapter
 import fr.azhot.realestatemanager.viewmodel.AddDetailFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.AddDetailFragmentViewModelFactory
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.NumberFormat
@@ -61,10 +60,6 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             application.realtorRepository,
         )
     }
-    private lateinit var currentPropertyType: PropertyType
-    private lateinit var currentRealtor: Realtor
-    private val entryDate by lazy { Calendar.getInstance() }
-    private val saleDate by lazy { Calendar.getInstance() }
 
 
     // overridden functions
@@ -75,7 +70,10 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     ): View {
         binding = FragmentAddDetailBinding.inflate(inflater)
         setUpWidgets()
+        setUpListeners()
         observeRealtorList()
+        observePointOfInterestList()
+        loadDataIfExisting()
         return binding.root
     }
 
@@ -86,42 +84,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            binding.createRealtorImageButton.id -> buildAddRealtorDialog(::insertRealtor)
-
             binding.addPointOfInterestButton.id -> buildAddPointOfInterestDialog(::addPointOfInterest)
-
-            binding.entryDateEditText.id -> buildMaterialDatePicker(
-                childFragmentManager,
-                entryDate,
-                binding.entryDateEditText
-            )
-
-            binding.saleDateEditText.id -> buildMaterialDatePicker(
-                childFragmentManager,
-                saleDate,
-                binding.saleDateEditText
-            )
-
-            binding.createPropertyButton.id -> {
-                showProgressBar()
-                CoroutineScope(Default).launch {
-                    val job: Job = launch(Default) {
-                        insertProperty()
-                    }
-                    job.join()
-                    withContext(Main) {
-                        makeSnackBar(
-                            binding.root,
-                            getString(R.string.new_property_created),
-                            requireContext()
-                        )
-                        val action =
-                            AddDetailFragmentDirections.actionAddDetailFragmentToPropertyListFragment()
-                        navController.navigate(action)
-                    }
-                }
-            }
-
+            binding.createRealtorImageButton.id -> buildAddRealtorDialog(::insertRealtor)
+            binding.entryDateEditText.id -> buildEntryDatePicker()
+            binding.saleDateEditText.id -> buildSaleDatePicker()
+            binding.createPropertyButton.id -> createProperty()
             binding.previousButton.id -> activity?.onBackPressed()
         }
     }
@@ -136,36 +103,99 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
     // private functions
     private fun setUpWidgets() {
-        buildPropertyTypeDropdownMenu()
-        configNumberEditText(binding.priceEditText)
-        configNumberEditText(binding.squareMeterEditText)
-        configNumberEditText(binding.roomsEditText)
-        binding.addPointOfInterestButton.setOnClickListener(this)
+        buildExposedDropdownMenu(
+            binding.propertyTypeAutoComplete,
+            PropertyType.values().toMutableList()
+        ) { item ->
+            sharedViewModel.liveDetail.value?.propertyType = item as PropertyType
+        }
+        setUpNumberFormattingEditText(binding.priceEditText) { price ->
+            sharedViewModel.liveDetail.value?.price = price
+        }
+        setUpNumberFormattingEditText(binding.squareMeterEditText) { squareMeters ->
+            sharedViewModel.liveDetail.value?.squareMeters = squareMeters
+        }
+        setUpNumberFormattingEditText(binding.roomsEditText) { rooms ->
+            sharedViewModel.liveDetail.value?.rooms = rooms
+        }
         buildPointOfInterestRecyclerView()
+        buildExposedDropdownMenu(binding.realtorAutoComplete, mutableListOf()) { item ->
+            sharedViewModel.liveDetail.value?.realtorId = (item as Realtor).realtorId
+        }
+    }
+
+    private fun setUpListeners() {
+        binding.addPointOfInterestButton.setOnClickListener(this)
         binding.entryDateEditText.setOnClickListener(this)
+        binding.entryDateEditText.doAfterTextChanged { editable ->
+            if (editable?.isEmpty() == true) sharedViewModel.liveDetail.value?.entryTimeStamp = null
+        }
         binding.saleDateEditText.setOnClickListener(this)
-        buildRealtorDropdownMenu()
+        binding.saleDateEditText.doAfterTextChanged { editable ->
+            if (editable?.isEmpty() == true) sharedViewModel.liveDetail.value?.saleTimeStamp = null
+        }
         binding.createRealtorImageButton.setOnClickListener(this)
+        binding.descriptionEditText.doAfterTextChanged { editable ->
+            sharedViewModel.liveDetail.value?.description =
+                if (editable?.isNotEmpty() == true) editable.toString() else null
+        }
         binding.previousButton.setOnClickListener(this)
         binding.createPropertyButton.setOnClickListener(this)
     }
 
-    private fun buildPropertyTypeDropdownMenu() {
-        binding.propertyTypeAutoComplete.apply {
-            val adapter = ExposedDropdownMenuAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                mutableListOf()
-            )
-            adapter.addAll(PropertyType.toMutableList())
-            setAdapter(adapter)
-            setOnItemClickListener { _, _, position, _ ->
-                currentPropertyType = adapter.getItem(position) as PropertyType
+    private fun observeRealtorList() {
+        viewModel.realtorList.observe(viewLifecycleOwner, { realtorList ->
+            (binding.realtorAutoComplete.adapter as ExposedDropdownMenuAdapter)
+                .list = realtorList.toMutableList()
+        })
+    }
+
+    private fun observePointOfInterestList() {
+        sharedViewModel.livePointOfInterestList.observe(viewLifecycleOwner, { pointOfInterestList ->
+            (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter)
+                .pointOfInterestList = pointOfInterestList
+        })
+    }
+
+    private fun loadDataIfExisting() {
+        sharedViewModel.liveDetail.value?.run {
+            propertyType?.let { binding.propertyTypeAutoComplete.setText(it.toString(), false) }
+            price?.let { binding.priceEditText.setText(it.toString()) }
+            squareMeters?.let { binding.squareMeterEditText.setText(it.toString()) }
+            rooms?.let { binding.roomsEditText.setText(it.toString()) }
+            description?.let { binding.descriptionEditText.setText(it) }
+            entryTimeStamp?.let { binding.entryDateEditText.setText(formatTimeStamp(it)) }
+            saleTimeStamp?.let { binding.saleDateEditText.setText(formatTimeStamp(it)) }
+            realtorId?.let { realtorId ->
+                viewModel.getRealtorById(realtorId) { realtor ->
+                    binding.realtorAutoComplete.setText(realtor.toString(), false)
+                }
             }
         }
     }
 
-    private fun configNumberEditText(editText: EditText) {
+    private fun buildExposedDropdownMenu(
+        autoCompleteTextView: AutoCompleteTextView,
+        mutableList: MutableList<Any>,
+        functionToCall: (any: Any?) -> (Unit)
+    ) {
+        autoCompleteTextView.apply {
+            val adapter = ExposedDropdownMenuAdapter(
+                requireContext(),
+                R.layout.exposed_dropdown_menu_item,
+                mutableList
+            )
+            setAdapter(adapter)
+            setOnItemClickListener { _, _, position, _ ->
+                functionToCall(adapter.getItem(position))
+            }
+        }
+    }
+
+    private fun setUpNumberFormattingEditText(
+        editText: EditText,
+        functionToCall: (number: Int?) -> (Unit)
+    ) {
         editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
             }
@@ -174,12 +204,14 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             }
 
             override fun afterTextChanged(s: Editable?) {
+                var number: Int? = null
                 if (s?.isNotEmpty() == true) {
                     editText.removeTextChangedListener(this)
+                    number = Integer.valueOf(s.toString().replace(",", ""))
                     editText.setText(
                         NumberFormat.getInstance(Locale.US).run {
                             maximumFractionDigits = 0
-                            format(Integer.valueOf(s.toString().replace(",", "")))
+                            format(number)
                         }
                     )
                     editText.text?.length?.let { length ->
@@ -187,6 +219,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                     }
                     editText.addTextChangedListener(this)
                 }
+                functionToCall(number)
             }
 
         })
@@ -199,28 +232,6 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
     }
 
-    private fun buildRealtorDropdownMenu() {
-        binding.realtorAutoComplete.apply {
-            val adapter = ExposedDropdownMenuAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                mutableListOf()
-            )
-            setAdapter(adapter)
-            setOnItemClickListener { _, _, position, _ ->
-                currentRealtor = adapter.getItem(position) as Realtor
-            }
-        }
-    }
-
-    private fun observeRealtorList() {
-        viewModel.realtorList.observe(viewLifecycleOwner, { realtorList ->
-            (binding.realtorAutoComplete.adapter as ExposedDropdownMenuAdapter).apply {
-                this.list = realtorList.toMutableList()
-            }
-        })
-    }
-
     private fun buildAddPointOfInterestDialog(
         functionOnClickAddButton: (
             name: String,
@@ -231,11 +242,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             complement: String?,
         ) -> (Unit)
     ) {
-        val builder = AlertDialog.Builder(context)
         val dialogBinding = DialogAddPointOfInterestBinding.inflate(layoutInflater)
-        builder.setView(dialogBinding.root)
-
-        val dialog = builder.create()
+        val dialog = AlertDialog.Builder(context).run {
+            setView(dialogBinding.root)
+            create()
+        }
 
         dialogBinding.nameEditText.doAfterTextChanged {
             dialogBinding.addButton.isEnabled =
@@ -249,15 +260,15 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
         dialogBinding.addButton.setOnClickListener {
             val name = dialogBinding.nameEditText.text.toString().trim()
-            val zipCode = if (dialogBinding.zipCodeEditText.text.toString().isNotEmpty())
+            val zipCode = if (dialogBinding.zipCodeEditText.text?.isNotEmpty() == true)
                 dialogBinding.zipCodeEditText.text.toString().trim() else null
-            val city = if (dialogBinding.cityEditText.text.toString().isNotEmpty())
+            val city = if (dialogBinding.cityEditText.text?.isNotEmpty() == true)
                 dialogBinding.cityEditText.text.toString().trim() else null
-            val roadName = if (dialogBinding.roadNameEditText.text.toString().isNotEmpty())
+            val roadName = if (dialogBinding.roadNameEditText.text?.isNotEmpty() == true)
                 dialogBinding.roadNameEditText.text.toString().trim() else null
-            val number = if (dialogBinding.numberEditText.text.toString().isNotEmpty())
+            val number = if (dialogBinding.numberEditText.text?.isNotEmpty() == true)
                 dialogBinding.numberEditText.text.toString().trim() else null
-            val complement = if (dialogBinding.complementEditText.text.toString().isNotEmpty())
+            val complement = if (dialogBinding.complementEditText.text?.isNotEmpty() == true)
                 dialogBinding.complementEditText.text.toString().trim() else null
 
             functionOnClickAddButton(name, zipCode, city, roadName, number, complement)
@@ -275,44 +286,55 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         number: String?,
         complement: String?,
     ) {
-        val pointOfInterest =
-            if (zipCode != null || city != null || roadName != null || number != null || complement != null) {
-                val address = Address(
+        sharedViewModel.livePointOfInterestList += PointOfInterest(
+            name = name,
+            address = if (zipCode != null
+                || city != null
+                || roadName != null
+                || number != null
+                || complement != null
+            ) {
+                Address(
                     zipCode = zipCode,
                     city = city,
                     roadName = roadName,
                     number = number,
                     complement = complement
                 )
-                PointOfInterest(name = name, address = address)
-            } else {
-                PointOfInterest(name = name)
-            }
+            } else null
+        )
+    }
 
-        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
-            pointOfInterestList.add(pointOfInterest)
-            notifyDataSetChanged()
+    private fun updateButtonColor(button: Button) {
+        if (button.isEnabled) {
+            button.setTextColor(
+                ContextCompat.getColor(requireContext(), R.color.primaryDayColor)
+            )
+        } else {
+            button.setTextColor(
+                ContextCompat.getColor(requireContext(), R.color.gray)
+            )
         }
     }
 
     private fun buildAddRealtorDialog(functionOnClickAddButton: (firstName: String, lastName: String) -> (Unit)) {
-        val builder = AlertDialog.Builder(context)
         val dialogBinding = DialogAddRealtorBinding.inflate(layoutInflater)
-        builder.setView(dialogBinding.root)
-
-        val dialog = builder.create()
+        val dialog = AlertDialog.Builder(context).run {
+            setView(dialogBinding.root)
+            create()
+        }
 
         dialogBinding.firstNameEditText.doAfterTextChanged {
             dialogBinding.addButton.isEnabled =
-                dialogBinding.firstNameEditText.text.toString().isNotEmpty()
-                        && dialogBinding.lastNameEditText.text.toString().isNotEmpty()
+                dialogBinding.firstNameEditText.text?.isNotEmpty() == true
+                        && dialogBinding.lastNameEditText.text?.isNotEmpty() == true
             updateButtonColor(dialogBinding.addButton)
         }
 
         dialogBinding.lastNameEditText.doAfterTextChanged {
             dialogBinding.addButton.isEnabled =
-                dialogBinding.firstNameEditText.text.toString().isNotEmpty()
-                        && dialogBinding.lastNameEditText.text.toString().isNotEmpty()
+                dialogBinding.firstNameEditText.text?.isNotEmpty() == true
+                        && dialogBinding.lastNameEditText.text?.isNotEmpty() == true
             updateButtonColor(dialogBinding.addButton)
         }
 
@@ -331,19 +353,21 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     }
 
     private fun insertRealtor(firstName: String, lastName: String) {
-        val realtor = Realtor(firstName = firstName, lastName = lastName)
-        binding.realtorAutoComplete.apply {
-            (adapter as ExposedDropdownMenuAdapter).run {
-                for (item in list) {
-                    if (item.toString() == realtor.toString()) {
-                        makeSnackBar(
-                            binding.root,
-                            context.getString(R.string.realtor_already_exists, item),
-                            requireContext()
-                        )
-                        return
+        Realtor(firstName = firstName, lastName = lastName).also { realtor ->
+            binding.realtorAutoComplete.apply {
+                with(adapter as ExposedDropdownMenuAdapter) {
+                    for (item in list) {
+                        if (item.toString() == realtor.toString()) {
+                            makeSnackBar(
+                                binding.root,
+                                context.getString(R.string.realtor_already_exists, item),
+                                requireContext()
+                            )
+                            return
+                        }
                     }
                 }
+                sharedViewModel.liveDetail.value?.realtorId = realtor.realtorId
                 setText(realtor.toString(), false)
             }
             viewModel.insertRealtor(realtor)
@@ -356,15 +380,45 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             .show()
     }
 
-    private fun updateButtonColor(button: Button) {
-        if (button.isEnabled) {
-            button.setTextColor(
-                ContextCompat.getColor(requireContext(), R.color.primaryDayColor)
-            )
-        } else {
-            button.setTextColor(
-                ContextCompat.getColor(requireContext(), R.color.gray)
-            )
+    private fun buildEntryDatePicker() {
+        sharedViewModel.liveDetail.value?.entryTimeStamp.let { timeInMillis ->
+            buildMaterialDatePicker(
+                childFragmentManager,
+                timeInMillis ?: System.currentTimeMillis(),
+            ) { selectedTimeInMillis ->
+                binding.entryDateEditText.setText(formatTimeStamp(selectedTimeInMillis))
+                sharedViewModel.liveDetail.value?.entryTimeStamp = selectedTimeInMillis
+            }
+        }
+    }
+
+    private fun buildSaleDatePicker() {
+        sharedViewModel.liveDetail.value?.saleTimeStamp.let { timeInMillis ->
+            buildMaterialDatePicker(
+                childFragmentManager,
+                timeInMillis ?: System.currentTimeMillis(),
+            ) { selectedTimeInMillis ->
+                binding.saleDateEditText.setText(formatTimeStamp(selectedTimeInMillis))
+                sharedViewModel.liveDetail.value?.saleTimeStamp = selectedTimeInMillis
+            }
+        }
+    }
+
+    private fun createProperty() {
+        showProgressBar()
+        CoroutineScope(IO).launch {
+            launch {
+                insertProperty()
+            }.run { join() }
+            withContext(Main) {
+                makeSnackBar(
+                    binding.root,
+                    getString(R.string.new_property_created),
+                    requireContext()
+                )
+                sharedViewModel.resetNewPropertyData()
+                navigateNext()
+            }
         }
     }
 
@@ -388,60 +442,30 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
     }
 
-    private fun insertProperty() {
-        // insert address to the database if exists
-        val address = sharedViewModel.liveAddress.value
-        address?.let { viewModel.insertAddress(it) }
+    private suspend fun insertProperty() {
+        sharedViewModel.liveDetail.value?.let { detail ->
 
-        // construct detail and insert it to the database
-        val detail = Detail().apply {
-            // set propertyType
-            if (this@AddDetailFragment::currentPropertyType.isInitialized)
-                propertyType = currentPropertyType
-            // set price
-            if (binding.priceEditText.text.toString().isNotEmpty())
-                price = Integer.valueOf(binding.priceEditText.text.toString().replace(",", ""))
-            // set squareMeters
-            if (binding.squareMeterEditText.text.toString().isNotEmpty())
-                squareMeters =
-                    Integer.valueOf(binding.squareMeterEditText.text.toString().replace(",", ""))
-            // set rooms
-            if (binding.roomsEditText.text.toString().isNotEmpty())
-                rooms = Integer.valueOf(binding.roomsEditText.text.toString().replace(",", ""))
-            // set description
-            if (binding.descriptionEditText.text.toString().isNotEmpty())
-                description = binding.descriptionEditText.text.toString()
-            // set addressId
-            addressId = address?.addressId
-            // set entryTimeStamp
-            if (binding.entryDateEditText.text.toString().isNotEmpty())
-                entryTimeStamp = entryDate.timeInMillis
-            // set saleTimeStamp
-            if (binding.saleDateEditText.text.toString().isNotEmpty())
-                saleTimeStamp = saleDate.timeInMillis
-            // set realtorId
-            if (this@AddDetailFragment::currentRealtor.isInitialized)
-                realtorId = currentRealtor.realtorId
-        }
-        viewModel.insertDetail(detail)
+            sharedViewModel.liveAddress.value?.let { address ->
+                detail.addressId = address.addressId
+                viewModel.insertAddress(address).join()
+                viewModel.insertDetail(detail)
+            }
 
-        // store and insert photos to the database
-        sharedViewModel.livePhotoMap.value?.let { photoMap ->
-            storePhotoMap(photoMap, detail.detailId).apply {
-                for (photo in this) {
-                    viewModel.insertPhoto(photo)
+            sharedViewModel.livePhotoMap.value?.let { photoMap ->
+                storePhotoMap(photoMap, detail.detailId).let { photoList ->
+                    for (photo in photoList) {
+                        viewModel.insertPhoto(photo)
+                    }
                 }
             }
-        }
 
-        // insert points of interest to the database
-        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter)
-            .pointOfInterestList.apply {
-                for (pointOfInterest in this) {
+            sharedViewModel.livePointOfInterestList.value?.let { pointOfInterestList ->
+                for (pointOfInterest in pointOfInterestList) {
                     pointOfInterest.detailId = detail.detailId
                     viewModel.insertPointOfInterest(pointOfInterest)
                 }
             }
+        }
     }
 
     private fun storePhotoMap(photoMap: Map<Bitmap, String>, detailId: String): List<Photo> {
@@ -460,5 +484,10 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                 )
             }
         }
+    }
+
+    private fun navigateNext() {
+        val action = AddDetailFragmentDirections.actionAddDetailFragmentToPropertyListFragment()
+        navController.navigate(action)
     }
 }
