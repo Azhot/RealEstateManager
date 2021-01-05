@@ -70,6 +70,5 @@
 
     <!-- Bottom navigation view -->
     <string name="property_list">Property list</string>
-    <string name="property_details">Property details</string>
 
 </resources>

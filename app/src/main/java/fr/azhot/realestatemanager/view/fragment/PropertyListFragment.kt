@@ -55,7 +55,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
         isLandscapeMode = activity?.resources?.getBoolean(R.bool.isLandscape) == true
         if (isLandscapeMode && sharedViewModel.liveProperty.value != null) {
             childFragmentManager.beginTransaction()
-                .replace(binding.detailsContainerView!!.id, PropertyDetailsFragment())
+                .replace(binding.detailContainerView!!.id, PropertyDetailFragment())
                 .commit()
         }
     }
@@ -65,11 +65,11 @@ class PropertyListFragment : Fragment(), PropertyClickListener {
             if (property == sharedViewModel.liveProperty.value) return
             childFragmentManager.beginTransaction()
                 .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
-                .replace(binding.detailsContainerView!!.id, PropertyDetailsFragment())
+                .replace(binding.detailContainerView!!.id, PropertyDetailFragment())
                 .commit()
         } else {
             val action =
-                PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailsFragment()
+                PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailFragment()
             navController.navigate(action)
         }
         sharedViewModel.liveProperty.value = property

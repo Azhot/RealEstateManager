@@ -10,7 +10,7 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.azhot.realestatemanager.R
-import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailsBinding
+import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailBinding
 import fr.azhot.realestatemanager.model.Photo
 import fr.azhot.realestatemanager.model.PointOfInterest
 import fr.azhot.realestatemanager.model.Property
@@ -24,11 +24,11 @@ import java.text.NumberFormat
 import java.util.*
 
 
-class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener {
+class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener {
 
 
     // variables
-    private lateinit var binding: FragmentPropertyDetailsBinding
+    private lateinit var binding: FragmentPropertyDetailBinding
     private lateinit var navController: NavController
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
@@ -63,7 +63,7 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
 
     // functions
     private fun setUpWidgets() {
-        binding = FragmentPropertyDetailsBinding.inflate(layoutInflater)
+        binding = FragmentPropertyDetailBinding.inflate(layoutInflater)
         buildPhotoRecyclerView()
         buildPointOfInterestRecyclerView()
     }
@@ -71,7 +71,7 @@ class PropertyDetailsFragment : Fragment(), PhotoListAdapter.OnPhotoClickListene
     private fun buildPhotoRecyclerView() {
         binding.photoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = PhotoListAdapter(mutableListOf(), this@PropertyDetailsFragment)
+            adapter = PhotoListAdapter(mutableListOf(), this@PropertyDetailFragment)
         }
     }
 

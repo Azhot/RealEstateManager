@@ -13,8 +13,8 @@
         tools:layout="@layout/fragment_property_list">
 
         <action
-            android:id="@+id/action_propertyListFragment_to_propertyDetailsFragment"
-            app:destination="@id/propertyDetailsFragment"
+            android:id="@+id/action_propertyListFragment_to_propertyDetailFragment"
+            app:destination="@id/propertyDetailFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
@@ -30,15 +30,15 @@
 
     </fragment>
 
-    <!-- Property Details Fragment -->
+    <!-- Property Detail Fragment -->
     <fragment
-        android:id="@+id/propertyDetailsFragment"
-        android:name="fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragment"
+        android:id="@+id/propertyDetailFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.PropertyDetailFragment"
         android:label="@string/property_detail"
-        tools:layout="@layout/fragment_property_details">
+        tools:layout="@layout/fragment_property_detail">
 
         <action
-            android:id="@+id/action_propertyDetailsFragment_to_addPhotoFragment"
+            android:id="@+id/action_propertyDetailFragment_to_addPhotoFragment"
             app:destination="@id/addPhotoFragment"
             app:enterAnim="@anim/slide_in_down"
             app:exitAnim="@anim/slide_out_up"

@@ -19,7 +19,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
-import fr.azhot.realestatemanager.view.fragment.PropertyDetailsFragmentDirections
+import fr.azhot.realestatemanager.view.fragment.PropertyDetailFragmentDirections
 import fr.azhot.realestatemanager.view.fragment.PropertyListFragmentDirections
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 
@@ -43,10 +43,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setSupportActionBar(binding.toolbar)
         navController.addOnDestinationChangedListener(this)
 
+        // todo : various looks depending on whether the property is sold
+        // todo : implement edit property
+        // todo : search
         // todo : implement nav drawer
         // todo : add static map
-        // todo : search
-        // todo : status bar white color
+        // todo : integration test for network verification
+        // todo : content provider
+        // todo : bottom add detail check nestedscrollview
 
         val toggle = ActionBarDrawerToggle(
             this,
@@ -74,7 +78,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             menuInflater.inflate(
                 when (navController.currentDestination?.id) {
                     R.id.propertyListFragment -> R.menu.property_list_menu
-                    R.id.propertyDetailsFragment -> R.menu.property_details_menu
+                    R.id.propertyDetailFragment -> R.menu.property_detail_menu
                     else -> return false
                 },
                 this.menu
@@ -108,7 +112,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_bold)
                 binding.bottomNavigation?.visibility = VISIBLE
             }
-            R.id.propertyDetailsFragment -> {
+            R.id.propertyDetailFragment -> {
                 toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_regular)
                 binding.bottomNavigation?.visibility = VISIBLE
             }
@@ -127,13 +131,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             supportFragmentManager.findFragmentById(binding.mainContainerView.id) as NavHostFragment
         navController = navHostFragment.findNavController()
         binding.bottomNavigation?.let { NavigationUI.setupWithNavController(it, navController) }
-        binding.bottomNavigation?.menu?.findItem(R.id.propertyDetailsFragment)?.isVisible = false
+        binding.bottomNavigation?.menu?.findItem(R.id.propertyDetailFragment)?.isVisible = false
     }
 
     private fun observeLiveProperty() {
         sharedViewModel.liveProperty.observe(this) { property ->
             if (property != null) {
-                binding.bottomNavigation?.menu?.findItem(R.id.propertyDetailsFragment)?.isVisible =
+                binding.bottomNavigation?.menu?.findItem(R.id.propertyDetailFragment)?.isVisible =
                     true
                 if (resources.getBoolean(R.bool.isLandscape) && this::menu.isInitialized) {
                     menu.findItem(R.id.edit_property)?.isVisible = true
@@ -145,7 +149,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private fun startAddNewProperty() {
         when (navController.currentDestination?.id) {
             R.id.propertyListFragment -> PropertyListFragmentDirections.actionPropertyListFragmentToAddPhotoFragment()
-            R.id.propertyDetailsFragment -> PropertyDetailsFragmentDirections.actionPropertyDetailsFragmentToAddPhotoFragment()
+            R.id.propertyDetailFragment -> PropertyDetailFragmentDirections.actionPropertyDetailFragmentToAddPhotoFragment()
             else -> null
         }?.let { navController.navigate(it) }
     }
