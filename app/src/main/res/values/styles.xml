@@ -6,4 +6,6 @@
         <item name="android:textColor">@color/primaryDayDarkColor</item>
         <item name="fontFamily">sans-serif-medium</item>
     </style>
+
+    <style name="with_elevation" />
 </resources>

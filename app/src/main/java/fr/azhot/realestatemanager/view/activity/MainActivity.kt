@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         // todo : add static map
         // todo : integration test for network verification
         // todo : content provider
-        // todo : bottom add detail check nestedscrollview
 
         val toggle = ActionBarDrawerToggle(
             this,

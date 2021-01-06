@@ -10,6 +10,7 @@
         android:id="@+id/scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,8 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/average_margin"
-            android:paddingBottom="@dimen/large_padding">
+            android:padding="@dimen/large_padding">
 
             <TextView
                 android:id="@+id/page_title"
@@ -41,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/very_large_margin"
                 android:hint="@string/photo_title"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

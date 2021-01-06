@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:overScrollMode="never"
     tools:context=".view.fragment.PropertyDetailFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        style="@style/with_elevation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/average_margin"
+        android:layout_marginStart="0dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="@dimen/average_margin"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/ic_white_background_with_corner"
-        android:elevation="3dp">
+        android:background="@drawable/ic_white_background_with_corner">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_constraint_layout"
@@ -345,8 +346,8 @@
 
         <ImageView
             android:id="@+id/sold_image_view"
-            android:layout_width="70dp"
-            android:layout_height="59dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:contentDescription="@null"
             android:src="@drawable/ic_sold_banner"
             app:layout_constraintEnd_toEndOf="parent"

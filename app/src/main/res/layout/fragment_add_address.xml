@@ -10,6 +10,7 @@
         android:id="@+id/scroll_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:overScrollMode="never"
         app:layout_constraintBottom_toTopOf="@id/bottom_nav"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -18,8 +19,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/average_margin"
-            android:paddingBottom="@dimen/large_padding">
+            android:padding="@dimen/large_padding">
 
             <TextView
                 android:id="@+id/page_title"
@@ -43,6 +43,7 @@
                 android:layout_marginTop="@dimen/very_large_margin"
                 android:layout_marginEnd="@dimen/average_margin"
                 android:hint="@string/zip_code"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/page_title"
@@ -66,6 +67,7 @@
                 android:layout_marginTop="@dimen/average_margin"
                 android:layout_marginEnd="@dimen/average_margin"
                 android:hint="@string/city"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/zip_code_input_layout"
@@ -89,6 +91,7 @@
                 android:layout_marginTop="@dimen/average_margin"
                 android:layout_marginEnd="@dimen/average_margin"
                 android:hint="@string/road_name"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/city_input_layout"
@@ -112,6 +115,7 @@
                 android:layout_marginTop="@dimen/average_margin"
                 android:layout_marginEnd="@dimen/average_margin"
                 android:hint="@string/number"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/road_name_input_layout"
@@ -135,6 +139,7 @@
                 android:layout_marginTop="@dimen/average_margin"
                 android:layout_marginEnd="@dimen/average_margin"
                 android:hint="@string/complement"
+                app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/number_input_layout"
