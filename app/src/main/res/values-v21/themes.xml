@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Theme.RealEstateManager" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/primaryDayColor</item>
+        <item name="colorPrimaryVariant">@color/primaryDayDarkColor</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/secondaryDayColor</item>
+        <item name="colorSecondaryVariant">@color/secondaryDayDarkColor</item>
+        <item name="colorOnSecondary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:colorPrimaryDark">@color/primaryDayDarkColor</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Light">
         <item name="android:elevation">4dp</item>
         <item name="android:textColorPrimary">@color/white</item>

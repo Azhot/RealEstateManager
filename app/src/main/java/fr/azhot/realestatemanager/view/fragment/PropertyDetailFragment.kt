@@ -1,9 +1,13 @@
 package fr.azhot.realestatemanager.view.fragment
 
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.*
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -92,6 +96,21 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
     }
 
     private fun setUpWidgets(property: Property) {
+        if (property.detail.saleTimeStamp != null) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.mainConstraintLayout.foreground = ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_white_transparent_foreground_with_corner
+                )
+            }
+            binding.soldImageView.visibility = VISIBLE
+        } else {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                binding.mainConstraintLayout.foreground = null
+            }
+            binding.soldImageView.visibility = GONE
+        }
+
         (binding.photoRecyclerView.adapter as PhotoListAdapter).photoList = property.photoList
         binding.descriptionTextView.text = property.detail.description
             ?: getString(R.string.not_provided)
@@ -100,10 +119,8 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
             ?: getString(R.string.not_provided)
         loadNumberTextView(property.detail.squareMeters, binding.squareMeterTextView, "m²")
         loadNumberTextView(property.detail.rooms, binding.roomsTextView, null)
-        binding.addressTextView.text = if (property.address?.toString()
-                ?.isNotEmpty() == true
-        ) property.address?.toString() else null
-            ?: getString(R.string.not_provided)
+        binding.addressTextView.text = if (property.address.toString().isNotEmpty())
+            property.address.toString() else getString(R.string.not_provided)
         loadTimeStampTextView(property.detail.entryTimeStamp, binding.entryDateTextView)
         loadTimeStampTextView(property.detail.saleTimeStamp, binding.saleDateTextView)
         binding.realtorTextView.text = property.realtor?.toString()

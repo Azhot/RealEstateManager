@@ -10,7 +10,7 @@ data class Property(
         parentColumn = "addressId",
         entityColumn = "addressId"
     )
-    var address: Address?,
+    var address: Address,
     @Relation(
         parentColumn = "detailId",
         entityColumn = "detailId"

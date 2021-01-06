@@ -38,7 +38,7 @@ class PhotoListAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoViewHolder, position: Int) {
-        holder.apply {
+        holder.run {
             bind(photoList[position])
             itemView.setOnClickListener {
                 onPhotoClickListener.onPhotoClick(photoList[position])

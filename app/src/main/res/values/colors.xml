@@ -16,5 +16,7 @@
     <color name="secondaryNightColor">#009688</color>
     <color name="secondaryNightDarkColor">#00695C</color>
     <color name="standard_text">#252525</color>
+    <color name="soldColor">#C80000</color>
+    <color name="globalBackground">#FAFAFA</color>
 
 </resources>

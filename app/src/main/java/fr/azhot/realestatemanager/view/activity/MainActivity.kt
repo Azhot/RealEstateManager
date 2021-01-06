@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setSupportActionBar(binding.toolbar)
         navController.addOnDestinationChangedListener(this)
 
-        // todo : various looks depending on whether the property is sold
         // todo : implement edit property
         // todo : search
         // todo : implement nav drawer
