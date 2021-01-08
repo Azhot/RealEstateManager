@@ -213,14 +213,14 @@ abstract class AppDatabase : RoomDatabase() {
             addressDao.insertAddress(address)
             realtorDao.insertRealtor(realtor)
             detailDao.insertDetail(detail)
-            for (i in 3..faker.number().numberBetween(3, 7)) {
+            repeat(faker.number().numberBetween(2, 8)) {
                 photoDao.insertPhoto(
                     photoList[faker.number().numberBetween(0, photoList.size)].apply {
                         detailId = detail.detailId
                     })
             }
 
-            for (i in 0..faker.number().numberBetween(0, 7)) {
+            repeat(faker.number().numberBetween(0, 7)) {
                 pointOfInterestDao.insertPointOfInterest(
                     PointOfInterest(
                         detailId = detail.detailId,
