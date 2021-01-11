@@ -71,7 +71,7 @@ abstract class AppDatabase : RoomDatabase() {
                     val pointOfInterestDao = database.pointOfInterestDao()
                     val realtorDao = database.realtorDao()
 
-                    for (i in 0..30) {
+                    repeat(30) {
                         createProperty(
                             detailDao,
                             addressDao,
