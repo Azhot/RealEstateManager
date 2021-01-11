@@ -72,7 +72,6 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         setUpWidgets()
         setUpListeners()
         observeRealtorList()
-        observePointOfInterestList()
         loadDataIfExisting()
         return binding.root
     }
@@ -95,8 +94,9 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
     override fun onDeletePointOfInterest(pointOfInterest: PointOfInterest) {
         (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
+            val index = pointOfInterestList.indexOf(pointOfInterest)
             pointOfInterestList.remove(pointOfInterest)
-            notifyDataSetChanged()
+            notifyItemRemoved(index)
         }
     }
 
@@ -107,20 +107,20 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             binding.propertyTypeAutoComplete,
             PropertyType.values().toMutableList()
         ) { item ->
-            sharedViewModel.liveDetail.value?.propertyType = item as PropertyType
+            sharedViewModel.sharedDetail.propertyType = item as PropertyType
         }
         setUpNumberFormattingEditText(binding.priceEditText) { price ->
-            sharedViewModel.liveDetail.value?.price = price
+            sharedViewModel.sharedDetail.price = price
         }
-        setUpNumberFormattingEditText(binding.squareMeterEditText) { squareMeters ->
-            sharedViewModel.liveDetail.value?.squareMeters = squareMeters
+        setUpNumberFormattingEditText(binding.squareMetersEditText) { squareMeters ->
+            sharedViewModel.sharedDetail.squareMeters = squareMeters
         }
         setUpNumberFormattingEditText(binding.roomsEditText) { rooms ->
-            sharedViewModel.liveDetail.value?.rooms = rooms
+            sharedViewModel.sharedDetail.rooms = rooms
         }
         buildPointOfInterestRecyclerView()
         buildExposedDropdownMenu(binding.realtorAutoComplete, mutableListOf()) { item ->
-            sharedViewModel.liveDetail.value?.realtorId = (item as Realtor).realtorId
+            sharedViewModel.sharedDetail.realtorId = (item as Realtor).realtorId
         }
     }
 
@@ -128,15 +128,15 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         binding.addPointOfInterestButton.setOnClickListener(this)
         binding.entryDateEditText.setOnClickListener(this)
         binding.entryDateEditText.doAfterTextChanged { editable ->
-            if (editable?.isEmpty() == true) sharedViewModel.liveDetail.value?.entryTimeStamp = null
+            if (editable?.isEmpty() == true) sharedViewModel.sharedDetail.entryTimeStamp = null
         }
         binding.saleDateEditText.setOnClickListener(this)
         binding.saleDateEditText.doAfterTextChanged { editable ->
-            if (editable?.isEmpty() == true) sharedViewModel.liveDetail.value?.saleTimeStamp = null
+            if (editable?.isEmpty() == true) sharedViewModel.sharedDetail.saleTimeStamp = null
         }
         binding.createRealtorImageButton.setOnClickListener(this)
         binding.descriptionEditText.doAfterTextChanged { editable ->
-            sharedViewModel.liveDetail.value?.description =
+            sharedViewModel.sharedDetail.description =
                 if (editable?.isNotEmpty() == true) editable.toString() else null
         }
         binding.previousButton.setOnClickListener(this)
@@ -150,24 +150,17 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         })
     }
 
-    private fun observePointOfInterestList() {
-        sharedViewModel.livePointOfInterestList.observe(viewLifecycleOwner, { pointOfInterestList ->
-            (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter)
-                .pointOfInterestList = pointOfInterestList
-        })
-    }
-
     private fun loadDataIfExisting() {
-        sharedViewModel.liveDetail.value?.run {
+        sharedViewModel.sharedDetail.run {
             propertyType?.let { binding.propertyTypeAutoComplete.setText(it.toString(), false) }
             price?.let { binding.priceEditText.setText(it.toString()) }
-            squareMeters?.let { binding.squareMeterEditText.setText(it.toString()) }
+            squareMeters?.let { binding.squareMetersEditText.setText(it.toString()) }
             rooms?.let { binding.roomsEditText.setText(it.toString()) }
             description?.let { binding.descriptionEditText.setText(it) }
             entryTimeStamp?.let { binding.entryDateEditText.setText(formatTimeStamp(it)) }
             saleTimeStamp?.let { binding.saleDateEditText.setText(formatTimeStamp(it)) }
             realtorId?.let { realtorId ->
-                viewModel.getRealtorById(realtorId) { realtor ->
+                viewModel.getRealtorById(realtorId).observe(viewLifecycleOwner) { realtor ->
                     binding.realtorAutoComplete.setText(realtor.toString(), false)
                 }
             }
@@ -228,7 +221,10 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     private fun buildPointOfInterestRecyclerView() {
         binding.pointOfInterestRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-            adapter = AddPointOfInterestListAdapter(mutableListOf(), this@AddDetailFragment)
+            adapter = AddPointOfInterestListAdapter(
+                sharedViewModel.sharedPointOfInterestList,
+                this@AddDetailFragment
+            )
         }
     }
 
@@ -286,23 +282,22 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         number: String?,
         complement: String?,
     ) {
-        sharedViewModel.livePointOfInterestList += PointOfInterest(
-            name = name,
-            address = if (zipCode != null
-                || city != null
-                || roadName != null
-                || number != null
-                || complement != null
-            ) {
-                Address(
-                    zipCode = zipCode,
-                    city = city,
-                    roadName = roadName,
-                    number = number,
-                    complement = complement
-                )
-            } else null
-        )
+        val address = if (zipCode != null || city != null || roadName != null || number != null
+            || complement != null
+        ) {
+            Address(
+                zipCode = zipCode,
+                city = city,
+                roadName = roadName,
+                number = number,
+                complement = complement
+            )
+        } else null
+
+        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
+            pointOfInterestList.add(PointOfInterest(name = name, address = address))
+            notifyItemInserted(pointOfInterestList.size)
+        }
     }
 
     private fun updateButtonColor(button: Button) {
@@ -367,7 +362,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                         }
                     }
                 }
-                sharedViewModel.liveDetail.value?.realtorId = realtor.realtorId
+                sharedViewModel.sharedDetail.realtorId = realtor.realtorId
                 setText(realtor.toString(), false)
             }
             viewModel.insertRealtor(realtor)
@@ -381,25 +376,25 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     }
 
     private fun buildEntryDatePicker() {
-        sharedViewModel.liveDetail.value?.entryTimeStamp.let { timeInMillis ->
+        sharedViewModel.sharedDetail.entryTimeStamp.let { timeInMillis ->
             buildMaterialDatePicker(
                 childFragmentManager,
                 timeInMillis ?: System.currentTimeMillis(),
             ) { selectedTimeInMillis ->
                 binding.entryDateEditText.setText(formatTimeStamp(selectedTimeInMillis))
-                sharedViewModel.liveDetail.value?.entryTimeStamp = selectedTimeInMillis
+                sharedViewModel.sharedDetail.entryTimeStamp = selectedTimeInMillis
             }
         }
     }
 
     private fun buildSaleDatePicker() {
-        sharedViewModel.liveDetail.value?.saleTimeStamp.let { timeInMillis ->
+        sharedViewModel.sharedDetail.saleTimeStamp.let { timeInMillis ->
             buildMaterialDatePicker(
                 childFragmentManager,
                 timeInMillis ?: System.currentTimeMillis(),
             ) { selectedTimeInMillis ->
                 binding.saleDateEditText.setText(formatTimeStamp(selectedTimeInMillis))
-                sharedViewModel.liveDetail.value?.saleTimeStamp = selectedTimeInMillis
+                sharedViewModel.sharedDetail.saleTimeStamp = selectedTimeInMillis
             }
         }
     }
@@ -443,43 +438,40 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     }
 
     private suspend fun insertProperty() {
-        sharedViewModel.liveDetail.value?.let { detail ->
+        sharedViewModel.sharedDetail.run {
+            addressId = sharedViewModel.sharedAddress.addressId
+            viewModel.insertAddress(sharedViewModel.sharedAddress).join()
+            viewModel.insertDetail(this).join()
 
-            sharedViewModel.liveAddress.value?.let { address ->
-                detail.addressId = address.addressId
-                viewModel.insertAddress(address).join()
-                viewModel.insertDetail(detail)
+            storePhotoList(sharedViewModel.sharedPhotoList, this.detailId).run photoList@{
+                for (photo in this@photoList) {
+                    viewModel.insertPhoto(photo)
+                }
+
             }
 
-            sharedViewModel.livePhotoMap.value?.let { photoMap ->
-                storePhotoMap(photoMap, detail.detailId).let { photoList ->
-                    for (photo in photoList) {
-                        viewModel.insertPhoto(photo)
-                    }
-                }
-            }
-
-            sharedViewModel.livePointOfInterestList.value?.let { pointOfInterestList ->
-                for (pointOfInterest in pointOfInterestList) {
-                    pointOfInterest.detailId = detail.detailId
-                    viewModel.insertPointOfInterest(pointOfInterest)
-                }
+            for (pointOfInterest in sharedViewModel.sharedPointOfInterestList) {
+                pointOfInterest.detailId = this.detailId
+                viewModel.insertPointOfInterest(pointOfInterest)
             }
         }
     }
 
-    private fun storePhotoMap(photoMap: Map<Bitmap, String>, detailId: String): List<Photo> {
+    private fun storePhotoList(
+        photoList: List<Pair<Bitmap, String>>,
+        detailId: String
+    ): List<Photo> {
         return mutableListOf<Photo>().apply {
-            for (entry in photoMap.entries) {
+            for (pair in photoList) {
                 val imageFile = storeBitmap(
-                    entry.key,
+                    pair.first,
                     context?.getDir(Environment.DIRECTORY_PICTURES, Context.MODE_PRIVATE)
                 )
                 this.add(
                     Photo(
                         detailId = detailId,
                         uri = imageFile.toUri().toString(),
-                        title = entry.value
+                        title = pair.second
                     )
                 )
             }

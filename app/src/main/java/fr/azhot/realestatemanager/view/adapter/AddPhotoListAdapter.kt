@@ -8,23 +8,15 @@ import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.databinding.CellAddPhotoBinding
 
 class AddPhotoListAdapter(
-    bitmapStringMutableMap: MutableMap<Bitmap, String>,
+    var bitmapList: MutableList<Pair<Bitmap, String>>,
     private val onDeletePhotoListener: OnDeletePhotoListener
 ) : RecyclerView.Adapter<AddPhotoListAdapter.PhotoMapViewHolder>() {
 
 
     // listeners
     interface OnDeletePhotoListener {
-        fun onDeletePhoto(bitmap: Bitmap)
+        fun onDeletePhoto(pair: Pair<Bitmap, String>)
     }
-
-
-    // variables
-    var bitmapStringMutableMap: MutableMap<Bitmap, String> = bitmapStringMutableMap
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
 
     // overridden functions
@@ -38,9 +30,9 @@ class AddPhotoListAdapter(
     }
 
     override fun onBindViewHolder(holder: PhotoMapViewHolder, position: Int) =
-        holder.bind(bitmapStringMutableMap.entries.elementAt(position))
+        holder.bind(bitmapList[position])
 
-    override fun getItemCount(): Int = bitmapStringMutableMap.count()
+    override fun getItemCount(): Int = bitmapList.count()
 
 
     // inner class
@@ -50,18 +42,16 @@ class AddPhotoListAdapter(
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
-        // todo: add onclicklistener to open image
-
-        fun bind(entry: Map.Entry<Bitmap, String>) {
+        fun bind(pair: Pair<Bitmap, String>) {
             Glide.with(itemView)
-                .load(entry.key)
+                .load(pair.first)
                 .centerCrop()
                 .into(binding.photoImageView)
 
-            binding.photoTitleTextView.text = entry.value
+            binding.photoTitleTextView.text = pair.second
 
             binding.deleteButton.setOnClickListener {
-                onDeletePhotoListener.onDeletePhoto(entry.key)
+                onDeletePhotoListener.onDeletePhoto(pair)
             }
         }
     }

@@ -10,21 +10,15 @@ import fr.azhot.realestatemanager.model.Property
 
 class SharedViewModel : ViewModel() {
     val liveProperty = MutableLiveData<Property>()
-    var livePhotoMap = MutableLiveData<MutableMap<Bitmap, String>>()
-    var liveAddress = MutableLiveData<Address>()
-    var liveDetail = MutableLiveData<Detail>()
-    var livePointOfInterestList = MutableLiveData<MutableList<PointOfInterest>>()
-
-    init {
-        liveAddress.value = Address()
-        liveDetail.value = Detail()
-        livePointOfInterestList.value = mutableListOf()
-    }
+    val sharedPhotoList: MutableList<Pair<Bitmap, String>> = mutableListOf()
+    var sharedAddress: Address = Address()
+    var sharedDetail: Detail = Detail()
+    val sharedPointOfInterestList: MutableList<PointOfInterest> = mutableListOf()
 
     fun resetNewPropertyData() {
-        livePhotoMap.value?.clear()
-        liveAddress.value = Address()
-        liveDetail.value = Detail()
-        livePointOfInterestList.value?.clear()
+        sharedPhotoList.clear()
+        sharedAddress = Address()
+        sharedDetail = Detail()
+        sharedPointOfInterestList.clear()
     }
 }

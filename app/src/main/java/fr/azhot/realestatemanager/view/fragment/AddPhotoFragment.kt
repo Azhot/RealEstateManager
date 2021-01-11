@@ -23,7 +23,6 @@ import androidx.core.net.toUri
 import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,8 +31,8 @@ import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddPhotoBinding
 import fr.azhot.realestatemanager.utils.*
 import fr.azhot.realestatemanager.view.adapter.AddPhotoListAdapter
-import fr.azhot.realestatemanager.viewmodel.AddPhotoFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
+import java.io.File
 
 
 class AddPhotoFragment : Fragment(), View.OnClickListener,
@@ -42,7 +41,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     // variables
     private lateinit var binding: FragmentAddPhotoBinding
     private lateinit var navController: NavController
-    private val viewModel: AddPhotoFragmentViewModel by viewModels()
+    private lateinit var cameraFile: File
     private val sharedViewModel: SharedViewModel by activityViewModels()
 
 
@@ -55,7 +54,6 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         binding = FragmentAddPhotoBinding.inflate(inflater)
         setUpAddPhotoRecyclerView()
         setUpListeners()
-        observePhotoList()
         return binding.root
     }
 
@@ -75,16 +73,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        if (checkPermission(
-                RC_READ_EXTERNAL_STORAGE_PERMISSION,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                requestCode,
-                permissions,
-                grantResults
-            )
-        ) {
-            selectPhoto()
-        }
+        selectPhoto()
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
@@ -93,15 +82,15 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         if (resultCode == RESULT_OK) {
             when (requestCode) {
                 RC_SELECT_PHOTO -> {
-                    val uri =
-                        if (data != null && data.data != null) data.data!! else viewModel.liveCameraFile.value?.toUri()
-                    if (uri != null) createBitmapWithGlide(
-                        Glide.with(requireContext()),
-                        PHOTO_WIDTH,
-                        PHOTO_HEIGHT,
-                        uri,
-                        ::addPhoto
-                    )
+                    (if (data?.data != null) data.data else cameraFile.toUri())?.let { uri ->
+                        createBitmapWithGlide(
+                            Glide.with(requireContext()),
+                            PHOTO_WIDTH,
+                            PHOTO_HEIGHT,
+                            uri,
+                            ::addPhoto
+                        )
+                    }
                 }
             }
         }
@@ -109,31 +98,30 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
 
     override fun onClick(v: View?) {
         when (v?.id) {
-            binding.selectPhotoButton.id -> {
-                if (checkAndRequestPermission(
-                        this,
-                        RC_READ_EXTERNAL_STORAGE_PERMISSION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    )
-                ) {
-                    selectPhoto()
-                }
-            }
+            binding.selectPhotoButton.id -> selectPhoto()
             binding.nextButton.id -> navigateNext()
             binding.previousButton.id -> activity?.onBackPressed()
         }
     }
 
-    override fun onDeletePhoto(bitmap: Bitmap) {
+    override fun onDeletePhoto(pair: Pair<Bitmap, String>) {
         (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).apply {
-            bitmapStringMutableMap.remove(bitmap)
-            notifyDataSetChanged()
+            val index = bitmapList.indexOf(pair)
+            bitmapList.remove(pair)
+            notifyItemRemoved(index)
         }
         checkEnableNextButton()
     }
 
 
     // private functions
+    private fun setUpAddPhotoRecyclerView() {
+        binding.addPhotoRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+            adapter = AddPhotoListAdapter(sharedViewModel.sharedPhotoList, this@AddPhotoFragment)
+        }
+    }
+
     private fun setUpListeners() {
         binding.photoTitleEditText.doAfterTextChanged { checkEnableAddButton() }
         binding.selectPhotoButton.setOnClickListener(this)
@@ -141,76 +129,74 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         binding.nextButton.setOnClickListener(this)
     }
 
-    private fun setUpAddPhotoRecyclerView() {
-        binding.addPhotoRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = AddPhotoListAdapter(mutableMapOf(), this@AddPhotoFragment)
-        }
-    }
-
-    private fun observePhotoList() {
-        sharedViewModel.livePhotoMap.observe(viewLifecycleOwner) {
-            (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).bitmapStringMutableMap =
-                it
-            checkEnableNextButton()
+    private fun checkEnableAddButton() {
+        binding.selectPhotoButton.apply {
+            isEnabled = binding.photoTitleEditText.text?.isNotEmpty() == true
+            val color = if (isEnabled) R.color.primaryDayColor else R.color.gray
+            setTextColor(ContextCompat.getColor(requireContext(), color))
+            setIconTintResource(color)
         }
     }
 
     private fun selectPhoto() {
+        if (!checkAndRequestPermission(
+                this,
+                RC_READ_EXTERNAL_STORAGE_PERMISSION,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        ) {
+            return
+        }
+
         val fromGallery =
             Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI).apply {
                 type = PICK_IMAGE_MIME
             }
 
         if (requireActivity().packageManager.hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
-            viewModel.liveCameraFile.value =
-                createImageFile(requireContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES))
-                    .also { cameraFile ->
+            cameraFile =
+                createImageFile(context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
 
-                        val uri = if (Build.VERSION_CODES.N <= Build.VERSION.SDK_INT)
-                            FileProvider.getUriForFile(
-                                requireContext(), FILE_PROVIDER_AUTHORITY, cameraFile
-                            ) else Uri.fromFile(cameraFile)
+            val uri =
+                if (Build.VERSION_CODES.N <= Build.VERSION.SDK_INT) FileProvider.getUriForFile(
+                    requireContext(),
+                    FILE_PROVIDER_AUTHORITY,
+                    cameraFile
+                ) else Uri.fromFile(cameraFile)
 
-                        val fromCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
-                            putExtra(MediaStore.EXTRA_OUTPUT, uri)
-                            addFlags(FLAG_GRANT_READ_URI_PERMISSION)
-                            addFlags(FLAG_GRANT_WRITE_URI_PERMISSION)
-                        }
+            val fromCamera = Intent(MediaStore.ACTION_IMAGE_CAPTURE).apply {
+                putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                addFlags(FLAG_GRANT_READ_URI_PERMISSION)
+                addFlags(FLAG_GRANT_WRITE_URI_PERMISSION)
+            }
 
-                        val chooser =
-                            Intent.createChooser(fromGallery, getString(R.string.select_photo))
-                                .apply {
-                                    putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(fromCamera))
-                                }
+            val chooser = Intent.createChooser(fromGallery, getString(R.string.select_photo))
+                .apply { putExtra(Intent.EXTRA_INITIAL_INTENTS, arrayOf(fromCamera)) }
 
-                        startActivityForResult(chooser, RC_SELECT_PHOTO)
-                    }
+            startActivityForResult(chooser, RC_SELECT_PHOTO)
+
         } else {
             startActivityForResult(fromGallery, RC_SELECT_PHOTO)
         }
     }
 
-    private fun checkEnableAddButton() {
-        binding.selectPhotoButton.isEnabled =
-            binding.photoTitleEditText.text.toString().isNotEmpty()
-        val color =
-            if (binding.selectPhotoButton.isEnabled) R.color.primaryDayColor else R.color.gray
-        binding.selectPhotoButton.setTextColor(ContextCompat.getColor(requireContext(), color))
-        binding.selectPhotoButton.setIconTintResource(color)
-    }
-
     private fun addPhoto(bitmap: Bitmap) {
-        viewModel.liveCameraFile.value?.delete()
-        sharedViewModel.livePhotoMap += (bitmap to binding.photoTitleEditText.text.toString())
+        cameraFile.delete()
+        cameraFile = createImageFile(context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
+        (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).apply {
+            bitmapList.add(bitmap to binding.photoTitleEditText.text.toString())
+            notifyItemInserted(bitmapList.size)
+        }
         binding.photoTitleEditText.text?.clear()
-        checkEnableNextButton()
         checkEnableAddButton()
+        checkEnableNextButton()
     }
 
     private fun checkEnableNextButton() {
-        binding.nextButton.isEnabled = binding.addPhotoRecyclerView.adapter?.itemCount != 0
-        binding.nextButton.visibility = if (binding.nextButton.isEnabled) VISIBLE else INVISIBLE
+        binding.nextButton.apply {
+            isEnabled = binding.addPhotoRecyclerView.adapter?.itemCount != 0
+            visibility = if (binding.nextButton.isEnabled) VISIBLE else INVISIBLE
+        }
     }
 
     private fun navigateNext() {

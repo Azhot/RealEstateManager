@@ -49,13 +49,8 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
 
     // private functions
-    private fun setUpListeners() {
-        binding.previousButton.setOnClickListener(this)
-        binding.nextButton.setOnClickListener(this)
-    }
-
     private fun loadDataIfExisting() {
-        sharedViewModel.liveAddress.value?.run {
+        sharedViewModel.sharedAddress.run {
             zipCode?.let { binding.zipCodeEditText.setText(it) }
             city?.let { binding.cityEditText.setText(it) }
             roadName?.let { binding.roadNameEditText.setText(it) }
@@ -64,25 +59,30 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         }
     }
 
+    private fun setUpListeners() {
+        binding.previousButton.setOnClickListener(this)
+        binding.nextButton.setOnClickListener(this)
+    }
+
     private fun setUpAddressTextWatchers() {
         binding.zipCodeEditText.doAfterTextChanged { editable ->
-            sharedViewModel.liveAddress.value?.zipCode =
+            sharedViewModel.sharedAddress.zipCode =
                 if (editable?.isNotEmpty() == true) editable.toString() else null
         }
         binding.cityEditText.doAfterTextChanged { editable ->
-            sharedViewModel.liveAddress.value?.city =
+            sharedViewModel.sharedAddress.city =
                 if (editable?.isNotEmpty() == true) editable.toString() else null
         }
         binding.roadNameEditText.doAfterTextChanged { editable ->
-            sharedViewModel.liveAddress.value?.roadName =
+            sharedViewModel.sharedAddress.roadName =
                 if (editable?.isNotEmpty() == true) editable.toString() else null
         }
         binding.numberEditText.doAfterTextChanged { editable ->
-            sharedViewModel.liveAddress.value?.number =
+            sharedViewModel.sharedAddress.number =
                 if (editable?.isNotEmpty() == true) editable.toString() else null
         }
         binding.complementEditText.doAfterTextChanged { editable ->
-            sharedViewModel.liveAddress.value?.complement =
+            sharedViewModel.sharedAddress.complement =
                 if (editable?.isNotEmpty() == true) editable.toString() else null
         }
     }

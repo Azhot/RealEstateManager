@@ -7,7 +7,7 @@ import fr.azhot.realestatemanager.databinding.CellAddPointOfInterestBinding
 import fr.azhot.realestatemanager.model.PointOfInterest
 
 class AddPointOfInterestListAdapter(
-    pointOfInterestList: MutableList<PointOfInterest>,
+    var pointOfInterestList: MutableList<PointOfInterest>,
     private val onDeletePointOfInterestListener: OnDeletePointOfInterestListener
 ) : RecyclerView.Adapter<AddPointOfInterestListAdapter.PointOfInterestViewHolder>() {
 
@@ -16,14 +16,6 @@ class AddPointOfInterestListAdapter(
     interface OnDeletePointOfInterestListener {
         fun onDeletePointOfInterest(pointOfInterest: PointOfInterest)
     }
-
-
-    // variables
-    var pointOfInterestList: MutableList<PointOfInterest> = pointOfInterestList
-        set(value) {
-            field = value
-            notifyDataSetChanged()
-        }
 
 
     // overridden functions

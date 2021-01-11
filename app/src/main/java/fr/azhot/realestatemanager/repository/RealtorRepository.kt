@@ -11,7 +11,7 @@ class RealtorRepository(private val realtorDao: RealtorDao) {
 
 
     // functions
-    suspend fun getRealtorById(realtorId: String): Realtor {
+    fun getRealtorById(realtorId: String): Flow<Realtor> {
         return realtorDao.getRealtorById(realtorId)
     }
 
