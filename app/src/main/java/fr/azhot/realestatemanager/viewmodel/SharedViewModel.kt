@@ -3,13 +3,11 @@ package fr.azhot.realestatemanager.viewmodel
 import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import fr.azhot.realestatemanager.model.Address
-import fr.azhot.realestatemanager.model.Detail
-import fr.azhot.realestatemanager.model.PointOfInterest
-import fr.azhot.realestatemanager.model.Property
+import fr.azhot.realestatemanager.model.*
 
 class SharedViewModel : ViewModel() {
     val liveProperty = MutableLiveData<Property>()
+    var livePropertySearch: PropertySearch = PropertySearch()
     val sharedPhotoList: MutableList<Pair<Bitmap, String>> = mutableListOf()
     var sharedAddress: Address = Address()
     var sharedDetail: Detail = Detail()
