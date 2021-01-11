@@ -36,8 +36,8 @@
     <string name="add_detail_fragment_title">… and finally complete the property\'s detail.</string>
     <string name="type">Type</string>
     <string name="price">Price</string>
-    <string name="square_meter">Square meter</string>
-    <string name="rooms">Room(s)</string>
+    <string name="square_meters">Square meters</string>
+    <string name="rooms">Rooms</string>
     <string name="points_of_interest">Point(s) of interest</string>
     <string name="address">Address</string>
     <string name="entry_date">Entry date</string>

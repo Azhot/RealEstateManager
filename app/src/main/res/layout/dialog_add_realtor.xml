@@ -9,7 +9,7 @@
         android:id="@+id/title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryDayLightColor"
+        android:background="@color/primaryDayColor"
         android:gravity="center"
         android:padding="@dimen/large_padding"
         android:text="@string/title_new_realtor_dialog"

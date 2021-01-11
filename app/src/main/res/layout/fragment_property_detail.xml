@@ -176,7 +176,7 @@
                     app:layout_constraintTop_toBottomOf="@id/square_meter_text_view" />
 
                 <TextView
-                    android:id="@+id/rooms__text_view"
+                    android:id="@+id/rooms_text_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="36dp"

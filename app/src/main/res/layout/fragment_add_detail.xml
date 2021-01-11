@@ -84,14 +84,14 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/square_meter_input_layout"
+                android:id="@+id/square_meters_input_layout"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/average_margin"
                 android:layout_marginTop="@dimen/average_margin"
                 android:layout_marginEnd="@dimen/average_margin"
-                android:hint="@string/square_meter"
+                android:hint="@string/square_meters"
                 app:boxBackgroundColor="@color/white"
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -101,7 +101,7 @@
                 app:startIconTint="@color/primaryDayLightColor">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/square_meter_edit_text"
+                    android:id="@+id/square_meters_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="number" />
@@ -121,7 +121,7 @@
                 app:endIconMode="clear_text"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/square_meter_input_layout"
+                app:layout_constraintTop_toBottomOf="@id/square_meters_input_layout"
                 app:startIconDrawable="@drawable/ic_rooms_24"
                 app:startIconTint="@color/primaryDayLightColor">
 

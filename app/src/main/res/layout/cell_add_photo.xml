@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="100dp"
     android:layout_height="100dp"
-    android:layout_margin="@dimen/x_very_small_margin">
+    android:layout_margin="@dimen/extra_small_margin">
 
     <ImageView
         android:id="@+id/photo_image_view"
