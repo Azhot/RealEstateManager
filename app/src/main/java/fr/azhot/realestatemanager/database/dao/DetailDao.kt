@@ -13,14 +13,20 @@ interface DetailDao {
 
     @Transaction
     @Query(
-        """SELECT * FROM detail_table d
+        """SELECT d.*, a.addressId, ph.detailId, poi.detailId, r.realtorId
+                FROM detail_table d
+                LEFT JOIN address_table a ON d.addressId = a.addressId
+                LEFT JOIN photo_table ph ON d.detailId = ph.detailId
+                LEFT JOIN point_of_interest_table poi ON d.detailId = poi.detailId
+                LEFT JOIN realtor_table r ON d.realtorId = r.realtorId
                 WHERE (:propertyType IS NULL or d.propertyType = :propertyType)
                 AND (:minPrice IS NULL or d.price >= :minPrice)
                 AND (:maxPrice IS NULL or d.price <= :maxPrice)
                 AND (:minSquareMeters IS NULL or d.squareMeters >= :minSquareMeters)
                 AND (:maxSquareMeters IS NULL or d.squareMeters <= :maxSquareMeters)
                 AND (:minRooms IS NULL or d.rooms >= :minRooms)
-                AND (:maxRooms IS NULL or d.rooms <= :maxRooms)"""
+                AND (:maxRooms IS NULL or d.rooms <= :maxRooms)
+                GROUP BY d.detailId"""
     )
     fun getPropertyFilterableList(
         propertyType: PropertyType?,
