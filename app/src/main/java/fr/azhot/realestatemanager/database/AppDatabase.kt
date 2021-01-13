@@ -99,88 +99,6 @@ abstract class AppDatabase : RoomDatabase() {
                     faker.number().numberBetween(1, 32)
                 )
             }
-            val photoList = arrayListOf(
-                Photo(
-                    uri = "https://static.cotemaison.fr/medias_11931/w_600,h_600,c_fill,g_north/v1566200335/amenager-un-salon-cosy-en-multipliant-les-assises_6109137.jpg",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/living-room-ideas-rds-work-queens-road-01-1594233253.jpg?crop=1.00xw:0.803xh;0,0.176xh&resize=640:*",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/living-room-inspiration-1592237936.jpg",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://stylebyemilyhenderson.com/wp-content/uploads/2019/08/Emily-Henderson-Moutain-House-Living-Room-LoRes1.jpg",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://jumanji.livspace-cdn.com/magazine/wp-content/uploads/2019/09/16191216/Contemporary-Living-Room-Easy-Functionality.jpg",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://cdn.vox-cdn.com/thumbor/mzq4g3lgBnqzBY1-v0R2bt-dQSk=/0x0:4000x2667/1200x800/filters:focal(1680x1014:2320x1654)/cdn.vox-cdn.com/uploads/chorus_image/image/65894378/2BWFDG7.8.jpg",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://www.mymove.com/wp-content/uploads/2020/07/layout_GettyImages-1177004304.jpg",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://static.dezeen.com/uploads/2020/03/mark-seelen-grove-house-roger-ferris-partners-hamptons-new-york_dezeen_2364_col_1-852x568.jpg",
-                    title = "Living-room",
-                ),
-                Photo(
-                    uri = "https://www.nouvomeuble.com/boutique/images_produits/chambre-a-coucher-design-blanc_zd1-z.jpg",
-                    title = "Bed-room",
-                ),
-                Photo(
-                    uri = "https://static.cotemaison.fr/medias_11749/w_2048,h_1146,c_crop,x_0,y_164/w_2000,h_1125,c_fill,g_north/v1518095166/chambre-parentale-avec-mur-bleu_6015724.jpg",
-                    title = "Bed-room",
-                ),
-                Photo(
-                    uri = "https://paradisahomes.com/wp-content/uploads/2017/06/IMG_0158.jpg",
-                    title = "Bed-room",
-                ),
-                Photo(
-                    uri = "https://www.decorist.com/static/blog_images/328-dcrstcnsrtmnrpllr_cntrst_361_1-_-1a394af7a04f4ebfa797336457d38fa2.jpg",
-                    title = "Bed-room",
-                ),
-                Photo(
-                    uri = "https://www.alsacecuisine.fr/public/donnees/cms/sources/pages/hp-03.jpg",
-                    title = "Kitchen",
-                ),
-                Photo(
-                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kitchen-ideas-calderone-kitchen-006-1583960334.jpg",
-                    title = "Kitchen",
-                ),
-                Photo(
-                    uri = "https://i1.wp.com/movingtips.wpengine.com/wp-content/uploads/2019/04/updated-kitchen.jpg?fit=1024%2C684&ssl=1",
-                    title = "Kitchen",
-                ),
-                Photo(
-                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/small-kitchen-1572367025.png",
-                    title = "Kitchen",
-                ),
-                Photo(
-                    uri = "https://www.jardiner-malin.fr/wp-content/uploads/2020/04/petit_jardin_mise_avant.jpg",
-                    title = "Garden",
-                ),
-                Photo(
-                    uri = "https://static.cotemaison.fr/medias_11846/w_640,h_360,c_fill,g_north/v1527605498/un-jardin-parfait_6065458.jpg",
-                    title = "Garden",
-                ),
-                Photo(
-                    uri = "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fjardin.2Fjardinage-les-conseils.2Fconseils-preparer-beau-jardin-facilement-48778.2F14916576-2-fre-FR.2F15-conseils-pour-preparer-un-beau-jardin-facilement.2Ejpg/1200x1200/quality/80/crop-from/center/15-conseils-pour-preparer-un-beau-jardin-facilement.jpeg",
-                    title = "Garden",
-                ),
-                Photo(
-                    uri = "https://edito.seloger.com/sites/default/files/styles/manual_crop_735x412/public/article/image/jardins-therapeutiques-lead.jpg?itok=jBLIBjBd",
-                    title = "Garden",
-                ),
-            )
 
             val address = Address(
                 zipCode = faker.address().zipCode(),
@@ -210,14 +128,114 @@ abstract class AppDatabase : RoomDatabase() {
                 realtorId = realtor.realtorId,
             )
 
+            val photoList = arrayListOf(
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://static.cotemaison.fr/medias_11931/w_600,h_600,c_fill,g_north/v1566200335/amenager-un-salon-cosy-en-multipliant-les-assises_6109137.jpg",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/living-room-ideas-rds-work-queens-road-01-1594233253.jpg?crop=1.00xw:0.803xh;0,0.176xh&resize=640:*",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/living-room-inspiration-1592237936.jpg",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://stylebyemilyhenderson.com/wp-content/uploads/2019/08/Emily-Henderson-Moutain-House-Living-Room-LoRes1.jpg",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://jumanji.livspace-cdn.com/magazine/wp-content/uploads/2019/09/16191216/Contemporary-Living-Room-Easy-Functionality.jpg",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://cdn.vox-cdn.com/thumbor/mzq4g3lgBnqzBY1-v0R2bt-dQSk=/0x0:4000x2667/1200x800/filters:focal(1680x1014:2320x1654)/cdn.vox-cdn.com/uploads/chorus_image/image/65894378/2BWFDG7.8.jpg",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://www.mymove.com/wp-content/uploads/2020/07/layout_GettyImages-1177004304.jpg",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://static.dezeen.com/uploads/2020/03/mark-seelen-grove-house-roger-ferris-partners-hamptons-new-york_dezeen_2364_col_1-852x568.jpg",
+                    title = "Living-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://www.nouvomeuble.com/boutique/images_produits/chambre-a-coucher-design-blanc_zd1-z.jpg",
+                    title = "Bed-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://static.cotemaison.fr/medias_11749/w_2048,h_1146,c_crop,x_0,y_164/w_2000,h_1125,c_fill,g_north/v1518095166/chambre-parentale-avec-mur-bleu_6015724.jpg",
+                    title = "Bed-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://paradisahomes.com/wp-content/uploads/2017/06/IMG_0158.jpg",
+                    title = "Bed-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://www.decorist.com/static/blog_images/328-dcrstcnsrtmnrpllr_cntrst_361_1-_-1a394af7a04f4ebfa797336457d38fa2.jpg",
+                    title = "Bed-room",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://www.alsacecuisine.fr/public/donnees/cms/sources/pages/hp-03.jpg",
+                    title = "Kitchen",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/kitchen-ideas-calderone-kitchen-006-1583960334.jpg",
+                    title = "Kitchen",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://i1.wp.com/movingtips.wpengine.com/wp-content/uploads/2019/04/updated-kitchen.jpg?fit=1024%2C684&ssl=1",
+                    title = "Kitchen",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/small-kitchen-1572367025.png",
+                    title = "Kitchen",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://www.jardiner-malin.fr/wp-content/uploads/2020/04/petit_jardin_mise_avant.jpg",
+                    title = "Garden",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://static.cotemaison.fr/medias_11846/w_640,h_360,c_fill,g_north/v1527605498/un-jardin-parfait_6065458.jpg",
+                    title = "Garden",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2FFAC.2Fvar.2Ffemmeactuelle.2Fstorage.2Fimages.2Fjardin.2Fjardinage-les-conseils.2Fconseils-preparer-beau-jardin-facilement-48778.2F14916576-2-fre-FR.2F15-conseils-pour-preparer-un-beau-jardin-facilement.2Ejpg/1200x1200/quality/80/crop-from/center/15-conseils-pour-preparer-un-beau-jardin-facilement.jpeg",
+                    title = "Garden",
+                ),
+                Photo(
+                    detailId = detail.detailId,
+                    uri = "https://edito.seloger.com/sites/default/files/styles/manual_crop_735x412/public/article/image/jardins-therapeutiques-lead.jpg?itok=jBLIBjBd",
+                    title = "Garden",
+                ),
+            )
+
             addressDao.insertAddress(address)
             realtorDao.insertRealtor(realtor)
             detailDao.insertDetail(detail)
             repeat(faker.number().numberBetween(2, 8)) {
-                photoDao.insertPhoto(
-                    photoList[faker.number().numberBetween(0, photoList.size)].apply {
-                        detailId = detail.detailId
-                    })
+                photoDao.insertPhoto(photoList[faker.number().numberBetween(0, photoList.size)])
             }
 
             repeat(faker.number().numberBetween(0, 7)) {
