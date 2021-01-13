@@ -117,25 +117,29 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
             create()
         }
 
-        setUpSliders(dialogBinding)
-        setUpExposedDropdownMenus(dialogBinding) { item ->
-            sharedViewModel.livePropertySearch.propertyType = item as PropertyType
-        }
+        setUpSliders(dialogBinding, sharedViewModel.livePropertySearch)
+        setUpExposedDropdownMenus(dialogBinding, sharedViewModel.livePropertySearch)
 
         dialogBinding.cancelButton.setOnClickListener { dialog.dismiss() }
 
         dialogBinding.resetButton.setOnClickListener {
             sharedViewModel.livePropertySearch = PropertySearch()
-            resetSearchWidgets(dialogBinding)
+            observePropertyFilterableList()
+            dialog.dismiss()
         }
 
         dialogBinding.applyButton.setOnClickListener {
-            sharedViewModel.livePropertySearch.apply {
-                price = dialogBinding.priceRangeSlider.values
-                squareMeters = dialogBinding.squareMetersRangeSlider.values
-                rooms = dialogBinding.roomsRangeSlider.values
+            sharedViewModel.livePropertySearch = PropertySearch(
+                propertyType = if (dialogBinding.propertyTypeFilterAutoComplete.text.isNotEmpty())
+                    PropertyType.valueOf(
+                        dialogBinding.propertyTypeFilterAutoComplete.text.toString()
+                            .toUpperCase(Locale.ROOT)
+                    ) else null,
+                price = dialogBinding.priceRangeSlider.values,
+                squareMeters = dialogBinding.squareMetersRangeSlider.values,
+                rooms = dialogBinding.roomsRangeSlider.values,
                 photoListSize = dialogBinding.photosSlider.value
-            }
+            )
 
             observePropertyFilterableList()
             dialog.dismiss()
@@ -144,9 +148,8 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         dialog.show()
     }
 
-    private fun setUpSliders(dialogBinding: DialogSearchBinding) {
-        setUpSlidersBounds(dialogBinding)
-        resetSearchWidgets(dialogBinding)
+    private fun setUpSliders(dialogBinding: DialogSearchBinding, propertySearch: PropertySearch) {
+        setUpSlidersBounds(dialogBinding, propertySearch)
 
         // format label
         dialogBinding.priceRangeSlider.setLabelFormatter { value ->
@@ -157,49 +160,41 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         }
     }
 
-    private fun setUpSlidersBounds(dialogBinding: DialogSearchBinding) {
-        viewModel.getPriceBounds().observe(viewLifecycleOwner) { minMax ->
-            dialogBinding.priceRangeSlider.apply {
-                minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
-                minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
-                values = listOf(valueFrom, valueTo)
-                sharedViewModel.livePropertySearch.price?.let { values = it }
+    private fun setUpSlidersBounds(
+        dialogBinding: DialogSearchBinding,
+        propertySearch: PropertySearch
+    ) {
+        propertySearch.run {
+            viewModel.getPriceBounds().observe(viewLifecycleOwner) { minMax ->
+                dialogBinding.priceRangeSlider.apply {
+                    minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
+                    minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
+                    values = if (price != null) price!! else listOf(valueFrom, valueTo)
+                }
+            }
+
+            viewModel.getSquareMetersBounds().observe(viewLifecycleOwner) { minMax ->
+                dialogBinding.squareMetersRangeSlider.apply {
+                    minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
+                    minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
+                    values = if (squareMeters != null) squareMeters!!
+                    else listOf(valueFrom, valueTo)
+                }
+            }
+
+            viewModel.getRoomsBounds().observe(viewLifecycleOwner) { minMax ->
+                dialogBinding.roomsRangeSlider.apply {
+                    minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
+                    minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
+                    values = if (rooms != null) rooms!! else listOf(valueFrom, valueTo)
+                }
             }
         }
-
-        viewModel.getSquareMetersBounds().observe(viewLifecycleOwner) { minMax ->
-            dialogBinding.squareMetersRangeSlider.apply {
-                minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
-                minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
-                values = listOf(valueFrom, valueTo)
-                sharedViewModel.livePropertySearch.squareMeters?.let { values = it }
-            }
-        }
-
-        viewModel.getRoomsBounds().observe(viewLifecycleOwner) { minMax ->
-            dialogBinding.roomsRangeSlider.apply {
-                minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
-                minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
-                values = listOf(valueFrom, valueTo)
-                sharedViewModel.livePropertySearch.rooms?.let { values = it }
-            }
-        }
-    }
-
-    private fun resetSearchWidgets(dialogBinding: DialogSearchBinding) {
-        dialogBinding.propertyTypeFilterAutoComplete.apply {
-            setText(null, false)
-            clearFocus()
-        }
-        dialogBinding.priceRangeSlider.apply { values = listOf(valueFrom, valueTo) }
-        dialogBinding.squareMetersRangeSlider.apply { values = listOf(valueFrom, valueTo) }
-        dialogBinding.roomsRangeSlider.apply { values = listOf(valueFrom, valueTo) }
-        dialogBinding.photosSlider.apply { value = valueFrom }
     }
 
     private fun setUpExposedDropdownMenus(
         dialogBinding: DialogSearchBinding,
-        functionToCall: (any: Any?) -> (Unit)
+        propertySearch: PropertySearch
     ) {
         dialogBinding.propertyTypeFilterAutoComplete.apply {
             val adapter = ExposedDropdownMenuAdapter(
@@ -208,11 +203,8 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
                 PropertyType.values().toMutableList()
             )
             setAdapter(adapter)
-            sharedViewModel.livePropertySearch.propertyType?.let { propertyType ->
+            propertySearch.propertyType?.let { propertyType ->
                 setText(propertyType.toString(), false)
-            }
-            setOnItemClickListener { _, _, position, _ ->
-                functionToCall(adapter.getItem(position))
             }
         }
     }
