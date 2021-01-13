@@ -2,68 +2,50 @@ package fr.azhot.realestatemanager.viewmodel
 
 import androidx.lifecycle.*
 import fr.azhot.realestatemanager.model.*
-import fr.azhot.realestatemanager.repository.*
+import fr.azhot.realestatemanager.repository.PropertyRepository
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 
-class AddDetailFragmentViewModel(
-    private val detailRepository: DetailRepository,
-    private val addressRepository: AddressRepository,
-    private val photoRepository: PhotoRepository,
-    private val pointOfInterestRepository: PointOfInterestRepository,
-    private val realtorRepository: RealtorRepository,
-) :
-    ViewModel() {
+class AddDetailFragmentViewModel(private val propertyRepository: PropertyRepository) : ViewModel() {
 
     // variables
-    val realtorList: LiveData<List<Realtor>> = realtorRepository.realtorList.asLiveData()
+    val realtorList: LiveData<List<Realtor>> = propertyRepository.realtorList.asLiveData()
 
 
     // functions
     fun insertDetail(detail: Detail) = viewModelScope.launch((IO)) {
-        detailRepository.insertDetail(detail)
+        propertyRepository.insertDetail(detail)
     }
 
     fun insertAddress(address: Address) = viewModelScope.launch(IO) {
-        addressRepository.insertAddress(address)
+        propertyRepository.insertAddress(address)
     }
 
     fun insertPhoto(photo: Photo) = viewModelScope.launch(IO) {
-        photoRepository.insertPhoto(photo)
+        propertyRepository.insertPhoto(photo)
     }
 
     fun insertPointOfInterest(pointOfInterest: PointOfInterest) = viewModelScope.launch(IO) {
-        pointOfInterestRepository.insertPointOfInterest(pointOfInterest)
+        propertyRepository.insertPointOfInterest(pointOfInterest)
     }
 
     fun insertRealtor(realtor: Realtor) = viewModelScope.launch(IO) {
-        realtorRepository.insertRealtor(realtor)
+        propertyRepository.insertRealtor(realtor)
     }
 
-    fun getRealtorById(realtorId: String) = realtorRepository.getRealtorById(realtorId).asLiveData()
+    fun getRealtorById(realtorId: String) =
+        propertyRepository.getRealtorById(realtorId).asLiveData()
 
 }
 
-class AddDetailFragmentViewModelFactory(
-    private val detailRepository: DetailRepository,
-    private val addressRepository: AddressRepository,
-    private val photoRepository: PhotoRepository,
-    private val pointOfInterestRepository: PointOfInterestRepository,
-    private val realtorRepository: RealtorRepository,
-) :
+class AddDetailFragmentViewModelFactory(private val propertyRepository: PropertyRepository) :
     ViewModelProvider.Factory {
 
     // overridden functions
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AddDetailFragmentViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return AddDetailFragmentViewModel(
-                detailRepository,
-                addressRepository,
-                photoRepository,
-                pointOfInterestRepository,
-                realtorRepository,
-            ) as T
+            return AddDetailFragmentViewModel(propertyRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

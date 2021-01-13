@@ -1,9 +1,6 @@
 package fr.azhot.realestatemanager.model
 
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.ForeignKey
-import androidx.room.PrimaryKey
+import androidx.room.*
 import java.util.*
 
 @Entity(
@@ -20,7 +17,8 @@ import java.util.*
 data class PointOfInterest(
     @PrimaryKey
     val pointOfInterestId: String = UUID.randomUUID().toString(),
-    var detailId: String? = null,
+    @ColumnInfo(index = true)
+    var detailId: String,
     val name: String,
     @Embedded
     val address: Address? = null,

@@ -1,5 +1,6 @@
 package fr.azhot.realestatemanager.model
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
@@ -30,8 +31,10 @@ data class Detail(
     var squareMeters: Int? = null,
     var rooms: Int? = null,
     var description: String? = null,
+    @ColumnInfo(index = true)
     var addressId: String? = null,
     var entryTimeStamp: Long? = null,
     var saleTimeStamp: Long? = null,
+    @ColumnInfo(index = true)
     var realtorId: String? = null,
 )

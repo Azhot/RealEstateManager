@@ -51,13 +51,8 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     private lateinit var navController: NavController
     private val sharedViewModel: SharedViewModel by activityViewModels()
     private val viewModel: AddDetailFragmentViewModel by viewModels {
-        val application = (activity?.application as RealEstateManagerApplication)
         AddDetailFragmentViewModelFactory(
-            application.detailRepository,
-            application.addressRepository,
-            application.photoRepository,
-            application.pointOfInterestRepository,
-            application.realtorRepository,
+            (activity?.application as RealEstateManagerApplication).propertyRepository
         )
     }
 
@@ -295,7 +290,13 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         } else null
 
         (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
-            pointOfInterestList.add(PointOfInterest(name = name, address = address))
+            pointOfInterestList.add(
+                PointOfInterest(
+                    detailId = sharedViewModel.sharedDetail.detailId,
+                    name = name,
+                    address = address
+                )
+            )
             notifyItemInserted(pointOfInterestList.size)
         }
     }

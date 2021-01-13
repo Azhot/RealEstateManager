@@ -155,6 +155,7 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
                 mutableListOf(
                     PointOfInterest(
                         pointOfInterestId = "",
+                        detailId = "",
                         name = getString(R.string.not_provided)
                     )
                 )

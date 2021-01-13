@@ -16,8 +16,7 @@ import java.text.NumberFormat
 import java.util.*
 
 class PropertyListAdapter(
-    filteredPropertyList: List<Property>,
-    var unFilteredPropertyList: List<Property>,
+    propertyList: List<Property>,
     private val listener: PropertyClickListener,
 ) : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
 
@@ -29,7 +28,7 @@ class PropertyListAdapter(
 
 
     // variables
-    var filteredPropertyList: List<Property> = filteredPropertyList
+    var propertyList: List<Property> = propertyList
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -47,14 +46,14 @@ class PropertyListAdapter(
     }
 
     override fun onBindViewHolder(holder: PropertyViewHolder, position: Int) {
-        val property = filteredPropertyList[position]
+        val property = propertyList[position]
         holder.bind(property)
         holder.itemView.setOnClickListener {
             listener.onPropertyClickListener(property)
         }
     }
 
-    override fun getItemCount(): Int = filteredPropertyList.count()
+    override fun getItemCount(): Int = propertyList.count()
 
 
     // inner class

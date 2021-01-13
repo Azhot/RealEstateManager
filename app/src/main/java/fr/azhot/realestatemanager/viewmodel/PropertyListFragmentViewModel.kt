@@ -4,25 +4,40 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import fr.azhot.realestatemanager.model.MinMax
 import fr.azhot.realestatemanager.model.Property
-import fr.azhot.realestatemanager.repository.DetailRepository
+import fr.azhot.realestatemanager.model.PropertySearch
+import fr.azhot.realestatemanager.repository.PropertyRepository
 
-class PropertyListFragmentViewModel(detailRepository: DetailRepository) :
+class PropertyListFragmentViewModel(private val propertyRepository: PropertyRepository) :
     ViewModel() {
 
-    // variables
-    // todo : point de débug to check data incoming
-    val propertyList: LiveData<List<Property>> = detailRepository.propertyList.asLiveData()
+    // functions
+    fun getPropertyFilterableList(propertySearch: PropertySearch): LiveData<List<Property>> {
+        return propertyRepository.getPropertyFilterableList(propertySearch).asLiveData()
+    }
+
+    fun getPriceBounds(): LiveData<MinMax> {
+        return propertyRepository.getPriceBounds()
+    }
+
+    fun getSquareMetersBounds(): LiveData<MinMax> {
+        return propertyRepository.getSquareMetersBounds()
+    }
+
+    fun getRoomsBounds(): LiveData<MinMax> {
+        return propertyRepository.getRoomsBounds()
+    }
 }
 
-class PropertyListFragmentViewModelFactory(private val detailRepository: DetailRepository) :
+class PropertyListFragmentViewModelFactory(private val propertyRepository: PropertyRepository) :
     ViewModelProvider.Factory {
 
     // overridden functions
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PropertyListFragmentViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return PropertyListFragmentViewModel(detailRepository) as T
+            return PropertyListFragmentViewModel(propertyRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

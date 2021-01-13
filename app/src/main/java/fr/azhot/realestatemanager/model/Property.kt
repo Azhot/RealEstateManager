@@ -20,10 +20,10 @@ data class Property(
         parentColumn = "detailId",
         entityColumn = "detailId"
     )
-    val pointOfInterestList: MutableList<PointOfInterest>?,
+    val pointOfInterestList: MutableList<PointOfInterest>? = null,
     @Relation(
         parentColumn = "realtorId",
         entityColumn = "realtorId"
     )
-    var realtor: Realtor?,
+    var realtor: Realtor? = null,
 )
