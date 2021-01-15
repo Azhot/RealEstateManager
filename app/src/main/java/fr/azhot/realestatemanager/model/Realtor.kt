@@ -8,8 +8,8 @@ import java.util.*
 data class Realtor(
     @PrimaryKey
     val realtorId: String = UUID.randomUUID().toString(),
-    var firstName: String,
-    var lastName: String,
+    val firstName: String,
+    val lastName: String,
 ) {
 
     override fun toString(): String {

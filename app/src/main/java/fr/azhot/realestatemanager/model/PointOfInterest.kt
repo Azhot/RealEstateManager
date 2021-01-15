@@ -18,7 +18,7 @@ data class PointOfInterest(
     @PrimaryKey
     val pointOfInterestId: String = UUID.randomUUID().toString(),
     @ColumnInfo(index = true)
-    var detailId: String,
+    val detailId: String,
     val name: String,
     @Embedded
     val address: Address? = null,

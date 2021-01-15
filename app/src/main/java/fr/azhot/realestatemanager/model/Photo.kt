@@ -24,7 +24,7 @@ data class Photo(
     @PrimaryKey
     val photoId: String = UUID.randomUUID().toString(),
     @ColumnInfo(index = true)
-    var detailId: String,
-    var uri: String? = null,
-    var title: String? = null,
+    val detailId: String,
+    val uri: String,
+    val title: String,
 ) : Parcelable

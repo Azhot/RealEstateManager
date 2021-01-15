@@ -10,7 +10,7 @@ data class Property(
         parentColumn = "addressId",
         entityColumn = "addressId"
     )
-    var address: Address,
+    val address: Address,
     @Relation(
         parentColumn = "detailId",
         entityColumn = "detailId"
@@ -20,7 +20,7 @@ data class Property(
         parentColumn = "detailId",
         entityColumn = "detailId"
     )
-    val pointOfInterestList: MutableList<PointOfInterest>? = null,
+    val pointOfInterestList: MutableList<PointOfInterest>,
     @Relation(
         parentColumn = "realtorId",
         entityColumn = "realtorId"

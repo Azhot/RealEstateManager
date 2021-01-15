@@ -13,11 +13,11 @@ interface DetailDao {
 
     @Transaction
     @Query(
-        """SELECT d.*, a.addressId, ph.detailId, poi.detailId, r.realtorId
+        """SELECT d.*
                 FROM detail_table d
                 LEFT JOIN address_table a ON d.addressId = a.addressId
                 LEFT JOIN photo_table ph ON d.detailId = ph.detailId
-                LEFT JOIN point_of_interest_table poi ON d.detailId = poi.detailId
+                LEFT JOIN point_of_interest_table poi ON d.detailId = poi.detailId 
                 LEFT JOIN realtor_table r ON d.realtorId = r.realtorId
                 WHERE (:propertyType IS NULL or d.propertyType = :propertyType)
                 AND (:minPrice IS NULL or d.price >= :minPrice)
