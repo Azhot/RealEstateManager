@@ -1,35 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="@dimen/large_padding">
-
-    <TextView
-        android:id="@+id/title_text_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/primaryDayColor"
-        android:gravity="center"
-        android:padding="@dimen/large_padding"
-        android:text="@string/search_properties"
-        android:textAppearance="?attr/textAppearanceHeadline6"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="#D8FFFFFF"
+    android:paddingBottom="@dimen/large_padding"
+    tools:context=".view.fragment.SearchModalFragment">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/property_type_filter_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/extra_large_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/extra_large_margin"
-        app:boxBackgroundColor="@color/white"
+        app:boxBackgroundColor="#D8FFFFFF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_text_view"
+        app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_property_type_24"
         app:startIconTint="@color/primaryDayLightColor">
 
@@ -147,18 +137,6 @@
         app:layout_constraintTop_toTopOf="@id/photos_filter_text_view" />
 
     <Button
-        android:id="@+id/cancel_button"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/average_margin"
-        android:layout_marginEnd="@dimen/average_margin"
-        android:text="@string/cancel_button_add_realtor_dialog"
-        android:textColor="@color/primaryDayColor"
-        app:layout_constraintEnd_toStartOf="@id/reset_button"
-        app:layout_constraintTop_toBottomOf="@id/photos_slider" />
-
-    <Button
         android:id="@+id/reset_button"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
@@ -167,17 +145,17 @@
         android:layout_marginEnd="@dimen/average_margin"
         android:text="@string/reset"
         android:textColor="@color/primaryDayColor"
-        app:layout_constraintEnd_toStartOf="@id/apply_button"
+        app:layout_constraintEnd_toStartOf="@id/ok_button"
         app:layout_constraintTop_toBottomOf="@id/photos_slider" />
 
     <Button
-        android:id="@+id/apply_button"
+        android:id="@+id/ok_button"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/very_large_margin"
-        android:text="@string/apply"
+        android:text="@string/ok"
         android:textColor="@color/primaryDayColor"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/photos_slider" />

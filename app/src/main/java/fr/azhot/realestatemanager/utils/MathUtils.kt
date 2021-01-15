@@ -1,7 +1,15 @@
 package fr.azhot.realestatemanager.utils
 
+import kotlin.math.abs
+import kotlin.math.ceil
+import kotlin.math.floor
+
 // todo : write javadoc
 
-fun roundInt(valueToRound: Int, roundValue: Int): Int {
-    return (((valueToRound + roundValue - 1) / roundValue) * roundValue)
+fun roundIntUpper(valueToRound: Int, roundValue: Float): Float {
+    return (roundValue * (ceil(abs(valueToRound.toDouble() / roundValue)))).toFloat()
+}
+
+fun roundIntLower(valueToRound: Int, roundValue: Float): Float {
+    return (roundValue * (floor(abs(valueToRound.toDouble() / roundValue)))).toFloat()
 }

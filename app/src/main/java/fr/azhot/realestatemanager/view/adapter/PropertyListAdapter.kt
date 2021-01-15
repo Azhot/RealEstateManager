@@ -16,7 +16,7 @@ import java.text.NumberFormat
 import java.util.*
 
 class PropertyListAdapter(
-    propertyList: List<Property>,
+    private var propertyList: MutableList<Property>,
     private val listener: PropertyClickListener,
 ) : RecyclerView.Adapter<PropertyListAdapter.PropertyViewHolder>() {
 
@@ -27,12 +27,44 @@ class PropertyListAdapter(
     }
 
 
-    // variables
-    var propertyList: List<Property> = propertyList
-        set(value) {
-            field = value
-            notifyDataSetChanged()
+    // functions
+    fun setList(newList: List<Property>) {
+        when {
+            newList.isEmpty() && propertyList.isNotEmpty() -> {
+                for (i in propertyList.lastIndex downTo 0) {
+                    propertyList.removeAt(i)
+                    notifyItemRemoved(i)
+                }
+                return
+            }
+            propertyList.isEmpty() -> {
+                for (i in newList.indices) {
+                    propertyList.add(newList[i])
+                    notifyItemInserted(i)
+                }
+                return
+            }
         }
+
+        for (i in propertyList.lastIndex downTo 0) {
+            if (!newList.contains(propertyList[i])) {
+                propertyList.removeAt(i)
+                notifyItemRemoved(i)
+            }
+        }
+
+        for (i in newList.indices) {
+            if ((!propertyList.contains(newList[i]))) {
+                if (i > propertyList.lastIndex) {
+                    propertyList.add(newList[i])
+                    notifyItemInserted(propertyList.size)
+                    continue
+                }
+                propertyList.add(i, newList[i])
+                notifyItemInserted(i)
+            }
+        }
+    }
 
 
     // overridden functions
@@ -80,10 +112,11 @@ class PropertyListAdapter(
             binding.cityTextView.text = property.address.city
 
             binding.priceTextView.text =
-                if (property.detail.price != null) NumberFormat.getCurrencyInstance(Locale.US).run {
-                    maximumFractionDigits = 0
-                    format(property.detail.price)
-                }
+                if (property.detail.price != null) NumberFormat.getCurrencyInstance(Locale.US)
+                    .run {
+                        maximumFractionDigits = 0
+                        format(property.detail.price)
+                    }
                 else null
 
             if (property.detail.saleTimeStamp != null) {

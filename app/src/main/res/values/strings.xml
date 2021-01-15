@@ -71,7 +71,7 @@
     <!-- Bottom navigation view -->
     <string name="property_list">Property list</string>
 
-    <!-- Search dialog -->
+    <!-- Search modal fragment -->
     <string name="search_properties">Search properties</string>
     <string name="type_filter">Type filter</string>
     <string name="price_range">Price range</string>
@@ -80,5 +80,6 @@
     <string name="minimum_photos">Minimum photos</string>
     <string name="reset">Reset</string>
     <string name="apply">Apply</string>
+    <string name="ok">OK</string>
 
 </resources>

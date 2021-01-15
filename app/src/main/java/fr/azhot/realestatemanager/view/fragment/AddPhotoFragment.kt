@@ -52,14 +52,14 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddPhotoBinding.inflate(inflater)
-        setUpAddPhotoRecyclerView()
-        setUpListeners()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
+        setUpAddPhotoRecyclerView()
+        setUpListeners()
     }
 
     override fun onResume() {

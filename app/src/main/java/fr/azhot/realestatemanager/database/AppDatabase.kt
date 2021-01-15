@@ -10,7 +10,7 @@ import com.github.javafaker.Faker
 import fr.azhot.realestatemanager.database.dao.*
 import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.utils.TypeConverter
-import fr.azhot.realestatemanager.utils.roundInt
+import fr.azhot.realestatemanager.utils.roundIntUpper
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
@@ -115,7 +115,10 @@ abstract class AppDatabase : RoomDatabase() {
 
             val detail = Detail(
                 propertyType = PropertyType.values()[faker.number().numberBetween(0, 4)],
-                price = roundInt(faker.number().numberBetween(500000, 2500001), 10000),
+                price = roundIntUpper(
+                    faker.number().numberBetween(500000, 2500001),
+                    10000F
+                ).toInt(),
                 squareMeters = faker.number().numberBetween(100, 251),
                 rooms = faker.number().numberBetween(5, 16),
                 description = faker.lorem().paragraph(faker.number().numberBetween(4, 11)),

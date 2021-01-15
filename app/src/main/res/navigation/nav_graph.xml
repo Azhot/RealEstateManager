@@ -28,6 +28,10 @@
             app:popEnterAnim="@anim/slide_in_up"
             app:popExitAnim="@anim/slide_out_down" />
 
+        <action
+            android:id="@+id/action_propertyListFragment_to_searchModalFragment"
+            app:destination="@id/searchModalFragment" />
+
     </fragment>
 
     <!-- Property Detail Fragment -->
@@ -99,5 +103,11 @@
             app:popUpToInclusive="true" />
 
     </fragment>
+
+    <dialog
+        android:id="@+id/searchModalFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.SearchModalFragment"
+        android:label="@string/search_properties"
+        tools:layout="@layout/fragment_search_modal" />
 
 </navigation>

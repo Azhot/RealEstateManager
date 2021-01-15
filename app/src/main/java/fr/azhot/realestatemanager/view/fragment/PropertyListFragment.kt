@@ -1,6 +1,5 @@
 package fr.azhot.realestatemanager.view.fragment
 
-import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -12,19 +11,14 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
-import fr.azhot.realestatemanager.databinding.DialogSearchBinding
 import fr.azhot.realestatemanager.databinding.FragmentPropertyListBinding
 import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.model.PropertySearch
-import fr.azhot.realestatemanager.model.PropertyType
-import fr.azhot.realestatemanager.utils.roundInt
-import fr.azhot.realestatemanager.view.adapter.ExposedDropdownMenuAdapter
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter
 import fr.azhot.realestatemanager.view.adapter.PropertyListAdapter.PropertyClickListener
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.PropertyListFragmentViewModelFactory
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
-import java.text.NumberFormat
 import java.util.*
 
 class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Property>> {
@@ -43,25 +37,20 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
 
     // overridden functions
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         binding = FragmentPropertyListBinding.inflate(layoutInflater)
-        setHasOptionsMenu(true)
-        setUpPropertyListRecyclerView()
-        observePropertyFilterableList()
         return binding.root
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.search_property -> buildSearchDialog()
-        }
-        return super.onOptionsItemSelected(item)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(requireActivity(), R.id.main_container_view)
+        setHasOptionsMenu(true)
+        setUpPropertyListRecyclerView()
+        observePropertySearch()
     }
 
     override fun onResume() {
@@ -75,9 +64,21 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         }
     }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.search_property -> {
+                val action =
+                    PropertyListFragmentDirections.actionPropertyListFragmentToSearchModalFragment()
+                navController.navigate(action)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
     override fun onChanged(propertyList: List<Property>) {
-        (binding.propertyListRecyclerView.adapter as PropertyListAdapter).propertyList =
+        (binding.propertyListRecyclerView.adapter as PropertyListAdapter).setList(
             propertyList
+        )
     }
 
     override fun onPropertyClickListener(property: Property) {
@@ -100,113 +101,20 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
     private fun setUpPropertyListRecyclerView() {
         binding.propertyListRecyclerView.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = PropertyListAdapter(emptyList(), this@PropertyListFragment)
+            adapter = PropertyListAdapter(mutableListOf(), this@PropertyListFragment)
         }
     }
 
-    private fun observePropertyFilterableList() {
-        viewModel.getPropertyFilterableList(sharedViewModel.livePropertySearch).removeObserver(this)
-        viewModel.getPropertyFilterableList(sharedViewModel.livePropertySearch)
+    private fun observePropertySearch() {
+        sharedViewModel.livePropertySearch.observe(viewLifecycleOwner) {
+            observePropertyFilterableList(it)
+        }
+    }
+
+    private fun observePropertyFilterableList(propertySearch: PropertySearch) {
+        viewModel.getPropertyFilterableList(propertySearch).removeObserver(this)
+        viewModel.getPropertyFilterableList(propertySearch)
             .observe(viewLifecycleOwner, this)
-    }
-
-    private fun buildSearchDialog() {
-        val dialogBinding = DialogSearchBinding.inflate(layoutInflater)
-        val dialog = AlertDialog.Builder(context).run {
-            setView(dialogBinding.root)
-            create()
-        }
-
-        setUpSliders(dialogBinding, sharedViewModel.livePropertySearch)
-        setUpExposedDropdownMenus(dialogBinding, sharedViewModel.livePropertySearch)
-
-        dialogBinding.cancelButton.setOnClickListener { dialog.dismiss() }
-
-        dialogBinding.resetButton.setOnClickListener {
-            sharedViewModel.livePropertySearch = PropertySearch()
-            observePropertyFilterableList()
-            dialog.dismiss()
-        }
-
-        dialogBinding.applyButton.setOnClickListener {
-            sharedViewModel.livePropertySearch = PropertySearch(
-                propertyType = if (dialogBinding.propertyTypeFilterAutoComplete.text.isNotEmpty())
-                    PropertyType.valueOf(
-                        dialogBinding.propertyTypeFilterAutoComplete.text.toString()
-                            .toUpperCase(Locale.ROOT)
-                    ) else null,
-                price = dialogBinding.priceRangeSlider.values,
-                squareMeters = dialogBinding.squareMetersRangeSlider.values,
-                rooms = dialogBinding.roomsRangeSlider.values,
-                photoListSize = dialogBinding.photosSlider.value
-            )
-
-            observePropertyFilterableList()
-            dialog.dismiss()
-        }
-
-        dialog.show()
-    }
-
-    private fun setUpSliders(dialogBinding: DialogSearchBinding, propertySearch: PropertySearch) {
-        setUpSlidersBounds(dialogBinding, propertySearch)
-
-        // format label
-        dialogBinding.priceRangeSlider.setLabelFormatter { value ->
-            NumberFormat.getCurrencyInstance(Locale.US).run {
-                maximumFractionDigits = 0
-                format(value.toDouble())
-            }
-        }
-    }
-
-    private fun setUpSlidersBounds(
-        dialogBinding: DialogSearchBinding,
-        propertySearch: PropertySearch
-    ) {
-        propertySearch.run {
-            viewModel.getPriceBounds().observe(viewLifecycleOwner) { minMax ->
-                dialogBinding.priceRangeSlider.apply {
-                    minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
-                    minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
-                    values = if (price != null) price!! else listOf(valueFrom, valueTo)
-                }
-            }
-
-            viewModel.getSquareMetersBounds().observe(viewLifecycleOwner) { minMax ->
-                dialogBinding.squareMetersRangeSlider.apply {
-                    minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
-                    minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
-                    values = if (squareMeters != null) squareMeters!!
-                    else listOf(valueFrom, valueTo)
-                }
-            }
-
-            viewModel.getRoomsBounds().observe(viewLifecycleOwner) { minMax ->
-                dialogBinding.roomsRangeSlider.apply {
-                    minMax.min?.let { valueFrom = roundInt(it, stepSize.toInt()).toFloat() }
-                    minMax.max?.let { valueTo = roundInt(it, stepSize.toInt()).toFloat() }
-                    values = if (rooms != null) rooms!! else listOf(valueFrom, valueTo)
-                }
-            }
-        }
-    }
-
-    private fun setUpExposedDropdownMenus(
-        dialogBinding: DialogSearchBinding,
-        propertySearch: PropertySearch
-    ) {
-        dialogBinding.propertyTypeFilterAutoComplete.apply {
-            val adapter = ExposedDropdownMenuAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                PropertyType.values().toMutableList()
-            )
-            setAdapter(adapter)
-            propertySearch.propertyType?.let { propertyType ->
-                setText(propertyType.toString(), false)
-            }
-        }
     }
 
 // address (contains with autocomplete)

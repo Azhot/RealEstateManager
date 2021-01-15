@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
-import fr.azhot.realestatemanager.model.MinMax
 import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.model.PropertySearch
 import fr.azhot.realestatemanager.repository.PropertyRepository
@@ -15,18 +14,6 @@ class PropertyListFragmentViewModel(private val propertyRepository: PropertyRepo
     // functions
     fun getPropertyFilterableList(propertySearch: PropertySearch): LiveData<List<Property>> {
         return propertyRepository.getPropertyFilterableList(propertySearch).asLiveData()
-    }
-
-    fun getPriceBounds(): LiveData<MinMax> {
-        return propertyRepository.getPriceBounds()
-    }
-
-    fun getSquareMetersBounds(): LiveData<MinMax> {
-        return propertyRepository.getSquareMetersBounds()
-    }
-
-    fun getRoomsBounds(): LiveData<MinMax> {
-        return propertyRepository.getRoomsBounds()
     }
 }
 

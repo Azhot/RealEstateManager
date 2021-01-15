@@ -29,15 +29,15 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddAddressBinding.inflate(inflater)
-        loadDataIfExisting()
-        setUpListeners()
-        setUpAddressTextWatchers()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
+        loadDataIfExisting()
+        setUpListeners()
+        setUpAddressTextWatchers()
     }
 
     override fun onClick(v: View?) {

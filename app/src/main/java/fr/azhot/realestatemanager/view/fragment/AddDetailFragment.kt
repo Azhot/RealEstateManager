@@ -64,16 +64,16 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddDetailBinding.inflate(inflater)
-        setUpWidgets()
-        setUpListeners()
-        observeRealtorList()
-        loadDataIfExisting()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
+        setUpWidgets()
+        setUpListeners()
+        observeRealtorList()
+        loadDataIfExisting()
     }
 
     override fun onClick(v: View?) {

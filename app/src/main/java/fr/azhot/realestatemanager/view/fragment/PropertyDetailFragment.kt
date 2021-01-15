@@ -43,14 +43,16 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        setUpWidgets()
-        observeLiveProperty()
+        binding = FragmentPropertyDetailBinding.inflate(layoutInflater)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(requireActivity(), R.id.main_container_view)
+        buildPhotoRecyclerView()
+        buildPointOfInterestRecyclerView()
+        observeLiveProperty()
     }
 
     override fun onResume() {
@@ -66,12 +68,6 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
 
 
     // functions
-    private fun setUpWidgets() {
-        binding = FragmentPropertyDetailBinding.inflate(layoutInflater)
-        buildPhotoRecyclerView()
-        buildPointOfInterestRecyclerView()
-    }
-
     private fun buildPhotoRecyclerView() {
         binding.photoRecyclerView.apply {
             layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)

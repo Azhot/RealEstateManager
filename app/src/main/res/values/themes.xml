@@ -27,4 +27,10 @@
     <style name="Theme.RealEstateManager.OpenPhoto" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="colorPrimary">@color/primaryDayColor</item>
     </style>
+
+    <style name="Theme.TransparentBottomSheetDialog" parent="Theme.RealEstateManager">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
 </resources>
