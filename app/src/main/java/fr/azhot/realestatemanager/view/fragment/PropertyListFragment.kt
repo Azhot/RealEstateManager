@@ -66,11 +66,8 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.search_property -> {
-                val action =
-                    PropertyListFragmentDirections.actionPropertyListFragmentToSearchModalFragment()
-                navController.navigate(action)
-            }
+            R.id.search_property -> promptSearchFragment()
+            R.id.edit_property -> navigateEditProperty()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -89,9 +86,9 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
                 .replace(binding.detailContainerView!!.id, PropertyDetailFragment())
                 .commit()
         } else {
-            val action =
+            navController.navigate(
                 PropertyListFragmentDirections.actionPropertyListFragmentToPropertyDetailFragment()
-            navController.navigate(action)
+            )
         }
         sharedViewModel.liveProperty.value = property
     }
@@ -115,6 +112,18 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         viewModel.getPropertyFilterableList(propertySearch).removeObserver(this)
         viewModel.getPropertyFilterableList(propertySearch)
             .observe(viewLifecycleOwner, this)
+    }
+
+    private fun promptSearchFragment() {
+        navController.navigate(
+            PropertyListFragmentDirections.actionPropertyListFragmentToSearchModalFragment()
+        )
+    }
+
+    private fun navigateEditProperty() {
+        navController.navigate(
+            PropertyListFragmentDirections.actionPropertyListFragmentToAddPhotoFragment(true)
+        )
     }
 
 // address (contains with autocomplete)

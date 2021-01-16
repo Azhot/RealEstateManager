@@ -64,7 +64,7 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.edit_property -> editProperty()
+            R.id.edit_property -> navigateEditProperty()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -172,9 +172,11 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
         activity?.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
     }
 
-    private fun editProperty() {
-        val action =
-            PropertyDetailFragmentDirections.actionPropertyDetailFragmentToAddPhotoFragment(true)
-        navController.navigate(action)
+    private fun navigateEditProperty() {
+        if (!resources.getBoolean(R.bool.isLandscape)) {
+            navController.navigate(
+                PropertyDetailFragmentDirections.actionPropertyDetailFragmentToAddPhotoFragment(true)
+            )
+        }
     }
 }

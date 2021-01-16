@@ -113,9 +113,10 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
     }
 
     private fun navigateNext() {
-        val action = AddAddressFragmentDirections.actionAddAddressFragmentToAddDetailFragment(
-            arguments?.let { AddAddressFragmentArgs.fromBundle(it).editMode } == true
+        navController.navigate(
+            AddAddressFragmentDirections.actionAddAddressFragmentToAddDetailFragment(
+                arguments?.let { AddAddressFragmentArgs.fromBundle(it).editMode } == true
+            )
         )
-        navController.navigate(action)
     }
 }

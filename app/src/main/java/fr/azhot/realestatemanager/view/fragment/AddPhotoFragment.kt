@@ -231,10 +231,11 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     }
 
     private fun navigateNext() {
-        val action = AddPhotoFragmentDirections.actionAddPhotoFragmentToAddAddressFragment(
-            arguments?.let { AddPhotoFragmentArgs.fromBundle(it).editMode } == true
+        navController.navigate(
+            AddPhotoFragmentDirections.actionAddPhotoFragmentToAddAddressFragment(
+                arguments?.let { AddPhotoFragmentArgs.fromBundle(it).editMode } == true
+            )
         )
-        navController.navigate(action)
     }
 
     private fun setUpOnBackPressed() {

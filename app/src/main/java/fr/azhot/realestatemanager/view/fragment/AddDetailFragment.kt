@@ -508,7 +508,8 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     }
 
     private fun navigateNext() {
-        val action = AddDetailFragmentDirections.actionAddDetailFragmentToPropertyListFragment()
-        navController.navigate(action)
+        navController.navigate(
+            AddDetailFragmentDirections.actionAddDetailFragmentToPropertyListFragment()
+        )
     }
 }
