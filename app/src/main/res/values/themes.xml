@@ -19,9 +19,13 @@
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Light">
-        <item name="android:textColorPrimary">@color/white</item>
-        <item name="android:textColorSecondary">@color/white</item>
-        <item name="actionMenuTextColor">@color/white</item>
+        <item name="android:textColorPrimary">@color/primaryDayColor</item>
+        <item name="android:textColorSecondary">@color/primaryDayColor</item>
+        <item name="actionMenuTextColor">@color/primaryDayColor</item>
+    </style>
+
+    <style name="BottomNavigationViewTheme">
+        <item name="fontFamily">@font/robotocondensed_regular</item>
     </style>
 
     <style name="Theme.RealEstateManager.OpenPhoto" parent="Theme.AppCompat.Light.DarkActionBar">

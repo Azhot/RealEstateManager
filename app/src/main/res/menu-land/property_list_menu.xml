@@ -6,20 +6,20 @@
         android:id="@+id/add_property"
         android:icon="@drawable/ic_add_24"
         android:title="@string/add_property"
-        app:iconTint="@color/white"
+        app:iconTint="@color/primaryDayColor"
         app:showAsAction="always" />
 
     <item
         android:id="@+id/edit_property"
         android:icon="@drawable/ic_edit_24"
         android:title="@string/edit_property"
-        app:iconTint="@color/white"
+        app:iconTint="@color/primaryDayColor"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/search_property"
         android:icon="@drawable/ic_search_24"
         android:title="@string/search_property"
-        app:iconTint="@color/white"
+        app:iconTint="@color/primaryDayColor"
         app:showAsAction="ifRoom" />
 </menu>

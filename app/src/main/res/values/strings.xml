@@ -1,6 +1,6 @@
 <resources>
     <!-- general -->
-    <string name="app_name">RealEstateManager</string>
+    <string name="app_name">Real Estate Manager</string>
     <string name="error_occurred">An error has occurred. Try again.</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
