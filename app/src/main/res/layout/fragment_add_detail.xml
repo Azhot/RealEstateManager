@@ -331,7 +331,7 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/create_property_button"
+            android:id="@+id/create_or_update_property_button"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="wrap_content"
             android:layout_height="?attr/actionBarSize"
@@ -351,10 +351,10 @@
             android:layout_height="wrap_content"
             android:indeterminateDrawable="@drawable/progress"
             android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="@id/create_property_button"
-            app:layout_constraintEnd_toEndOf="@id/create_property_button"
-            app:layout_constraintStart_toStartOf="@id/create_property_button"
-            app:layout_constraintTop_toTopOf="@id/create_property_button" />
+            app:layout_constraintBottom_toBottomOf="@id/create_or_update_property_button"
+            app:layout_constraintEnd_toEndOf="@id/create_or_update_property_button"
+            app:layout_constraintStart_toStartOf="@id/create_or_update_property_button"
+            app:layout_constraintTop_toTopOf="@id/create_or_update_property_button" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

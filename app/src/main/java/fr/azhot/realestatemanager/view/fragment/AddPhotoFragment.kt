@@ -16,6 +16,7 @@ import android.view.View
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity.RESULT_OK
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -29,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentAddPhotoBinding
+import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.utils.*
 import fr.azhot.realestatemanager.view.adapter.AddPhotoListAdapter
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
@@ -60,6 +62,10 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         navController = Navigation.findNavController(view)
         setUpAddPhotoRecyclerView()
         setUpListeners()
+        if (arguments?.let { AddPhotoFragmentArgs.fromBundle(it).editMode } == true) {
+            sharedViewModel.liveProperty.value?.let { loadDataIfEditMode(it) }
+        }
+        setUpOnBackPressed()
     }
 
     override fun onResume() {
@@ -105,10 +111,12 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     }
 
     override fun onDeletePhoto(pair: Pair<Bitmap, String>) {
-        (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).apply {
-            val index = bitmapList.indexOf(pair)
-            bitmapList.remove(pair)
-            notifyItemRemoved(index)
+        sharedViewModel.sharedPhotoList.indexOf(pair).run {
+            try {
+                sharedViewModel.sharedPhotoList.removeAt(this)
+                (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).notifyItemRemoved(this)
+            } catch (e: IndexOutOfBoundsException) {
+            }
         }
         checkEnableNextButton()
     }
@@ -127,6 +135,29 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         binding.selectPhotoButton.setOnClickListener(this)
         binding.previousButton.setOnClickListener(this)
         binding.nextButton.setOnClickListener(this)
+    }
+
+    private fun loadDataIfEditMode(property: Property) {
+        if (sharedViewModel.sharedDetail.detailId == property.detail.detailId) return
+        sharedViewModel.sharedAddress = property.address.copy()
+        sharedViewModel.sharedDetail = property.detail.copy()
+        sharedViewModel.sharedPhotoList.clear()
+        for (photo in property.photoList) {
+            createBitmapWithGlide(
+                Glide.with(this),
+                PHOTO_WIDTH,
+                PHOTO_HEIGHT,
+                Uri.parse(photo.uri)
+            ) { bitmap ->
+                sharedViewModel.sharedPhotoList.add(bitmap to photo.title)
+                (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).notifyItemInserted(
+                    sharedViewModel.sharedPhotoList.size
+                )
+                checkEnableNextButton()
+            }
+        }
+        sharedViewModel.sharedPointOfInterestList.clear()
+        sharedViewModel.sharedPointOfInterestList.addAll(property.pointOfInterestList)
     }
 
     private fun checkEnableAddButton() {
@@ -183,10 +214,10 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     private fun addPhoto(bitmap: Bitmap) {
         cameraFile.delete()
         cameraFile = createImageFile(context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES))
-        (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).apply {
-            bitmapList.add(bitmap to binding.photoTitleEditText.text.toString())
-            notifyItemInserted(bitmapList.size)
-        }
+        sharedViewModel.sharedPhotoList.add(bitmap to binding.photoTitleEditText.text.toString())
+        (binding.addPhotoRecyclerView.adapter as AddPhotoListAdapter).notifyItemInserted(
+            sharedViewModel.sharedPhotoList.size
+        )
         binding.photoTitleEditText.text?.clear()
         checkEnableAddButton()
         checkEnableNextButton()
@@ -200,7 +231,22 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     }
 
     private fun navigateNext() {
-        val action = AddPhotoFragmentDirections.actionAddPhotoFragmentToAddAddressFragment()
+        val action = AddPhotoFragmentDirections.actionAddPhotoFragmentToAddAddressFragment(
+            arguments?.let { AddPhotoFragmentArgs.fromBundle(it).editMode } == true
+        )
         navController.navigate(action)
+    }
+
+    private fun setUpOnBackPressed() {
+        object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (arguments?.let { AddPhotoFragmentArgs.fromBundle(it).editMode } == true) {
+                    sharedViewModel.resetNewPropertyData()
+                }
+                navController.navigateUp()
+            }
+        }.run {
+            requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner, this)
+        }
     }
 }

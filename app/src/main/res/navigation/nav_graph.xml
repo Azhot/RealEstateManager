@@ -58,6 +58,11 @@
         android:label="@string/new_property"
         tools:layout="@layout/fragment_add_photo">
 
+        <argument
+            android:name="editMode"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
         <action
             android:id="@+id/action_addPhotoFragment_to_addAddressFragment"
             app:destination="@id/addAddressFragment"
@@ -75,6 +80,11 @@
         android:label="@string/new_property"
         tools:layout="@layout/fragment_add_address">
 
+        <argument
+            android:name="editMode"
+            android:defaultValue="false"
+            app:argType="boolean" />
+
         <action
             android:id="@+id/action_addAddressFragment_to_addDetailFragment"
             app:destination="@id/addDetailFragment"
@@ -91,6 +101,11 @@
         android:name="fr.azhot.realestatemanager.view.fragment.AddDetailFragment"
         android:label="@string/new_property"
         tools:layout="@layout/fragment_add_detail">
+
+        <argument
+            android:name="editMode"
+            android:defaultValue="false"
+            app:argType="boolean" />
 
         <action
             android:id="@+id/action_addDetailFragment_to_propertyListFragment"

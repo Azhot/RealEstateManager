@@ -45,7 +45,9 @@
     <string name="realtor">Realtor</string>
     <string name="description">Description</string>
     <string name="create">Create</string>
+    <string name="update">Update</string>
     <string name="new_property_created">New property created</string>
+    <string name="property_updated">Property updated</string>
     <string name="realtor_already_exists">%1$s already exists…</string>
 
     <!-- Add address fragment -->

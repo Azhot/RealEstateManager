@@ -21,12 +21,24 @@ class PropertyRepository(
         photoDao.insertPhoto(photo)
     }
 
+    suspend fun deletePhoto(photo: Photo) {
+        photoDao.deletePhoto(photo)
+    }
+
     suspend fun insertAddress(address: Address) {
         return addressDao.insertAddress(address)
     }
 
+    suspend fun updateAddress(address: Address) {
+        return addressDao.updateAddress(address)
+    }
+
     suspend fun insertPointOfInterest(pointOfInterest: PointOfInterest) {
         pointOfInterestDao.insertPointOfInterest(pointOfInterest)
+    }
+
+    suspend fun deletePointOfInterest(pointOfInterest: PointOfInterest) {
+        pointOfInterestDao.deletePointOfInterest(pointOfInterest)
     }
 
     fun getRealtorById(realtorId: String): Flow<Realtor> {
@@ -39,6 +51,10 @@ class PropertyRepository(
 
     suspend fun insertDetail(detail: Detail) {
         detailDao.insertDetail(detail)
+    }
+
+    suspend fun updateDetail(detail: Detail) {
+        detailDao.updateDetail(detail)
     }
 
     fun getPropertyFilterableList(propertySearch: PropertySearch): Flow<List<Property>> {

@@ -17,16 +17,32 @@ class AddDetailFragmentViewModel(private val propertyRepository: PropertyReposit
         propertyRepository.insertDetail(detail)
     }
 
+    fun updateDetail(detail: Detail) = viewModelScope.launch((IO)) {
+        propertyRepository.updateDetail(detail)
+    }
+
     fun insertAddress(address: Address) = viewModelScope.launch(IO) {
         propertyRepository.insertAddress(address)
+    }
+
+    fun updateAddress(address: Address) = viewModelScope.launch(IO) {
+        propertyRepository.updateAddress(address)
     }
 
     fun insertPhoto(photo: Photo) = viewModelScope.launch(IO) {
         propertyRepository.insertPhoto(photo)
     }
 
+    fun deletePhoto(photo: Photo) = viewModelScope.launch(IO) {
+        propertyRepository.deletePhoto(photo)
+    }
+
     fun insertPointOfInterest(pointOfInterest: PointOfInterest) = viewModelScope.launch(IO) {
         propertyRepository.insertPointOfInterest(pointOfInterest)
+    }
+
+    fun deletePointOfInterest(pointOfInterest: PointOfInterest) = viewModelScope.launch(IO) {
+        propertyRepository.deletePointOfInterest(pointOfInterest)
     }
 
     fun insertRealtor(realtor: Realtor) = viewModelScope.launch(IO) {

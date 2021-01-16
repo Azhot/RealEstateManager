@@ -3,6 +3,7 @@ package fr.azhot.realestatemanager.view.fragment
 import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
 import android.text.Editable
@@ -40,6 +41,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 import java.text.NumberFormat
 import java.util.*
 
@@ -82,7 +84,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             binding.createRealtorImageButton.id -> buildAddRealtorDialog(::insertRealtor)
             binding.entryDateEditText.id -> buildEntryDatePicker()
             binding.saleDateEditText.id -> buildSaleDatePicker()
-            binding.createPropertyButton.id -> createProperty()
+            binding.createOrUpdatePropertyButton.id -> createOrUpdateProperty()
             binding.previousButton.id -> activity?.onBackPressed()
         }
     }
@@ -117,6 +119,9 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         buildExposedDropdownMenu(binding.realtorAutoComplete, mutableListOf()) { item ->
             sharedViewModel.sharedDetail.realtorId = (item as Realtor).realtorId
         }
+        if (arguments?.let { AddDetailFragmentArgs.fromBundle(it).editMode } == true) {
+            binding.createOrUpdatePropertyButton.text = getString(R.string.update)
+        }
     }
 
     private fun setUpListeners() {
@@ -135,7 +140,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                 if (editable?.isNotEmpty() == true) editable.toString() else null
         }
         binding.previousButton.setOnClickListener(this)
-        binding.createPropertyButton.setOnClickListener(this)
+        binding.createOrUpdatePropertyButton.setOnClickListener(this)
     }
 
     private fun observeRealtorList() {
@@ -289,16 +294,17 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             )
         } else null
 
-        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
-            pointOfInterestList.add(
-                PointOfInterest(
-                    detailId = sharedViewModel.sharedDetail.detailId,
-                    name = name,
-                    address = address
-                )
+        sharedViewModel.sharedPointOfInterestList.add(
+            PointOfInterest(
+                detailId = sharedViewModel.sharedDetail.detailId,
+                name = name,
+                address = address
             )
-            notifyItemInserted(pointOfInterestList.size)
-        }
+        )
+
+        (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).notifyItemInserted(
+            sharedViewModel.sharedPointOfInterestList.size
+        )
     }
 
     private fun updateButtonColor(button: Button) {
@@ -356,7 +362,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                         if (item.toString() == realtor.toString()) {
                             makeSnackBar(
                                 binding.root,
-                                context.getString(R.string.realtor_already_exists, item),
+                                getString(R.string.realtor_already_exists, item),
                                 requireContext()
                             )
                             return
@@ -400,16 +406,18 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
     }
 
-    private fun createProperty() {
+    private fun createOrUpdateProperty() {
         showProgressBar()
         CoroutineScope(IO).launch {
+            val editMode = arguments?.let { AddDetailFragmentArgs.fromBundle(it).editMode } == true
             launch {
-                insertProperty()
+                if (editMode) updateProperty() else insertProperty()
             }.run { join() }
             withContext(Main) {
                 makeSnackBar(
                     binding.root,
-                    getString(R.string.new_property_created),
+                    if (editMode) getString(R.string.property_updated) else
+                        getString(R.string.new_property_created),
                     requireContext()
                 )
                 sharedViewModel.resetNewPropertyData()
@@ -420,7 +428,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
     private fun showProgressBar() {
         binding.previousButton.isEnabled = false
-        binding.createPropertyButton.apply {
+        binding.createOrUpdatePropertyButton.apply {
             alpha = 1f
             isEnabled = false
             animate()
@@ -438,23 +446,43 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
     }
 
-    private suspend fun insertProperty() {
-        sharedViewModel.sharedDetail.run {
-            addressId = sharedViewModel.sharedAddress.addressId
-            viewModel.insertAddress(sharedViewModel.sharedAddress).join()
-            viewModel.insertDetail(this).join()
+    private fun insertProperty() {
+        viewModel.insertAddress(sharedViewModel.sharedAddress)
+        viewModel.insertDetail(sharedViewModel.sharedDetail)
+        storePhotoList(sharedViewModel.sharedPhotoList, sharedViewModel.sharedDetail.detailId).run {
+            for (photo in this) {
+                viewModel.insertPhoto(photo)
+            }
+        }
+        for (pointOfInterest in sharedViewModel.sharedPointOfInterestList) {
+            viewModel.insertPointOfInterest(pointOfInterest)
+        }
+    }
 
-            storePhotoList(sharedViewModel.sharedPhotoList, this.detailId).run photoList@{
+    private fun updateProperty() {
+        viewModel.updateAddress(sharedViewModel.sharedAddress)
+        viewModel.updateDetail(sharedViewModel.sharedDetail)
+        sharedViewModel.liveProperty.value?.photoList?.let { photoList ->
+            for (photo in photoList) {
+                Uri.parse(photo.uri).path?.let { path ->
+                    File(path).run { if (this.exists()) this.delete() }
+                }
+                viewModel.deletePhoto(photo)
+            }
+        }
+        storePhotoList(sharedViewModel.sharedPhotoList, sharedViewModel.sharedDetail.detailId)
+            .run photoList@{
                 for (photo in this@photoList) {
                     viewModel.insertPhoto(photo)
                 }
-
             }
-
-            for (pointOfInterest in sharedViewModel.sharedPointOfInterestList) {
-                pointOfInterest.detailId = this.detailId
-                viewModel.insertPointOfInterest(pointOfInterest)
+        sharedViewModel.liveProperty.value?.pointOfInterestList?.let { pointOfInterestList ->
+            for (pointOfInterest in pointOfInterestList) {
+                viewModel.deletePointOfInterest(pointOfInterest)
             }
+        }
+        for (pointOfInterest in sharedViewModel.sharedPointOfInterestList) {
+            viewModel.insertPointOfInterest(pointOfInterest)
         }
     }
 

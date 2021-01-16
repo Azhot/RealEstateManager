@@ -18,8 +18,7 @@ import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailBinding
 import fr.azhot.realestatemanager.model.Photo
 import fr.azhot.realestatemanager.model.PointOfInterest
 import fr.azhot.realestatemanager.model.Property
-import fr.azhot.realestatemanager.utils.PHOTO_EXTRA
-import fr.azhot.realestatemanager.utils.formatTimeStamp
+import fr.azhot.realestatemanager.utils.*
 import fr.azhot.realestatemanager.view.activity.OpenPhotoActivity
 import fr.azhot.realestatemanager.view.adapter.PhotoListAdapter
 import fr.azhot.realestatemanager.view.adapter.PointOfInterestListAdapter
@@ -50,6 +49,7 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(requireActivity(), R.id.main_container_view)
+        setHasOptionsMenu(true)
         buildPhotoRecyclerView()
         buildPointOfInterestRecyclerView()
         observeLiveProperty()
@@ -60,6 +60,13 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
         if (activity?.resources?.getBoolean(R.bool.isLandscape) == true) {
             navController.navigateUp()
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.edit_property -> editProperty()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onPhotoClick(photo: Photo) {
@@ -145,7 +152,7 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
 
     private fun loadPointOfInterestList(property: Property) {
         (binding.pointOfInterestRecyclerView.adapter as PointOfInterestListAdapter).pointOfInterestList =
-            if (property.pointOfInterestList?.isNotEmpty() == true) {
+            if (property.pointOfInterestList.isNotEmpty()) {
                 property.pointOfInterestList
             } else {
                 mutableListOf(
@@ -163,5 +170,11 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
             putExtra(PHOTO_EXTRA, photo)
         })
         activity?.overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
+    }
+
+    private fun editProperty() {
+        val action =
+            PropertyDetailFragmentDirections.actionPropertyDetailFragmentToAddPhotoFragment(true)
+        navController.navigate(action)
     }
 }

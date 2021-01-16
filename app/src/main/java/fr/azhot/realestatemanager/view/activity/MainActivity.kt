@@ -43,14 +43,12 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setSupportActionBar(binding.toolbar)
         navController.addOnDestinationChangedListener(this)
 
-        // todo : implement edit property
         // todo : search -> add a (gone) view above recyclerview to show filters on (with a delete filters button)
-        //  should retrieve filtered lists from Room directly
-        //  should use bottom sheet instead of dialog
         // todo : implement nav drawer
         // todo : add static map
         // todo : integration test for network verification
         // todo : content provider
+        // todo : loan simulator
 
         val toggle = ActionBarDrawerToggle(
             this,
@@ -112,7 +110,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_bold)
                 binding.bottomNavigation?.visibility = VISIBLE
             }
-            R.id.propertyDetailFragment -> {
+            R.id.propertyDetailFragment, R.id.searchModalFragment -> {
                 toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_regular)
                 binding.bottomNavigation?.visibility = VISIBLE
             }
