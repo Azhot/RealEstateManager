@@ -3,33 +3,30 @@
 
     <style name="Theme.RealEstateManager" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryDayColor</item>
-        <item name="colorPrimaryVariant">@color/primaryDayDarkColor</item>
-        <item name="colorOnPrimary">@color/white</item>
-        <item name="android:textColor">@color/black</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/secondaryDayColor</item>
-        <item name="colorSecondaryVariant">@color/secondaryDayDarkColor</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/lightText</item>
+        <item name="android:textColor">@color/lightText</item>
         <!-- Status bar color. -->
         <item name="windowActionBar">false</item>
         <item name="android:windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:windowNoTitle">true</item>
+        <!-- Drawer -->
+        <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
+        <!-- Theme font -->
+        <item name="android:fontFamily">@font/robotocondensed_light</item>
+        <item name="fontFamily">@font/robotocondensed_light</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Light">
-        <item name="android:textColorPrimary">@color/primaryDayColor</item>
-        <item name="android:textColorSecondary">@color/primaryDayColor</item>
-        <item name="actionMenuTextColor">@color/primaryDayColor</item>
-    </style>
-
-    <style name="BottomNavigationViewTheme">
-        <item name="fontFamily">@font/robotocondensed_regular</item>
+        <item name="android:textColorPrimary">@color/lightText</item>
+        <item name="android:textColorSecondary">@color/lightText</item>
+        <item name="actionMenuTextColor">@color/primaryColor</item>
     </style>
 
     <style name="Theme.RealEstateManager.OpenPhoto" parent="Theme.AppCompat.Light.DarkActionBar">
-        <item name="colorPrimary">@color/primaryDayColor</item>
+        <item name="colorPrimary">@color/background</item>
     </style>
 
     <style name="Theme.TransparentBottomSheetDialog" parent="Theme.RealEstateManager">
@@ -37,4 +34,7 @@
         <item name="android:colorBackground">@android:color/transparent</item>
     </style>
 
+    <style name="DrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="color">@color/primaryColor</item>
+    </style>
 </resources>

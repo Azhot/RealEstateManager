@@ -1,22 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="blackTransparentBackground">#80000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="gray">#B4B4B4</color>
     <color name="lightGray">#EBEBEB</color>
-    <color name="primaryDayColor">#6002ee</color>
-    <color name="primaryDayLightColor">#9c47ff</color>
-    <color name="primaryDayDarkColor">#0000ba</color>
-    <color name="secondaryDayColor">#0d47a1</color>
-    <color name="secondaryDayLightColor">#5472d3</color>
-    <color name="secondaryDayDarkColor">#002171</color>
-    <color name="primaryNightColor">#673AB7</color>
-    <color name="primaryNightDarkColor">#4527A0</color>
-    <color name="secondaryNightColor">#009688</color>
-    <color name="secondaryNightDarkColor">#00695C</color>
-    <color name="standard_text">#252525</color>
-    <color name="soldColor">#C80000</color>
-    <color name="globalBackground">#FAFAFA</color>
-
+    <color name="gray">#B4B4B4</color>
+    <color name="black">#FF000000</color>
+    <color name="background">#0F0F1E</color>
+    <color name="lightBackground">#1E1E2D</color>
+    <color name="transparentBackground">#800F0F1E</color>
+    <color name="lightText">#DCDCFF</color>
+    <color name="darkText">#28284B</color>
+    <color name="primaryColor">#9BAAD7</color>
+    <color name="primaryLightColor">#B9C8F5</color>
+    <color name="primaryDarkColor">#505F96</color>
 </resources>

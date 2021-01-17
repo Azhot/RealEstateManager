@@ -8,5 +8,5 @@
         android:id="@+id/edit_realtors"
         android:icon="@drawable/ic_realtor_24"
         android:title="Edit realtors"
-        app:iconTint="@color/primaryDayColor" />
+        app:iconTint="@color/background" />
 </menu>

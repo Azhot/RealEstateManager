@@ -20,7 +20,7 @@
             android:angle="0"
             android:centerColor="@android:color/transparent"
             android:endColor="@android:color/transparent"
-            android:startColor="@color/primaryDayLightColor"
+            android:startColor="@color/primaryLightColor"
             android:type="linear"
             android:useLevel="false" />
     </shape>

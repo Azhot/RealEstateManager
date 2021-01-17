@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#D8FFFFFF"
+    android:background="#BF9BAAD7"
     android:paddingBottom="@dimen/large_padding"
     tools:context=".view.fragment.SearchModalFragment">
 
@@ -21,7 +21,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_property_type_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryLightColor">
 
         <AutoCompleteTextView
             android:id="@+id/property_type_filter_auto_complete"
@@ -40,6 +40,7 @@
         android:drawablePadding="@dimen/average_padding"
         android:text="@string/price_range"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/darkText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/property_type_filter_input_layout" />
@@ -66,6 +67,7 @@
         android:drawablePadding="@dimen/average_padding"
         android:text="@string/surface_range"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/darkText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/price_range_slider" />
@@ -92,6 +94,7 @@
         android:drawablePadding="@dimen/average_padding"
         android:text="@string/rooms_range"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/darkText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/square_meters_range_slider" />
@@ -118,6 +121,7 @@
         android:drawablePadding="@dimen/average_padding"
         android:text="@string/minimum_photos"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/darkText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rooms_range_slider" />
@@ -144,7 +148,7 @@
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:text="@string/reset"
-        android:textColor="@color/primaryDayColor"
+        android:textColor="@color/darkText"
         app:layout_constraintEnd_toStartOf="@id/ok_button"
         app:layout_constraintTop_toBottomOf="@id/photos_slider" />
 
@@ -156,7 +160,7 @@
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/very_large_margin"
         android:text="@string/ok"
-        android:textColor="@color/primaryDayColor"
+        android:textColor="@color/darkText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/photos_slider" />
 

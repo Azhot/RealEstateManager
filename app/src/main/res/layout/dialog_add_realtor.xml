@@ -9,7 +9,7 @@
         android:id="@+id/title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryDayColor"
+        android:background="@color/primaryDarkColor"
         android:gravity="center"
         android:padding="@dimen/large_padding"
         android:text="@string/title_new_realtor_dialog"
@@ -20,18 +20,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/first_name_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/hint_first_name_add_realtor_dialog"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_text_view"
         app:startIconDrawable="@drawable/ic_text_snippet_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/first_name_edit_text"
@@ -43,18 +46,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/last_name_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/hint_last_name_add_realtor_dialog"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/first_name_input_layout"
         app:startIconDrawable="@drawable/ic_text_snippet_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/last_name_edit_text"
@@ -72,7 +78,7 @@
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:text="@string/cancel_button_add_realtor_dialog"
-        android:textColor="@color/primaryDayColor"
+        android:textColor="@color/primaryDarkColor"
         app:layout_constraintEnd_toStartOf="@id/add_button"
         app:layout_constraintTop_toBottomOf="@id/last_name_input_layout" />
 

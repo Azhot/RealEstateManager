@@ -310,7 +310,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     private fun updateButtonColor(button: Button) {
         if (button.isEnabled) {
             button.setTextColor(
-                ContextCompat.getColor(requireContext(), R.color.primaryDayColor)
+                ContextCompat.getColor(requireContext(), R.color.primaryDarkColor)
             )
         } else {
             button.setTextColor(
@@ -378,7 +378,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
     private fun makeSnackBar(view: View, string: String, context: Context) {
         Snackbar.make(view, string, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(context, R.color.secondaryDayColor))
+            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
             .show()
     }
 

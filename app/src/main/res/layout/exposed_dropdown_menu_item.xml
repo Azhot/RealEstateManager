@@ -3,8 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/lightText"
     android:ellipsize="end"
     android:maxLines="1"
     android:padding="@dimen/large_padding"
     android:textAppearance="?attr/textAppearanceSubtitle1"
+    android:textColor="@color/darkText"
     tools:text="This is a text example." />

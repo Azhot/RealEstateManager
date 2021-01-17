@@ -163,7 +163,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     private fun checkEnableAddButton() {
         binding.selectPhotoButton.apply {
             isEnabled = binding.photoTitleEditText.text?.isNotEmpty() == true
-            val color = if (isEnabled) R.color.primaryDayColor else R.color.gray
+            val color = if (isEnabled) R.color.primaryColor else R.color.gray
             setTextColor(ContextCompat.getColor(requireContext(), color))
             setIconTintResource(color)
         }

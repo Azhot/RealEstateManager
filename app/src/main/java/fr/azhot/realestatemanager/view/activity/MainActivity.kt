@@ -1,7 +1,6 @@
 package fr.azhot.realestatemanager.view.activity
 
 import android.os.Bundle
-import android.util.TypedValue
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.GONE
@@ -42,6 +41,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         navController.addOnDestinationChangedListener(this)
+
+        // todo: make a specific viewmodel for new property process
+        // todo: replace shareDetail, shareAddress, etc. by sharedProperty
+        // todo : create insertProperty and updateProperty
+        // todo : add scrollview to SearchModalFragment
 
         // todo : search -> add a (gone) view above recyclerview to show filters on (with a delete filters button)
         // todo : implement nav drawer
@@ -104,18 +108,18 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         invalidateOptionsMenu()
         supportActionBar?.title = destination.label
         val toolbarTitle = binding.toolbar.getChildAt(0) as TextView
-        toolbarTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17f)
         when (destination.id) {
             R.id.propertyListFragment -> {
-                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_bold)
+                toolbarTitle.typeface =
+                    ResourcesCompat.getFont(this, R.font.robotocondensed_regular)
                 binding.bottomNavigation?.visibility = VISIBLE
             }
             R.id.propertyDetailFragment, R.id.searchModalFragment -> {
-                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_regular)
+                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.robotocondensed_light)
                 binding.bottomNavigation?.visibility = VISIBLE
             }
             else -> {
-                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.merienda_regular)
+                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.robotocondensed_light)
                 binding.bottomNavigation?.visibility = GONE
             }
         }

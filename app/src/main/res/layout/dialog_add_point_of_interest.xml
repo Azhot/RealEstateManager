@@ -9,7 +9,7 @@
         android:id="@+id/title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryDayColor"
+        android:background="@color/primaryDarkColor"
         android:gravity="center"
         android:padding="@dimen/large_padding"
         android:text="@string/add_a_point_of_interest"
@@ -20,18 +20,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/name"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_text_view"
         app:startIconDrawable="@drawable/ic_text_snippet_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/name_edit_text"
@@ -43,18 +46,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/zip_code_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/zip_code"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/name_input_layout"
         app:startIconDrawable="@drawable/ic_zip_code_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/zip_code_edit_text"
@@ -66,18 +72,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/city_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/city"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/zip_code_input_layout"
         app:startIconDrawable="@drawable/ic_city_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/city_edit_text"
@@ -89,18 +98,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/road_name_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/road_name"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/city_input_layout"
         app:startIconDrawable="@drawable/ic_add_road_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/road_name_edit_text"
@@ -112,18 +124,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/number_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/number"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/road_name_input_layout"
         app:startIconDrawable="@drawable/ic_number_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/number_edit_text"
@@ -135,18 +150,21 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/complement_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:hint="@string/complement"
+        android:textColor="@color/darkText"
+        android:textColorHint="@color/darkText"
+        app:boxBackgroundColor="@color/white"
         app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/number_input_layout"
         app:startIconDrawable="@drawable/ic_text_snippet_24"
-        app:startIconTint="@color/primaryDayLightColor">
+        app:startIconTint="@color/primaryDarkColor">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/complement_edit_text"
@@ -164,7 +182,7 @@
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:text="@string/cancel_button_add_realtor_dialog"
-        android:textColor="@color/primaryDayColor"
+        android:textColor="@color/primaryDarkColor"
         app:layout_constraintEnd_toStartOf="@id/add_button"
         app:layout_constraintTop_toBottomOf="@id/complement_input_layout" />
 

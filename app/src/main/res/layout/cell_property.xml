@@ -9,7 +9,7 @@
     android:layout_marginTop="@dimen/very_small_margin"
     android:layout_marginEnd="@dimen/small_margin"
     android:layout_marginBottom="@dimen/very_small_margin"
-    android:background="@drawable/ic_white_background_with_corner">
+    android:background="@drawable/ic_background_with_corner">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"
@@ -21,20 +21,20 @@
 
         <ImageView
             android:id="@+id/photo_image_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:contentDescription="@null"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:background="@color/primaryDayDarkColor" />
+            tools:background="@color/primaryDarkColor" />
 
         <TextView
             android:id="@+id/type_text_view"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/average_margin"
-            android:textAppearance="?attr/textAppearanceHeadline6"
-            android:textColor="@color/primaryDayDarkColor"
+            android:textSize="20sp"
+            android:textColor="@color/lightText"
             app:layout_constraintBottom_toTopOf="@id/city_text_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/photo_image_view"
@@ -49,7 +49,7 @@
             android:layout_marginStart="@dimen/average_margin"
             android:paddingStart="@dimen/very_small_padding"
             android:paddingEnd="0dp"
-            android:textAppearance="?attr/textAppearanceBody1"
+            android:textSize="16sp"
             android:textColor="@android:color/darker_gray"
             app:layout_constraintBottom_toTopOf="@id/price_text_view"
             app:layout_constraintEnd_toEndOf="parent"
@@ -63,8 +63,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/average_margin"
-            android:textAppearance="?attr/textAppearanceHeadline5"
-            android:textColor="@color/primaryDayColor"
+            android:textSize="20sp"
+            android:textColor="@color/lightText"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/photo_image_view"
@@ -82,6 +82,6 @@
         android:src="@drawable/ic_sold_banner"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/soldColor" />
+        app:tint="@color/primaryColor" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

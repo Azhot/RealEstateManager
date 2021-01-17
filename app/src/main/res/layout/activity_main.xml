@@ -5,7 +5,7 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/globalBackground"
+    android:background="@color/background"
     android:fitsSystemWindows="true"
     tools:context=".view.activity.MainActivity"
     tools:openDrawer="end">
@@ -41,9 +41,11 @@
             android:id="@+id/bottom_navigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:theme="@style/BottomNavigationViewTheme"
+            android:background="@drawable/ic_background_with_top_border"
+            app:itemIconTint="@color/bottom_nav_item_color"
             app:itemTextAppearanceActive="?attr/textAppearanceBody1"
             app:itemTextAppearanceInactive="?attr/textAppearanceBody2"
+            app:itemTextColor="@color/bottom_nav_item_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/primaryDayColor"
+        android:background="@color/primaryColor"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

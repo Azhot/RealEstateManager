@@ -10,14 +10,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@null"
-        tools:background="@color/primaryDayColor" />
+        tools:background="@color/primaryColor" />
 
     <TextView
         android:id="@+id/photo_title_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/blackTransparentBackground"
+        android:background="@color/transparentBackground"
         android:ellipsize="end"
         android:maxLines="1"
         android:padding="@dimen/average_padding"
