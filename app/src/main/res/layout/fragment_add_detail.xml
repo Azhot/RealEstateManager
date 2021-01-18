@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     tools:context=".view.fragment.AddDetailFragment">
 
     <androidx.core.widget.NestedScrollView
@@ -43,7 +42,6 @@
                 android:layout_marginStart="@dimen/average_margin"
                 android:layout_marginTop="@dimen/very_large_margin"
                 android:layout_marginEnd="@dimen/average_margin"
-                android:hint="@string/type"
                 android:textColor="@color/darkText"
                 android:textColorHint="@color/darkText"
                 app:boxBackgroundColor="@color/white"
@@ -151,7 +149,7 @@
                 android:layout_marginStart="@dimen/average_margin"
                 android:layout_marginTop="@dimen/average_margin"
                 android:layout_marginEnd="@dimen/average_margin"
-                android:background="@drawable/ic_background_with_borders"
+                android:background="@drawable/ic_background_poi"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rooms_input_layout">
@@ -328,7 +326,7 @@
         android:id="@+id/bottom_nav"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/ic_background_with_top_border"
+        android:background="@drawable/ic_background_bottom_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
@@ -367,7 +365,7 @@
             android:id="@+id/progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminateDrawable="@drawable/progress"
+            android:indeterminateDrawable="@drawable/ic_progress_bar"
             android:visibility="invisible"
             app:layout_constraintBottom_toBottomOf="@id/create_or_update_property_button"
             app:layout_constraintEnd_toEndOf="@id/create_or_update_property_button"

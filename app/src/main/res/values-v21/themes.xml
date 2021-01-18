@@ -3,15 +3,14 @@
 
     <style name="Theme.RealEstateManager" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="android:colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/lightText</item>
         <item name="android:textColor">@color/lightText</item>
+        <item name="android:colorBackground">@color/background</item>
         <!-- Status bar color. -->
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/background</item>
         <item name="android:colorPrimaryDark">@color/background</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
         <!-- Drawer -->
@@ -23,14 +22,34 @@
         <item name="fontFamily">@font/robotocondensed_light</item>
     </style>
 
-    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Light">
+    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents">
         <item name="android:elevation">4dp</item>
         <item name="android:textColorPrimary">@color/lightText</item>
         <item name="android:textColorSecondary">@color/lightText</item>
         <item name="actionMenuTextColor">@color/primaryColor</item>
     </style>
 
-    <style name="BottomNavigationBar">
-        <item name="android:elevation">8dp</item>
+    <style name="Theme.RealEstateManager.OpenPhoto" parent="Theme.MaterialComponents">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/background</item>
+        <item name="android:colorPrimary">@color/background</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/lightText</item>
+        <item name="android:textColor">@color/lightText</item>
+        <item name="android:colorBackground">@color/background</item>
+        <!-- Action bar. -->
+        <item name="actionBarTheme">@style/ActionBarTheme</item>
+        <item name="android:actionBarTheme">@style/ActionBarTheme</item>
+        <!-- Status bar color. -->
+        <item name="colorPrimaryDark">@color/background</item>
+        <item name="android:colorPrimaryDark">@color/background</item>
+        <item name="android:statusBarColor">@color/background</item>
+        <!-- Drawer -->
+        <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
+        <!-- Navigation bar color. -->
+        <item name="android:navigationBarColor">@color/lightBackground</item>
+        <!-- Theme font -->
+        <item name="android:fontFamily">@font/robotocondensed_light</item>
+        <item name="fontFamily">@font/robotocondensed_light</item>
     </style>
 </resources>

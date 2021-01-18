@@ -4,4 +4,8 @@
     <style name="with_elevation">
         <item name="android:elevation">1dp</item>
     </style>
+
+    <style name="BottomNavigationBar">
+        <item name="android:elevation">8dp</item>
+    </style>
 </resources>

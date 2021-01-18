@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="primaryColor">#9BAAD7</color>
+    <color name="primaryLightColor">#B9C8F5</color>
+    <color name="primaryDarkColor">#505F96</color>
     <color name="white">#FFFFFFFF</color>
     <color name="lightGray">#EBEBEB</color>
     <color name="gray">#B4B4B4</color>
@@ -7,9 +10,7 @@
     <color name="background">#0F0F1E</color>
     <color name="lightBackground">#1E1E2D</color>
     <color name="transparentBackground">#800F0F1E</color>
+    <color name="strokeColor">#232332</color>
     <color name="lightText">#DCDCFF</color>
     <color name="darkText">#28284B</color>
-    <color name="primaryColor">#9BAAD7</color>
-    <color name="primaryLightColor">#B9C8F5</color>
-    <color name="primaryDarkColor">#505F96</color>
 </resources>

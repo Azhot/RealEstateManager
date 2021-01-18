@@ -3,15 +3,13 @@
 
     <style name="Theme.RealEstateManager" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/lightText</item>
         <item name="android:textColor">@color/lightText</item>
+        <item name="android:colorBackground">@color/background</item>
         <!-- Status bar color. -->
-        <item name="windowActionBar">false</item>
-        <item name="android:windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-        <item name="android:windowNoTitle">true</item>
+        <item name="colorPrimaryDark">@color/background</item>
         <!-- Drawer -->
         <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
         <!-- Theme font -->
@@ -19,22 +17,39 @@
         <item name="fontFamily">@font/robotocondensed_light</item>
     </style>
 
-    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.Light">
+    <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents">
         <item name="android:textColorPrimary">@color/lightText</item>
         <item name="android:textColorSecondary">@color/lightText</item>
         <item name="actionMenuTextColor">@color/primaryColor</item>
     </style>
 
-    <style name="Theme.RealEstateManager.OpenPhoto" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.RealEstateManager.OpenPhoto" parent="Theme.MaterialComponents">
+        <!-- Primary brand color. -->
         <item name="colorPrimary">@color/background</item>
+        <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
+        <item name="colorOnPrimary">@color/lightText</item>
+        <item name="android:textColor">@color/lightText</item>
+        <!-- Action bar. -->
+        <item name="actionBarTheme">@style/ActionBarTheme</item>
+        <!-- Status bar color. -->
+        <item name="colorPrimaryDark">@color/background</item>
+        <!-- Drawer -->
+        <item name="drawerArrowStyle">@style/DrawerIconStyle</item>
+        <!-- Theme font -->
+        <item name="android:fontFamily">@font/robotocondensed_light</item>
+        <item name="fontFamily">@font/robotocondensed_light</item>
+    </style>
+
+    <style name="ActionBarTheme" parent="ThemeOverlay.MaterialComponents">
+        <item name="android:textColorPrimary">@color/lightText</item>
+        <item name="android:textColorSecondary">@color/lightText</item>
+        <item name="actionMenuTextColor">@color/primaryColor</item>
+        <item name="background">@color/background</item>
+        <item name="android:background">@color/background</item>
     </style>
 
     <style name="Theme.TransparentBottomSheetDialog" parent="Theme.RealEstateManager">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:colorBackground">@android:color/transparent</item>
-    </style>
-
-    <style name="DrawerIconStyle" parent="Widget.AppCompat.DrawerArrowToggle">
-        <item name="color">@color/primaryColor</item>
     </style>
 </resources>

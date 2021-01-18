@@ -14,7 +14,7 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="@dimen/average_margin"
         android:layout_marginBottom="12dp"
-        android:background="@drawable/ic_background_with_corner">
+        android:background="@drawable/ic_background">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/main_constraint_layout"

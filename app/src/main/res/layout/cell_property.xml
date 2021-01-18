@@ -9,7 +9,7 @@
     android:layout_marginTop="@dimen/very_small_margin"
     android:layout_marginEnd="@dimen/small_margin"
     android:layout_marginBottom="@dimen/very_small_margin"
-    android:background="@drawable/ic_background_with_corner">
+    android:background="@drawable/ic_background">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_layout"

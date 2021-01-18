@@ -103,7 +103,7 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 binding.mainConstraintLayout.foreground = ContextCompat.getDrawable(
                     requireContext(),
-                    R.drawable.ic_transparent_foreground_with_corner
+                    R.drawable.ic_transparent_foreground
                 )
             }
             binding.soldImageView.visibility = VISIBLE

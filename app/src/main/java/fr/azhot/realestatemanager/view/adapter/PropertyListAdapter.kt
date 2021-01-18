@@ -123,7 +123,7 @@ class PropertyListAdapter(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     binding.constraintLayout.foreground = ContextCompat.getDrawable(
                         context,
-                        R.drawable.ic_transparent_foreground_with_corner
+                        R.drawable.ic_transparent_foreground
                     )
                 }
                 binding.soldImageView.visibility = VISIBLE
