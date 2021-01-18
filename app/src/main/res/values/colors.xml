@@ -8,9 +8,9 @@
     <color name="gray">#B4B4B4</color>
     <color name="black">#FF000000</color>
     <color name="background">#0F0F1E</color>
-    <color name="lightBackground">#1E1E2D</color>
+    <color name="lightBackground">#282837</color>
+    <color name="lighterBackground">#323241</color>
     <color name="transparentBackground">#800F0F1E</color>
-    <color name="strokeColor">#232332</color>
     <color name="lightText">#DCDCFF</color>
     <color name="darkText">#28284B</color>
 </resources>

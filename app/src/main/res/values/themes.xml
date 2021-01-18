@@ -3,7 +3,7 @@
 
     <style name="Theme.RealEstateManager" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimary">#9BAAD7</item>
         <item name="colorPrimaryVariant">@color/primaryDarkColor</item>
         <item name="colorOnPrimary">@color/lightText</item>
         <item name="android:textColor">@color/lightText</item>
@@ -48,8 +48,9 @@
         <item name="android:background">@color/background</item>
     </style>
 
-    <style name="Theme.TransparentBottomSheetDialog" parent="Theme.RealEstateManager">
+    <style name="TransparentBottomSheetDialog" parent="Theme.Design.BottomSheetDialog">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:colorBackground">@android:color/transparent</item>
+        <item name="colorPrimary">#E65A5A69</item>
     </style>
 </resources>

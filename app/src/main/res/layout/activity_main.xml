@@ -44,7 +44,7 @@
             app:itemIconTint="@color/bottom_nav_item_color"
             app:itemTextAppearanceActive="@style/BottomNavigation.ActiveItemTextAppearance"
             app:itemTextAppearanceInactive="@style/BottomNavigation.InactiveItemTextAppearance"
-            app:itemTextColor="@color/bottom_nav_item_color"
+            app:itemTextColor="@color/bottom_nav_text_color"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -57,7 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/primaryColor"
+        android:background="#E69BAAD7"
+        app:headerLayout="@layout/nav_drawer_header"
         app:menu="@menu/drawer_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

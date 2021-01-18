@@ -9,11 +9,15 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.CellPropertyBinding
 import fr.azhot.realestatemanager.model.Property
 import java.text.NumberFormat
 import java.util.*
+
 
 class PropertyListAdapter(
     private var propertyList: MutableList<Property>,
@@ -99,7 +103,7 @@ class PropertyListAdapter(
             if (property.photoList.isNotEmpty()) { // to deal with database populating
                 Glide.with(itemView)
                     .load(property.photoList[0].uri)
-                    .centerCrop()
+                    .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(4)))
                     .into(binding.photoImageView)
             }
 
@@ -107,9 +111,10 @@ class PropertyListAdapter(
                 if (property.detail.propertyType != null) property.detail.propertyType.toString()
                     .toLowerCase(Locale.ROOT)
                     .capitalize(Locale.ROOT)
-                else null
+                else context.getString(R.string.not_provided)
 
-            binding.cityTextView.text = property.address.city
+            binding.cityTextView.text =
+                property.address.city ?: context.getString(R.string.not_provided)
 
             binding.priceTextView.text =
                 if (property.detail.price != null) NumberFormat.getCurrencyInstance(Locale.US)
@@ -117,7 +122,7 @@ class PropertyListAdapter(
                         maximumFractionDigits = 0
                         format(property.detail.price)
                     }
-                else null
+                else context.getString(R.string.not_provided)
 
             if (property.detail.saleTimeStamp != null) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

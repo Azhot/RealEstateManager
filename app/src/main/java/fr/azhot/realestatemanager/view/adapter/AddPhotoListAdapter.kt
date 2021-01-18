@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import fr.azhot.realestatemanager.databinding.CellAddPhotoBinding
 
 class AddPhotoListAdapter(
@@ -45,7 +48,12 @@ class AddPhotoListAdapter(
         fun bind(pair: Pair<Bitmap, String>) {
             Glide.with(itemView)
                 .load(pair.first)
-                .centerCrop()
+                .apply(
+                    RequestOptions().transform(
+                        CenterCrop(),
+                        GranularRoundedCorners(4f, 4f, 0f, 0f)
+                    )
+                )
                 .into(binding.photoImageView)
 
             binding.photoTitleTextView.text = pair.second

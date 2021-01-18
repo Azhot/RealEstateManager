@@ -45,8 +45,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         // todo: make a specific viewmodel for new property process
         // todo: replace shareDetail, shareAddress, etc. by sharedProperty
         // todo : create insertProperty and updateProperty
-        // todo : add scrollview to SearchModalFragment
-        // todo : Search fragment design to implement
 
         // todo : search -> add a (gone) view above recyclerview to show filters on (with a delete filters button)
         // todo : implement nav drawer

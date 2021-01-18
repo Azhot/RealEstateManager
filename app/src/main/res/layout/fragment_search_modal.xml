@@ -1,168 +1,177 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="#BF9BAAD7"
-    android:paddingBottom="@dimen/large_padding"
-    tools:context=".view.fragment.SearchModalFragment">
+    android:layout_height="wrap_content">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/property_type_filter_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="0dp"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/extra_large_margin"
-        android:layout_marginTop="@dimen/average_margin"
-        android:layout_marginEnd="@dimen/extra_large_margin"
-        app:boxBackgroundColor="#D8FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:startIconDrawable="@drawable/ic_property_type_24"
-        app:startIconTint="@color/primaryLightColor">
+        android:background="#BF232332"
+        android:padding="@dimen/large_padding"
+        tools:context=".view.fragment.SearchModalFragment">
 
-        <AutoCompleteTextView
-            android:id="@+id/property_type_filter_auto_complete"
-            android:layout_width="match_parent"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/property_type_filter_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:hint="@string/type_filter"
-            android:inputType="none" />
+            android:layout_marginStart="48dp"
+            android:layout_marginEnd="48dp"
+            android:background="#D8FFFFFF"
+            android:textColor="@color/darkText"
+            android:textColorHint="@color/darkText"
+            app:boxBackgroundColor="#D8FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:startIconDrawable="@drawable/ic_property_type_24"
+            app:startIconTint="@color/primaryLightColor">
 
-    </com.google.android.material.textfield.TextInputLayout>
+            <AutoCompleteTextView
+                android:id="@+id/property_type_filter_auto_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/type_filter"
+                android:inputType="none"
+                android:textColor="@color/darkText" />
 
-    <TextView
-        android:id="@+id/price_filter_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/very_large_margin"
-        android:drawablePadding="@dimen/average_padding"
-        android:text="@string/price_range"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/darkText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/property_type_filter_input_layout" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/price_range_slider"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginEnd="48dp"
-        android:stepSize="10000"
-        android:valueFrom="0"
-        android:valueTo="10000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/price_filter_text_view" />
+        <TextView
+            android:id="@+id/price_filter_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/very_large_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/price_range"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/property_type_filter_input_layout" />
 
-    <TextView
-        android:id="@+id/square_meters_filter_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/average_margin"
-        android:drawablePadding="@dimen/average_padding"
-        android:text="@string/surface_range"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/darkText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/price_range_slider" />
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/price_range_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:stepSize="10000"
+            android:valueFrom="0"
+            android:valueTo="10000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/price_filter_text_view" />
 
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/square_meters_range_slider"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginEnd="48dp"
-        android:stepSize="1"
-        android:valueFrom="0"
-        android:valueTo="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/square_meters_filter_text_view" />
+        <TextView
+            android:id="@+id/square_meters_filter_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/surface_range"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/price_range_slider" />
 
-    <TextView
-        android:id="@+id/rooms_filter_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/average_margin"
-        android:drawablePadding="@dimen/average_padding"
-        android:text="@string/rooms_range"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/darkText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/square_meters_range_slider" />
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/square_meters_range_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/square_meters_filter_text_view" />
 
-    <com.google.android.material.slider.RangeSlider
-        android:id="@+id/rooms_range_slider"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginEnd="48dp"
-        android:stepSize="1"
-        android:valueFrom="0"
-        android:valueTo="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rooms_filter_text_view" />
+        <TextView
+            android:id="@+id/rooms_filter_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/rooms_range"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/square_meters_range_slider" />
 
-    <TextView
-        android:id="@+id/photos_filter_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/average_margin"
-        android:drawablePadding="@dimen/average_padding"
-        android:text="@string/minimum_photos"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-        android:textColor="@color/darkText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rooms_range_slider" />
+        <com.google.android.material.slider.RangeSlider
+            android:id="@+id/rooms_range_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/rooms_filter_text_view" />
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/photos_slider"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="@dimen/small_margin"
-        android:layout_marginEnd="48dp"
-        android:stepSize="1"
-        android:valueFrom="0"
-        android:valueTo="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/photos_filter_text_view" />
+        <TextView
+            android:id="@+id/photos_filter_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/minimum_photos"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rooms_range_slider" />
 
-    <Button
-        android:id="@+id/reset_button"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/average_margin"
-        android:layout_marginEnd="@dimen/average_margin"
-        android:text="@string/reset"
-        android:textColor="@color/darkText"
-        app:layout_constraintEnd_toStartOf="@id/ok_button"
-        app:layout_constraintTop_toBottomOf="@id/photos_slider" />
+        <com.google.android.material.slider.Slider
+            android:id="@+id/photos_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/small_margin"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:stepSize="1"
+            android:valueFrom="0"
+            android:valueTo="1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/photos_filter_text_view" />
 
-    <Button
-        android:id="@+id/ok_button"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/average_margin"
-        android:layout_marginEnd="@dimen/very_large_margin"
-        android:text="@string/ok"
-        android:textColor="@color/darkText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/photos_slider" />
+        <Button
+            android:id="@+id/reset_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:layout_marginEnd="@dimen/average_margin"
+            android:text="@string/reset"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toStartOf="@id/ok_button"
+            app:layout_constraintTop_toBottomOf="@id/photos_slider" />
+
+        <Button
+            android:id="@+id/ok_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:text="@string/ok"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/photos_slider" />
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.core.widget.NestedScrollView>
