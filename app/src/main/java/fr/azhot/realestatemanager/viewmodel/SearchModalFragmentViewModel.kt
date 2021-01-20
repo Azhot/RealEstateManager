@@ -27,6 +27,10 @@ class SearchModalFragmentViewModel(private val propertyRepository: PropertyRepos
     fun getRoomsBounds(): LiveData<MinMax> {
         return propertyRepository.getRoomsBounds()
     }
+
+    fun getPhotoListMax(): LiveData<Int> {
+        return propertyRepository.getPhotoListMax()
+    }
 }
 
 class SearchModalFragmentViewModelFactory(private val propertyRepository: PropertyRepository) :

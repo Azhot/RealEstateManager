@@ -1,5 +1,6 @@
 package fr.azhot.realestatemanager.database.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import fr.azhot.realestatemanager.model.Photo
 
@@ -14,4 +15,12 @@ interface PhotoDao {
 
     @Delete
     suspend fun deletePhoto(photo: Photo)
+
+    @Query(
+        """SELECT MAX(photoListSize) 
+                  FROM (SELECT detailId, COUNT(detailId) photoListSize
+                  FROM photo_table
+                  GROUP BY detailId)"""
+    )
+    fun getPhotoListMax(): LiveData<Int>
 }

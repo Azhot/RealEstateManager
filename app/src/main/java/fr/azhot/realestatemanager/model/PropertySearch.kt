@@ -104,7 +104,10 @@ class PropertySearch(
                 append("\n")
                 append(context.getString(R.string.minimum_photos))
                 append(": ")
-                append(photoListSize)
+                append(NumberFormat.getInstance(Locale.ROOT).run {
+                    maximumFractionDigits = 0
+                    format(photoListSize)
+                })
             }
             entryDateRange?.let { pair ->
                 append("\n")

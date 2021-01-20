@@ -177,24 +177,27 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     binding.priceRangeSlider.apply {
                         minMax.min?.let { valueFrom = roundIntLower(it, stepSize) }
                         minMax.max?.let { valueTo = roundIntUpper(it, stepSize) }
-                        values =
-                            if (priceRange != null) priceRange!! else listOf(valueFrom, valueTo)
+                        values = priceRange ?: listOf(valueFrom, valueTo)
                     }
                 }
                 getSquareMetersBounds().observe(viewLifecycleOwner) { minMax ->
                     binding.squareMetersRangeSlider.apply {
                         minMax.min?.let { valueFrom = roundIntLower(it, stepSize) }
                         minMax.max?.let { valueTo = roundIntUpper(it, stepSize) }
-                        values = if (squareMetersRange != null) squareMetersRange!!
-                        else listOf(valueFrom, valueTo)
+                        values = squareMetersRange ?: listOf(valueFrom, valueTo)
                     }
                 }
                 getRoomsBounds().observe(viewLifecycleOwner) { minMax ->
                     binding.roomsRangeSlider.apply {
                         minMax.min?.let { valueFrom = roundIntLower(it, stepSize) }
                         minMax.max?.let { valueTo = roundIntUpper(it, stepSize) }
-                        values =
-                            if (roomsRange != null) roomsRange!! else listOf(valueFrom, valueTo)
+                        values = roomsRange ?: listOf(valueFrom, valueTo)
+                    }
+                }
+                getPhotoListMax().observe(viewLifecycleOwner) { max ->
+                    binding.photosSlider.apply {
+                        max?.let { valueTo = max.toFloat() }
+                        value = photoListSize ?: valueFrom
                     }
                 }
             }
@@ -220,6 +223,7 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     priceRangeSlider.apply { values = listOf(valueFrom, valueTo) }
                     squareMetersRangeSlider.apply { values = listOf(valueFrom, valueTo) }
                     roomsRangeSlider.apply { values = listOf(valueFrom, valueTo) }
+                    photosSlider.apply { value = valueFrom }
                     entryDateButton.text = getString(R.string.entry_date_range)
                     saleDateButton.text = getString(R.string.sale_date_range)
                     realtorFilterAutoComplete.setText(null, false)
@@ -254,6 +258,10 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 propertySearch.roomsRange =
                     if (slider.values.containsAll(listOf(slider.valueFrom, slider.valueTo))) null
                     else slider.values
+                sharedViewModel.livePropertySearch.forceRefresh()
+            }
+            photosSlider.addOnChangeListener { slider, value, _ ->
+                propertySearch.photoListSize = if (value != slider.valueFrom) value else null
                 sharedViewModel.livePropertySearch.forceRefresh()
             }
             entryDateButton.setOnClickListener(this@SearchModalFragment)

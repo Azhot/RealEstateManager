@@ -142,8 +142,8 @@
             android:layout_marginTop="@dimen/small_margin"
             android:layout_marginEnd="@dimen/very_large_margin"
             android:stepSize="1"
-            android:valueFrom="0"
-            android:valueTo="1"
+            android:valueFrom="1"
+            android:valueTo="2"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/photos_filter_text_view" />

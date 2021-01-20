@@ -70,7 +70,8 @@ class PropertyRepository(
             propertySearch.entryDateRange?.second,
             propertySearch.saleDateRange?.first,
             propertySearch.saleDateRange?.second,
-            propertySearch.realtor?.realtorId
+            propertySearch.realtor?.realtorId,
+            propertySearch.photoListSize
         )
     }
 
@@ -84,5 +85,9 @@ class PropertyRepository(
 
     fun getRoomsBounds(): LiveData<MinMax> {
         return detailDao.getRoomsBounds()
+    }
+
+    fun getPhotoListMax(): LiveData<Int> {
+        return photoDao.getPhotoListMax()
     }
 }
