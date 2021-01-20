@@ -14,6 +14,7 @@ class PropertyRepository(
 ) {
     // variables
     val realtorList: Flow<List<Realtor>> = realtorDao.getRealtorList()
+    val cityList: Flow<List<String>> = addressDao.getCityList()
 
 
     // functions
@@ -60,6 +61,7 @@ class PropertyRepository(
     fun getPropertyFilterableList(propertySearch: PropertySearch): Flow<List<Property>> {
         return detailDao.getPropertyFilterableList(
             propertySearch.propertyType,
+            propertySearch.city,
             propertySearch.priceRange?.get(0)?.toInt(),
             propertySearch.priceRange?.get(1)?.toInt(),
             propertySearch.squareMetersRange?.get(0)?.toInt(),

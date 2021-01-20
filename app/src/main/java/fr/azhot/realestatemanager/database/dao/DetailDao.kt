@@ -34,12 +34,14 @@ interface DetailDao {
                   AND (:minSaleDate IS NULL or d.saleTimeStamp >= :minSaleDate)
                   AND (:maxSaleDate IS NULL or d.saleTimeStamp <= :maxSaleDate)
                   AND (:realtorId IS NULL or d.realtorId = :realtorId)
+                  AND (:city IS NULL or a.city = :city)
                   GROUP BY d.detailId
                   HAVING(:photoListSize IS NULL or photosCount >= :photoListSize)
                   """
     )
     fun getPropertyFilterableList(
         propertyType: PropertyType?,
+        city: String?,
         minPrice: Int?,
         maxPrice: Int?,
         minSquareMeters: Int?,

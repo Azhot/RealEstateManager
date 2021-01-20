@@ -9,6 +9,7 @@ import java.util.*
 
 class PropertySearch(
     var propertyType: PropertyType? = null,
+    var city: String? = null,
     var priceRange: List<Float>? = null,
     var squareMetersRange: List<Float>? = null,
     var roomsRange: List<Float>? = null,
@@ -20,6 +21,7 @@ class PropertySearch(
 
     fun isOn(): Boolean {
         return propertyType != null
+                || city != null
                 || priceRange != null
                 || squareMetersRange != null
                 || roomsRange != null
@@ -31,6 +33,7 @@ class PropertySearch(
 
     fun clear() {
         propertyType = null
+        city = null
         priceRange = null
         squareMetersRange = null
         roomsRange = null
@@ -47,6 +50,12 @@ class PropertySearch(
                 append(context.getString(R.string.type))
                 append(": ")
                 append(propertyType.toString())
+            }
+            if (city != null) {
+                append("\n")
+                append(context.getString(R.string.city))
+                append(": ")
+                append(city)
             }
             priceRange?.let { list ->
                 append("\n")

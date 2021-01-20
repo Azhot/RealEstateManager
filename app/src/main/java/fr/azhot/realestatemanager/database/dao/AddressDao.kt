@@ -2,6 +2,7 @@ package fr.azhot.realestatemanager.database.dao
 
 import androidx.room.*
 import fr.azhot.realestatemanager.model.Address
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface AddressDao {
@@ -14,4 +15,7 @@ interface AddressDao {
 
     @Delete
     suspend fun deleteAddress(address: Address)
+
+    @Query("SELECT DISTINCT city FROM address_table")
+    fun getCityList(): Flow<List<String>>
 }

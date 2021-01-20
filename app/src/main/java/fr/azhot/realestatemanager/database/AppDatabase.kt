@@ -72,7 +72,7 @@ abstract class AppDatabase : RoomDatabase() {
                     val pointOfInterestDao = database.pointOfInterestDao()
                     val realtorDao = database.realtorDao()
 
-                    createRealtorList(faker, realtorDao).run {
+                    createRealtorAndCityList(faker, realtorDao).run {
                         repeat(30) {
                             createProperty(
                                 faker,
@@ -88,11 +88,11 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private suspend fun createRealtorList(
+        private suspend fun createRealtorAndCityList(
             faker: Faker,
             realtorDao: RealtorDao
-        ): ArrayList<Realtor> {
-            return arrayListOf<Realtor>().apply {
+        ): Pair<ArrayList<Realtor>, ArrayList<String>> {
+            val realtorList = arrayListOf<Realtor>().apply {
                 repeat(5) {
                     Realtor(
                         firstName = faker.name().firstName(),
@@ -103,6 +103,12 @@ abstract class AppDatabase : RoomDatabase() {
                     }
                 }
             }
+            val cityList = arrayListOf<String>().apply {
+                repeat(8) {
+                    add(faker.address().cityName())
+                }
+            }
+            return realtorList to cityList
         }
 
         private suspend fun createProperty(
@@ -111,7 +117,7 @@ abstract class AppDatabase : RoomDatabase() {
             addressDao: AddressDao,
             photoDao: PhotoDao,
             pointOfInterestDao: PointOfInterestDao,
-            realtorList: ArrayList<Realtor>
+            realtorAndCityLists: Pair<ArrayList<Realtor>, ArrayList<String>>
         ) {
             val calendar: Calendar = Calendar.getInstance().apply {
                 this.set(
@@ -125,7 +131,8 @@ abstract class AppDatabase : RoomDatabase() {
 
             val address = Address(
                 zipCode = faker.address().zipCode(),
-                city = faker.address().cityName(),
+                city = realtorAndCityLists.second[faker.number()
+                    .numberBetween(0, realtorAndCityLists.second.size)],
                 roadName = faker.address().streetAddress(),
                 number = faker.address().streetAddressNumber(),
                 complement = faker.address().streetSuffix(),
@@ -146,8 +153,8 @@ abstract class AppDatabase : RoomDatabase() {
                     set(Calendar.MONTH, 2)
                     timeInMillis
                 } else null,
-                realtorId = realtorList[faker.number()
-                    .numberBetween(0, realtorList.size)].realtorId,
+                realtorId = realtorAndCityLists.first[faker.number()
+                    .numberBetween(0, realtorAndCityLists.first.size)].realtorId,
             )
 
             val photoList = arrayListOf(

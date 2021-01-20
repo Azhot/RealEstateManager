@@ -52,7 +52,7 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     BottomSheetBehavior.from(frameLayout).state = BottomSheetBehavior.STATE_EXPANDED
                 }
             }
-            this // returned dialog charged with OnShowListener
+            this // returned bottom sheet dialog loaded with OnShowListener
         }
     }
 
@@ -79,6 +79,7 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
             setUpDateRangePickerButton(binding.saleDateButton, propertySearch.saleDateRange)
             setUpListeners(propertySearch)
         }
+        observeCityList()
         observeRealtorList()
         setUpButtons()
     }
@@ -127,6 +128,13 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
             propertySearch.propertyType?.toString(),
         ) { item ->
             sharedViewModel.livePropertySearch.value?.propertyType = item as PropertyType
+        }
+        setUpExposedDropdownMenu(
+            binding.cityFilterAutoComplete,
+            mutableListOf(),
+            propertySearch.city,
+        ) { item ->
+            sharedViewModel.livePropertySearch.value?.city = item as String
         }
         setUpExposedDropdownMenu(
             binding.realtorFilterAutoComplete,
@@ -218,16 +226,24 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
         binding.apply {
             resetButton.setOnClickListener {
                 binding.apply {
-                    propertyTypeFilterAutoComplete.setText(null, false)
-                    propertyTypeFilterAutoComplete.clearFocus()
+                    propertyTypeFilterAutoComplete.apply {
+                        setText(null, false)
+                        clearFocus()
+                    }
+                    cityFilterAutoComplete.apply {
+                        setText(null, false)
+                        clearFocus()
+                    }
                     priceRangeSlider.apply { values = listOf(valueFrom, valueTo) }
                     squareMetersRangeSlider.apply { values = listOf(valueFrom, valueTo) }
                     roomsRangeSlider.apply { values = listOf(valueFrom, valueTo) }
                     photosSlider.apply { value = valueFrom }
                     entryDateButton.text = getString(R.string.entry_date_range)
                     saleDateButton.text = getString(R.string.sale_date_range)
-                    realtorFilterAutoComplete.setText(null, false)
-                    realtorFilterAutoComplete.clearFocus()
+                    realtorFilterAutoComplete.apply {
+                        setText(null, false)
+                        clearFocus()
+                    }
                 }
                 sharedViewModel.livePropertySearch.apply {
                     value?.clear()
@@ -276,7 +292,12 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
         })
     }
 
-// photoListSize
-// address (contains with autocomplete)
+    private fun observeCityList() {
+        viewModel.cityList.observe(viewLifecycleOwner, { cityList ->
+            (binding.cityFilterAutoComplete.adapter as ExposedDropdownMenuAdapter)
+                .list = cityList.toMutableList()
+        })
+    }
+
 // poi
 }

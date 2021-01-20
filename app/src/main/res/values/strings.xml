@@ -76,6 +76,7 @@
     <!-- Search modal fragment -->
     <string name="search_properties">Search properties</string>
     <string name="type_filter">Type filter</string>
+    <string name="city_filter">City filter</string>
     <string name="price_range">Price range</string>
     <string name="surface_range">Surface range</string>
     <string name="rooms_range">Rooms range</string>

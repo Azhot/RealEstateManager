@@ -13,6 +13,7 @@ class SearchModalFragmentViewModel(private val propertyRepository: PropertyRepos
 
     // variables
     val realtorList: LiveData<List<Realtor>> = propertyRepository.realtorList.asLiveData()
+    val cityList: LiveData<List<String>> = propertyRepository.cityList.asLiveData()
 
 
     // functions
