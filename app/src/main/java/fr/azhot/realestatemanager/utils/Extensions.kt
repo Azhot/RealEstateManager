@@ -25,3 +25,10 @@ operator fun <T, S> MutableLiveData<MutableMap<T, S>>.plusAssign(pair: Pair<T, S
     value[pair.first] = pair.second
     this.value = value
 }
+
+/**
+ * Forces a refresh of a MutableLiveData's  observers.
+ */
+fun <T> MutableLiveData<T>.forceRefresh() {
+    value = value
+}

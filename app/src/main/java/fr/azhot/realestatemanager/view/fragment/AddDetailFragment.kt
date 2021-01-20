@@ -386,7 +386,10 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         sharedViewModel.sharedDetail.entryTimeStamp.let { timeInMillis ->
             buildMaterialDatePicker(
                 childFragmentManager,
-                timeInMillis ?: System.currentTimeMillis(),
+                timeInMillis ?: Calendar.getInstance().run {
+                    set(Calendar.HOUR_OF_DAY, 12)
+                    this.timeInMillis
+                },
             ) { selectedTimeInMillis ->
                 binding.entryDateEditText.setText(formatTimeStamp(selectedTimeInMillis))
                 sharedViewModel.sharedDetail.entryTimeStamp = selectedTimeInMillis
@@ -398,7 +401,10 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         sharedViewModel.sharedDetail.saleTimeStamp.let { timeInMillis ->
             buildMaterialDatePicker(
                 childFragmentManager,
-                timeInMillis ?: System.currentTimeMillis(),
+                timeInMillis ?: Calendar.getInstance().run {
+                    set(Calendar.HOUR_OF_DAY, 12)
+                    this.timeInMillis
+                },
             ) { selectedTimeInMillis ->
                 binding.saleDateEditText.setText(formatTimeStamp(selectedTimeInMillis))
                 sharedViewModel.sharedDetail.saleTimeStamp = selectedTimeInMillis

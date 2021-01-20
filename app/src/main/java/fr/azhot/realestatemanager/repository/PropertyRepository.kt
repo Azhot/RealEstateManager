@@ -60,12 +60,17 @@ class PropertyRepository(
     fun getPropertyFilterableList(propertySearch: PropertySearch): Flow<List<Property>> {
         return detailDao.getPropertyFilterableList(
             propertySearch.propertyType,
-            propertySearch.price?.get(0)?.toInt(),
-            propertySearch.price?.get(1)?.toInt(),
-            propertySearch.squareMeters?.get(0)?.toInt(),
-            propertySearch.squareMeters?.get(1)?.toInt(),
-            propertySearch.rooms?.get(0)?.toInt(),
-            propertySearch.rooms?.get(1)?.toInt(),
+            propertySearch.priceRange?.get(0)?.toInt(),
+            propertySearch.priceRange?.get(1)?.toInt(),
+            propertySearch.squareMetersRange?.get(0)?.toInt(),
+            propertySearch.squareMetersRange?.get(1)?.toInt(),
+            propertySearch.roomsRange?.get(0)?.toInt(),
+            propertySearch.roomsRange?.get(1)?.toInt(),
+            propertySearch.entryDateRange?.first,
+            propertySearch.entryDateRange?.second,
+            propertySearch.saleDateRange?.first,
+            propertySearch.saleDateRange?.second,
+            propertySearch.realtor?.realtorId
         )
     }
 

@@ -65,38 +65,61 @@ abstract class AppDatabase : RoomDatabase() {
             super.onCreate(db)
             INSTANCE?.let { database ->
                 scope.launch {
+                    val faker = Faker()
                     val detailDao = database.detailDao()
                     val addressDao = database.addressDao()
                     val photoDao = database.photoDao()
                     val pointOfInterestDao = database.pointOfInterestDao()
                     val realtorDao = database.realtorDao()
 
-                    repeat(30) {
-                        createProperty(
-                            detailDao,
-                            addressDao,
-                            photoDao,
-                            pointOfInterestDao,
-                            realtorDao
-                        )
+                    createRealtorList(faker, realtorDao).run {
+                        repeat(30) {
+                            createProperty(
+                                faker,
+                                detailDao,
+                                addressDao,
+                                photoDao,
+                                pointOfInterestDao,
+                                this
+                            )
+                        }
+                    }
+                }
+            }
+        }
+
+        private suspend fun createRealtorList(
+            faker: Faker,
+            realtorDao: RealtorDao
+        ): ArrayList<Realtor> {
+            return arrayListOf<Realtor>().apply {
+                repeat(5) {
+                    Realtor(
+                        firstName = faker.name().firstName(),
+                        lastName = faker.name().lastName()
+                    ).run {
+                        realtorDao.insertRealtor(this)
+                        add(this)
                     }
                 }
             }
         }
 
         private suspend fun createProperty(
+            faker: Faker,
             detailDao: DetailDao,
             addressDao: AddressDao,
             photoDao: PhotoDao,
             pointOfInterestDao: PointOfInterestDao,
-            realtorDao: RealtorDao
+            realtorList: ArrayList<Realtor>
         ) {
-            val faker = Faker()
             val calendar: Calendar = Calendar.getInstance().apply {
                 this.set(
                     2021,
                     faker.number().numberBetween(0, 11),
-                    faker.number().numberBetween(1, 32)
+                    faker.number().numberBetween(1, 32),
+                    12,
+                    0,
                 )
             }
 
@@ -106,11 +129,6 @@ abstract class AppDatabase : RoomDatabase() {
                 roadName = faker.address().streetAddress(),
                 number = faker.address().streetAddressNumber(),
                 complement = faker.address().streetSuffix(),
-            )
-
-            val realtor = Realtor(
-                firstName = faker.name().firstName(),
-                lastName = faker.name().lastName()
             )
 
             val detail = Detail(
@@ -128,7 +146,8 @@ abstract class AppDatabase : RoomDatabase() {
                     set(Calendar.MONTH, 2)
                     timeInMillis
                 } else null,
-                realtorId = realtor.realtorId,
+                realtorId = realtorList[faker.number()
+                    .numberBetween(0, realtorList.size)].realtorId,
             )
 
             val photoList = arrayListOf(
@@ -235,7 +254,6 @@ abstract class AppDatabase : RoomDatabase() {
             )
 
             addressDao.insertAddress(address)
-            realtorDao.insertRealtor(realtor)
             detailDao.insertDetail(detail)
             repeat(faker.number().numberBetween(2, 8)) {
                 photoDao.insertPhoto(photoList[faker.number().numberBetween(0, photoList.size)])

@@ -80,6 +80,10 @@
     <string name="surface_range">Surface range</string>
     <string name="rooms_range">Rooms range</string>
     <string name="minimum_photos">Minimum photos</string>
+    <string name="entry_date_range">Entry date range</string>
+    <string name="sale_date_range">Sale date range</string>
+    <string name="range_result">%1$s to %2$s</string>
+    <string name="realtor_filter">Realtor filter</string>
     <string name="reset">Reset</string>
     <string name="apply">Apply</string>
     <string name="ok">OK</string>

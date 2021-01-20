@@ -26,6 +26,11 @@ interface DetailDao {
                 AND (:maxSquareMeters IS NULL or d.squareMeters <= :maxSquareMeters)
                 AND (:minRooms IS NULL or d.rooms >= :minRooms)
                 AND (:maxRooms IS NULL or d.rooms <= :maxRooms)
+                AND (:minEntryDate IS NULL or d.entryTimeStamp >= :minEntryDate)
+                AND (:maxEntryDate IS NULL or d.entryTimeStamp <= :maxEntryDate)
+                AND (:minSaleDate IS NULL or d.saleTimeStamp >= :minSaleDate)
+                AND (:maxSaleDate IS NULL or d.saleTimeStamp <= :maxSaleDate)
+                AND (:realtorId IS NULL or d.realtorId = :realtorId)
                 GROUP BY d.detailId"""
     )
     fun getPropertyFilterableList(
@@ -36,6 +41,11 @@ interface DetailDao {
         maxSquareMeters: Int?,
         minRooms: Int?,
         maxRooms: Int?,
+        minEntryDate: Long?,
+        maxEntryDate: Long?,
+        minSaleDate: Long?,
+        maxSaleDate: Long?,
+        realtorId: String?
     ): Flow<List<Property>>
 
     @Query("SELECT MIN(price) as min, MAX(price) as max FROM detail_table")

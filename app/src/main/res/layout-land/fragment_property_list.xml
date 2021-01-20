@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.PropertyListFragment">
 
+    <TextView
+        android:id="@+id/filer_on_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/average_margin"
+        android:layout_marginEnd="@dimen/small_margin"
+        android:background="@drawable/ic_background_filter"
+        android:drawablePadding="@dimen/average_padding"
+        android:padding="@dimen/average_padding"
+        android:textAllCaps="false"
+        android:textColor="@color/gray"
+        android:textStyle="italic"
+        android:visibility="gone"
+        app:drawableEndCompat="@drawable/ic_close_24"
+        app:drawableTint="@color/gray"
+        app:layout_constraintEnd_toEndOf="@id/property_list_recycler_view"
+        app:layout_constraintStart_toStartOf="@id/property_list_recycler_view"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/property_list_recycler_view"
         android:layout_width="0dp"
@@ -21,7 +41,7 @@
         app:layout_constraintEnd_toStartOf="@id/detail_container_view"
         app:layout_constraintHorizontal_weight="5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filer_on_text_view"
         tools:listitem="@layout/cell_property" />
 
     <androidx.fragment.app.FragmentContainerView

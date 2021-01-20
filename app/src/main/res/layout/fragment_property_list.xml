@@ -6,18 +6,41 @@
     android:layout_height="match_parent"
     tools:context=".view.fragment.PropertyListFragment">
 
+    <TextView
+        android:id="@+id/filer_on_text_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/average_margin"
+        android:layout_marginEnd="@dimen/average_margin"
+        android:background="@drawable/ic_background_filter"
+        android:drawablePadding="@dimen/average_padding"
+        android:padding="@dimen/average_padding"
+        android:textAllCaps="false"
+        android:textColor="@color/gray"
+        android:textStyle="italic"
+        android:visibility="gone"
+        app:drawableEndCompat="@drawable/ic_close_24"
+        app:drawableTint="@color/gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/property_list_recycler_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clipToPadding="false"
         android:overScrollMode="never"
-        android:padding="@dimen/average_padding"
+        android:paddingStart="@dimen/average_padding"
+        android:paddingTop="@dimen/average_padding"
+        android:paddingEnd="@dimen/average_padding"
+        android:paddingBottom="@dimen/average_padding"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filer_on_text_view"
         tools:listitem="@layout/cell_property" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

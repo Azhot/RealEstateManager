@@ -42,16 +42,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setSupportActionBar(binding.toolbar)
         navController.addOnDestinationChangedListener(this)
 
-        // todo: make a specific viewmodel for new property process
-        // todo: replace shareDetail, shareAddress, etc. by sharedProperty
-        // todo : create insertProperty and updateProperty
-
-        // todo : search -> add a (gone) view above recyclerview to show filters on (with a delete filters button)
+        // todo : map fragment : Si l'agent immobilier est connecté et géo-localisable, il peut afficher les biens sur une carte, afin de voir d'un coup d'œil les biens les plus proches de lui. Cette carte est dynamique : l'agent peut zoomer, dézoomer, se déplacer, et afficher le détail d'un bien en cliquant sur la punaise correspondante.
+        // todo : point of interest type ? (for search)
+        // todo : loan simulator
         // todo : implement nav drawer
         // todo : add static map
         // todo : integration test for network verification
         // todo : content provider
-        // todo : loan simulator
 
         val toggle = ActionBarDrawerToggle(
             this,
