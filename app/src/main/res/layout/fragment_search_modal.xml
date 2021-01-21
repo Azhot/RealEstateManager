@@ -207,7 +207,7 @@
             app:layout_constraintTop_toBottomOf="@id/entry_date_button" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/realtor_filter_input_layout"
+            android:id="@+id/poi_filter_input_layout"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -221,6 +221,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sale_date_button"
+            app:startIconDrawable="@drawable/ic_realtor_24"
+            app:startIconTint="@color/primaryLightColor">
+
+            <AutoCompleteTextView
+                android:id="@+id/poi_filter_auto_complete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/poi_filter"
+                android:inputType="none"
+                android:textColor="@color/darkText" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/realtor_filter_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="@dimen/average_margin"
+            android:layout_marginEnd="48dp"
+            android:background="#D8FFFFFF"
+            android:textColor="@color/darkText"
+            android:textColorHint="@color/darkText"
+            app:boxBackgroundColor="#D8FFFFFF"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/poi_filter_input_layout"
             app:startIconDrawable="@drawable/ic_realtor_24"
             app:startIconTint="@color/primaryLightColor">
 

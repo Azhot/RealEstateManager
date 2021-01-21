@@ -85,6 +85,8 @@
     <string name="sale_date_range">Sale date range</string>
     <string name="range_result">%1$s to %2$s</string>
     <string name="realtor_filter">Realtor filter</string>
+    <string name="poi_filter">Point of interest filter</string>
+    <string name="point_of_interest">Point of interest</string>
     <string name="reset">Reset</string>
     <string name="apply">Apply</string>
     <string name="ok">OK</string>

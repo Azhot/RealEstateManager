@@ -19,6 +19,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentSearchModalBinding
+import fr.azhot.realestatemanager.model.PointOfInterestType
 import fr.azhot.realestatemanager.model.PropertySearch
 import fr.azhot.realestatemanager.model.PropertyType
 import fr.azhot.realestatemanager.model.Realtor
@@ -46,6 +47,7 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     // overridden functions
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        // open dialog fragment in expanded mode
         return (super.onCreateDialog(savedInstanceState) as BottomSheetDialog).run {
             setOnShowListener {
                 findViewById<FrameLayout>(com.google.android.material.R.id.design_bottom_sheet)?.let { frameLayout ->
@@ -58,6 +60,7 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        // set dialog fragment's background to transparent
         setStyle(STYLE_NO_FRAME, R.style.TransparentBottomSheetDialog)
     }
 
@@ -135,6 +138,14 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
             propertySearch.city,
         ) { item ->
             sharedViewModel.livePropertySearch.value?.city = item as String
+        }
+        setUpExposedDropdownMenu(
+            binding.poiFilterAutoComplete,
+            PointOfInterestType.values().toMutableList(),
+            propertySearch.pointOfInterestType?.toString(),
+        ) { item ->
+            sharedViewModel.livePropertySearch.value?.pointOfInterestType =
+                item as PointOfInterestType
         }
         setUpExposedDropdownMenu(
             binding.realtorFilterAutoComplete,
@@ -240,6 +251,10 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     photosSlider.apply { value = valueFrom }
                     entryDateButton.text = getString(R.string.entry_date_range)
                     saleDateButton.text = getString(R.string.sale_date_range)
+                    poiFilterAutoComplete.apply {
+                        setText(null, false)
+                        clearFocus()
+                    }
                     realtorFilterAutoComplete.apply {
                         setText(null, false)
                         clearFocus()
@@ -298,6 +313,4 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                 .list = cityList.toMutableList()
         })
     }
-
-// poi
 }

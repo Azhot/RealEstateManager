@@ -68,12 +68,13 @@ class PropertyRepository(
             propertySearch.squareMetersRange?.get(1)?.toInt(),
             propertySearch.roomsRange?.get(0)?.toInt(),
             propertySearch.roomsRange?.get(1)?.toInt(),
+            propertySearch.photoListSize,
             propertySearch.entryDateRange?.first,
             propertySearch.entryDateRange?.second,
             propertySearch.saleDateRange?.first,
             propertySearch.saleDateRange?.second,
+            propertySearch.pointOfInterestType,
             propertySearch.realtor?.realtorId,
-            propertySearch.photoListSize
         )
     }
 

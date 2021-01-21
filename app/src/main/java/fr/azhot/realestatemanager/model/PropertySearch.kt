@@ -16,6 +16,7 @@ class PropertySearch(
     var photoListSize: Float? = null,
     var entryDateRange: Pair<Long, Long>? = null,
     var saleDateRange: Pair<Long, Long>? = null,
+    var pointOfInterestType: PointOfInterestType? = null,
     var realtor: Realtor? = null,
 ) {
 
@@ -28,6 +29,7 @@ class PropertySearch(
                 || photoListSize != null
                 || entryDateRange != null
                 || saleDateRange != null
+                || pointOfInterestType != null
                 || realtor != null
     }
 
@@ -40,6 +42,7 @@ class PropertySearch(
         photoListSize = null
         entryDateRange = null
         saleDateRange = null
+        pointOfInterestType = null
         realtor = null
     }
 
@@ -141,6 +144,12 @@ class PropertySearch(
                         formatTimeStamp(pair.second!!)
                     )
                 )
+            }
+            if (pointOfInterestType != null) {
+                append("\n")
+                append(context.getString(R.string.point_of_interest))
+                append(": ")
+                append(pointOfInterestType.toString())
             }
             if (realtor != null) {
                 append("\n")

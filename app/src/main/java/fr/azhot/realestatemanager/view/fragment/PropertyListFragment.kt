@@ -111,17 +111,21 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         }
     }
 
-    // sets the action on click to the right drawable of the filter text view
+    // sets the action on click either to the right drawable or the text of filter text view
     private fun setUpFilterOnTextView() {
         binding.filerOnTextView.apply {
             setOnTouchListener { v, event ->
                 v.performClick()
-                if (event.action == MotionEvent.ACTION_DOWN) {
-                    if (event.rawX >= (v.right - (v as TextView).compoundDrawables[2].bounds.width())) {
-                        sharedViewModel.livePropertySearch.apply {
-                            value?.clear()
-                            forceRefresh()
+                when (event.action) {
+                    MotionEvent.ACTION_DOWN -> {
+                        if (event.rawX >= (v.right - (v as TextView).compoundDrawables[2].bounds.width())) {
+                            sharedViewModel.livePropertySearch.apply {
+                                value?.clear()
+                                forceRefresh()
+                            }
+                            return@setOnTouchListener true
                         }
+                        promptSearchFragment()
                         return@setOnTouchListener true
                     }
                 }
@@ -132,7 +136,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
 
     private fun observePropertySearch() {
         sharedViewModel.livePropertySearch.observe(viewLifecycleOwner) { propertySearch ->
-            // get data from room
+            // get property data from room
             observePropertyFilterableList(propertySearch)
             // animate filter text view
             binding.filerOnTextView.apply {
