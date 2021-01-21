@@ -19,15 +19,15 @@ data class PointOfInterest(
     val pointOfInterestId: String = UUID.randomUUID().toString(),
     @ColumnInfo(index = true)
     val detailId: String,
-    val name: String,
+    val pointOfInterestType: PointOfInterestType? = null,
     @Embedded
     val address: Address? = null,
 ) {
     override fun toString(): String {
         return if (address != null) {
-            "$name: $address"
+            "$pointOfInterestType: $address"
         } else {
-            name
+            pointOfInterestType?.toString() ?: "-"
         }
     }
 }

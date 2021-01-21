@@ -20,27 +20,26 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/name_input_layout"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginTop="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
-        android:hint="@string/name"
         android:textColor="@color/darkText"
         android:textColorHint="@color/darkText"
         app:boxBackgroundColor="@color/white"
-        app:endIconMode="clear_text"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_text_view"
         app:startIconDrawable="@drawable/ic_text_snippet_24"
         app:startIconTint="@color/primaryDarkColor">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/name_edit_text"
+        <AutoCompleteTextView
+            android:id="@+id/points_of_interest_type_auto_complete"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textShortMessage" />
+            android:hint="@string/points_of_interest_type"
+            android:inputType="none" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

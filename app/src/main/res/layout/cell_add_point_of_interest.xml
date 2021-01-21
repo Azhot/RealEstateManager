@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toStartOf="@id/delete_button"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Name: address" />
+        tools:text="Type: address" />
 
     <ImageButton
         android:id="@+id/delete_button"

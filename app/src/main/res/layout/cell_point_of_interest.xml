@@ -9,5 +9,5 @@
     android:lines="1"
     android:textColor="@color/lightText"
     android:textAppearance="?attr/textAppearanceBody1"
-    tools:text="Name: address" />
+    tools:text="Type: address" />
 

@@ -91,9 +91,8 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
     override fun onDeletePointOfInterest(pointOfInterest: PointOfInterest) {
         (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).apply {
-            val index = pointOfInterestList.indexOf(pointOfInterest)
             pointOfInterestList.remove(pointOfInterest)
-            notifyItemRemoved(index)
+            notifyDataSetChanged()
         }
     }
 
@@ -103,8 +102,8 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         buildExposedDropdownMenu(
             binding.propertyTypeAutoComplete,
             PropertyType.values().toMutableList()
-        ) { item ->
-            sharedViewModel.sharedDetail.propertyType = item as PropertyType
+        ) { propertyType ->
+            sharedViewModel.sharedDetail.propertyType = propertyType as PropertyType
         }
         setUpNumberFormattingEditText(binding.priceEditText) { price ->
             sharedViewModel.sharedDetail.price = price
@@ -116,8 +115,8 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             sharedViewModel.sharedDetail.rooms = rooms
         }
         buildPointOfInterestRecyclerView()
-        buildExposedDropdownMenu(binding.realtorAutoComplete, mutableListOf()) { item ->
-            sharedViewModel.sharedDetail.realtorId = (item as Realtor).realtorId
+        buildExposedDropdownMenu(binding.realtorAutoComplete, mutableListOf()) { realtor ->
+            sharedViewModel.sharedDetail.realtorId = (realtor as Realtor).realtorId
         }
         if (arguments?.let { AddDetailFragmentArgs.fromBundle(it).editMode } == true) {
             binding.createOrUpdatePropertyButton.text = getString(R.string.update)
@@ -230,7 +229,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
 
     private fun buildAddPointOfInterestDialog(
         functionOnClickAddButton: (
-            name: String,
+            pointsOfInterestType: PointOfInterestType?,
             zipCode: String?,
             city: String?,
             roadName: String?,
@@ -244,9 +243,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             create()
         }
 
-        dialogBinding.nameEditText.doAfterTextChanged {
-            dialogBinding.addButton.isEnabled =
-                dialogBinding.nameEditText.text.toString().isNotEmpty()
+        buildExposedDropdownMenu(
+            dialogBinding.pointsOfInterestTypeAutoComplete,
+            PointOfInterestType.values().toMutableList()
+        ) { pointOfInterestType ->
+            dialogBinding.addButton.isEnabled = pointOfInterestType != null
             updateButtonColor(dialogBinding.addButton)
         }
 
@@ -255,7 +256,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
 
         dialogBinding.addButton.setOnClickListener {
-            val name = dialogBinding.nameEditText.text.toString().trim()
+            val pointsOfInterestType = PointOfInterestType.valueOf(
+                dialogBinding.pointsOfInterestTypeAutoComplete.text.toString()
+                    .replace(" ", "_")
+                    .toUpperCase(Locale.ROOT)
+            )
             val zipCode = if (dialogBinding.zipCodeEditText.text?.isNotEmpty() == true)
                 dialogBinding.zipCodeEditText.text.toString().trim() else null
             val city = if (dialogBinding.cityEditText.text?.isNotEmpty() == true)
@@ -267,7 +272,14 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             val complement = if (dialogBinding.complementEditText.text?.isNotEmpty() == true)
                 dialogBinding.complementEditText.text.toString().trim() else null
 
-            functionOnClickAddButton(name, zipCode, city, roadName, number, complement)
+            functionOnClickAddButton(
+                pointsOfInterestType,
+                zipCode,
+                city,
+                roadName,
+                number,
+                complement
+            )
             dialog.dismiss()
         }
 
@@ -275,7 +287,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
     }
 
     private fun addPointOfInterest(
-        name: String,
+        pointsOfInterestType: PointOfInterestType?,
         zipCode: String?,
         city: String?,
         roadName: String?,
@@ -294,13 +306,15 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
             )
         } else null
 
-        sharedViewModel.sharedPointOfInterestList.add(
-            PointOfInterest(
-                detailId = sharedViewModel.sharedDetail.detailId,
-                name = name,
-                address = address
+        pointsOfInterestType?.let { type ->
+            sharedViewModel.sharedPointOfInterestList.add(
+                PointOfInterest(
+                    detailId = sharedViewModel.sharedDetail.detailId,
+                    pointOfInterestType = type,
+                    address = address
+                )
             )
-        )
+        }
 
         (binding.pointOfInterestRecyclerView.adapter as AddPointOfInterestListAdapter).notifyItemInserted(
             sharedViewModel.sharedPointOfInterestList.size
@@ -482,13 +496,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                     viewModel.insertPhoto(photo)
                 }
             }
-        sharedViewModel.liveProperty.value?.pointOfInterestList?.let { pointOfInterestList ->
-            for (pointOfInterest in pointOfInterestList) {
-                viewModel.deletePointOfInterest(pointOfInterest)
+        sharedViewModel.liveProperty.value?.detail?.detailId?.let { detailId ->
+            viewModel.deleteAllPointsOfInterest(detailId)
+            for (pointOfInterest in sharedViewModel.sharedPointOfInterestList) {
+                viewModel.insertPointOfInterest(pointOfInterest)
             }
-        }
-        for (pointOfInterest in sharedViewModel.sharedPointOfInterestList) {
-            viewModel.insertPointOfInterest(pointOfInterest)
         }
     }
 

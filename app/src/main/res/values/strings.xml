@@ -64,7 +64,7 @@
 
     <!-- dialog_add_point_of_interest.xml -->
     <string name="add_a_point_of_interest">Add a point of interest</string>
-    <string name="name">Name *</string>
+    <string name="points_of_interest_type">Type *</string>
 
     <!-- Navigation drawer -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

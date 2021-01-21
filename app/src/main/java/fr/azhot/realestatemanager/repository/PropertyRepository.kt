@@ -38,8 +38,8 @@ class PropertyRepository(
         pointOfInterestDao.insertPointOfInterest(pointOfInterest)
     }
 
-    suspend fun deletePointOfInterest(pointOfInterest: PointOfInterest) {
-        pointOfInterestDao.deletePointOfInterest(pointOfInterest)
+    suspend fun deleteAllPointsOfInterest(detailId: String) {
+        pointOfInterestDao.deleteAllPointsOfInterest(detailId)
     }
 
     fun getRealtorById(realtorId: String): Flow<Realtor> {

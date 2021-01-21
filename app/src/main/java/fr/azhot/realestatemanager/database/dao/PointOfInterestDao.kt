@@ -14,4 +14,7 @@ interface PointOfInterestDao {
 
     @Delete
     suspend fun deletePointOfInterest(pointOfInterest: PointOfInterest)
+
+    @Query("DELETE FROM point_of_interest_table WHERE detailId = :detailId")
+    suspend fun deleteAllPointsOfInterest(detailId: String)
 }

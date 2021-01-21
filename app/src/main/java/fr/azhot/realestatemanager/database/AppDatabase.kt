@@ -270,7 +270,8 @@ abstract class AppDatabase : RoomDatabase() {
                 pointOfInterestDao.insertPointOfInterest(
                     PointOfInterest(
                         detailId = detail.detailId,
-                        name = faker.address().cityName(),
+                        pointOfInterestType = PointOfInterestType.values()[faker.number()
+                            .numberBetween(0, 4)],
                         address = Address(
                             zipCode = faker.address().zipCode(),
                             city = faker.address().cityName(),

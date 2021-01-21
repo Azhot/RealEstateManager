@@ -41,8 +41,8 @@ class AddDetailFragmentViewModel(private val propertyRepository: PropertyReposit
         propertyRepository.insertPointOfInterest(pointOfInterest)
     }
 
-    fun deletePointOfInterest(pointOfInterest: PointOfInterest) = viewModelScope.launch(IO) {
-        propertyRepository.deletePointOfInterest(pointOfInterest)
+    fun deleteAllPointsOfInterest(detailId: String) = viewModelScope.launch(IO) {
+        propertyRepository.deleteAllPointsOfInterest(detailId)
     }
 
     fun insertRealtor(realtor: Realtor) = viewModelScope.launch(IO) {

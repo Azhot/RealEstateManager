@@ -159,7 +159,6 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
                     PointOfInterest(
                         pointOfInterestId = "",
                         detailId = "",
-                        name = getString(R.string.not_provided)
                     )
                 )
             }
