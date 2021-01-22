@@ -1,11 +1,13 @@
 package fr.azhot.realestatemanager.view.activity
 
+import android.Manifest
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -16,14 +18,22 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
+import com.google.android.material.navigation.NavigationView
+import fr.azhot.realestatemanager.NavGraphDirections
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
+import fr.azhot.realestatemanager.utils.RC_LOCATION_PERMISSIONS
+import fr.azhot.realestatemanager.utils.checkAndRequestPermissions
+import fr.azhot.realestatemanager.utils.checkPermissionsGranted
 import fr.azhot.realestatemanager.view.fragment.PropertyDetailFragmentDirections
 import fr.azhot.realestatemanager.view.fragment.PropertyListFragmentDirections
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 
 
-class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
+class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
+    NavigationView.OnNavigationItemSelectedListener {
 
 
     // variables
@@ -41,9 +51,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
         navController.addOnDestinationChangedListener(this)
+        binding.navView.setNavigationItemSelectedListener(this)
 
         // todo : map fragment : Si l'agent immobilier est connecté et géo-localisable, il peut afficher les biens sur une carte, afin de voir d'un coup d'œil les biens les plus proches de lui. Cette carte est dynamique : l'agent peut zoomer, dézoomer, se déplacer, et afficher le détail d'un bien en cliquant sur la punaise correspondante.
-        // todo : point of interest type ? (for search)
         // todo : loan simulator
         // todo : implement nav drawer
         // todo : add static map
@@ -121,6 +131,27 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
     }
 
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.map_view_fragment -> navigateToMap()
+        }
+        onBackPressed()
+        return true
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (checkPermissionsGranted(
+                RC_LOCATION_PERMISSIONS,
+                requestCode,
+                grantResults
+            )
+        ) navigateToMap()
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
 
     // functions
     private fun initVariables() {
@@ -150,5 +181,45 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             R.id.propertyDetailFragment -> PropertyDetailFragmentDirections.actionPropertyDetailFragmentToAddPhotoFragment()
             else -> null
         }?.let { navController.navigate(it) }
+    }
+
+    private fun navigateToMap() {
+        if (!isGoogleServicesOK()) {
+            return
+        }
+        if (checkAndRequestPermissions(
+                this,
+                RC_LOCATION_PERMISSIONS,
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            )
+        ) {
+            navController.navigate(NavGraphDirections.navigateToMapFragment())
+        }
+    }
+
+    private fun isGoogleServicesOK(): Boolean {
+        GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(this).run {
+            when {
+                this == ConnectionResult.SUCCESS -> {
+                    return true
+                }
+                (GoogleApiAvailability.getInstance().isUserResolvableError(this)) -> {
+                    GoogleApiAvailability.getInstance()
+                        .getErrorDialog(this@MainActivity, this, 9001).show() // todo constant
+                    return false
+                }
+                else -> {
+                    Toast.makeText(
+                        this@MainActivity,
+                        "You can't make map requests", // todo string resource
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    return false
+                }
+            }
+        }
     }
 }

@@ -1,12 +1,12 @@
 package fr.azhot.realestatemanager
 
-import android.app.Application
+import androidx.multidex.MultiDexApplication
 import fr.azhot.realestatemanager.database.AppDatabase
 import fr.azhot.realestatemanager.repository.PropertyRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 
-class RealEstateManagerApplication : Application() {
+class RealEstateManagerApplication : MultiDexApplication() {
 
     // variables
     private val applicationScope = CoroutineScope(SupervisorJob())

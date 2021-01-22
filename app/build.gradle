@@ -14,10 +14,14 @@ android {
         applicationId "fr.azhot.realestatemanager"
         minSdkVersion 19
         targetSdkVersion 30
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField "String", "GOOGLE_API_KEY", GOOGLE_API_KEY
+        resValue "string", "google_api_key", GOOGLE_API_KEY
     }
 
     buildFeatures{
@@ -47,6 +51,9 @@ android {
 }
 
 dependencies {
+
+    // Multidex
+    implementation 'com.android.support:multidex:1.0.3'
 
     // kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -85,6 +92,10 @@ dependencies {
 
     // javafaker
     implementation 'com.github.javafaker:javafaker:1.0.2'
+
+    // Google play sercices
+    implementation "com.google.android.gms:play-services-location:17.1.0"
+    implementation "com.google.android.gms:play-services-maps:17.0.0"
 
     // tests
     testImplementation 'junit:junit:4.13.1'

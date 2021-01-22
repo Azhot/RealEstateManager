@@ -5,7 +5,9 @@ import java.util.*
 enum class PointOfInterestType {
     SCHOOL,
     TRAIN_STATION,
-    SHOP,
+    BUSINESS,
+    MEDICAL,
+    PARK,
     POST_OFFICE;
 
     override fun toString(): String {

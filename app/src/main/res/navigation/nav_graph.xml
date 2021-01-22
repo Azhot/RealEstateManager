@@ -119,10 +119,26 @@
 
     </fragment>
 
+    <!-- Search Modal Fragment -->
     <dialog
         android:id="@+id/searchModalFragment"
         android:name="fr.azhot.realestatemanager.view.fragment.SearchModalFragment"
         android:label="@string/search_properties"
         tools:layout="@layout/fragment_search_modal" />
+
+    <!-- Map Fragment -->
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.MapFragment"
+        android:label="Map view"
+        tools:layout="@layout/fragment_map" />
+
+    <action
+        android:id="@+id/navigateToMapFragment"
+        app:destination="@id/mapFragment"
+        app:enterAnim="@anim/fade_in"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/fade_out" />
 
 </navigation>

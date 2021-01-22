@@ -271,7 +271,7 @@ abstract class AppDatabase : RoomDatabase() {
                     PointOfInterest(
                         detailId = detail.detailId,
                         pointOfInterestType = PointOfInterestType.values()[faker.number()
-                            .numberBetween(0, 4)],
+                            .numberBetween(0, PointOfInterestType.values().lastIndex)],
                         address = Address(
                             zipCode = faker.address().zipCode(),
                             city = faker.address().cityName(),

@@ -79,7 +79,14 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        selectPhoto()
+        if (checkPermissionsGranted(
+                RC_READ_EXTERNAL_STORAGE_PERMISSION,
+                requestCode,
+                grantResults
+            )
+        ) {
+            selectPhoto()
+        }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
