@@ -46,8 +46,8 @@
     <string name="description">Description</string>
     <string name="create">Create</string>
     <string name="update">Update</string>
-    <string name="new_property_created">New property created</string>
-    <string name="property_updated">Property updated</string>
+    <string name="new_property_created">New property created.</string>
+    <string name="property_updated">Property updated.</string>
     <string name="realtor_already_exists">%1$s already exists…</string>
 
     <!-- Add address fragment -->
@@ -90,5 +90,7 @@
     <string name="reset">Reset</string>
     <string name="apply">Apply</string>
     <string name="ok">OK</string>
+    <string name="cannot_make_map_requests">This device cannot make map requests.</string>
+    <string name="location_not_available">Location is not available… Check GPS settings.</string>
 
 </resources>

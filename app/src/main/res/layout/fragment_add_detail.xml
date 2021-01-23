@@ -141,7 +141,6 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- todo: background NOT rounded bottom -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/point_of_interest_constraint_layout"
                 android:layout_width="match_parent"

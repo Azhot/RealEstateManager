@@ -24,6 +24,7 @@ import com.google.android.material.navigation.NavigationView
 import fr.azhot.realestatemanager.NavGraphDirections
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
+import fr.azhot.realestatemanager.utils.RC_GOOGLE_SERVICES_DIALOG
 import fr.azhot.realestatemanager.utils.RC_LOCATION_PERMISSIONS
 import fr.azhot.realestatemanager.utils.checkAndRequestPermissions
 import fr.azhot.realestatemanager.utils.checkPermissionsGranted
@@ -53,14 +54,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
         binding.navView.setNavigationItemSelectedListener(this)
 
-        // todo : map fragment : Si l'agent immobilier est connecté et géo-localisable, il peut afficher les biens sur une carte, afin de voir d'un coup d'œil les biens les plus proches de lui. Cette carte est dynamique : l'agent peut zoomer, dézoomer, se déplacer, et afficher le détail d'un bien en cliquant sur la punaise correspondante.
+        // todo : toggle should change to a back arrow on all fragments but ListViewFragment
         // todo : loan simulator
-        // todo : implement nav drawer
         // todo : add static map
         // todo : integration test for network verification
         // todo : content provider
 
-        val toggle = ActionBarDrawerToggle(
+        val toggle = ActionBarDrawerToggle( // todo : in a method
             this,
             binding.drawerLayout,
             binding.toolbar,
@@ -187,6 +187,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         if (!isGoogleServicesOK()) {
             return
         }
+        // todo : check user connection available or else snackBar user and return
         if (checkAndRequestPermissions(
                 this,
                 RC_LOCATION_PERMISSIONS,
@@ -206,15 +207,16 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 this == ConnectionResult.SUCCESS -> {
                     return true
                 }
-                (GoogleApiAvailability.getInstance().isUserResolvableError(this)) -> {
+                GoogleApiAvailability.getInstance().isUserResolvableError(this) -> {
                     GoogleApiAvailability.getInstance()
-                        .getErrorDialog(this@MainActivity, this, 9001).show() // todo constant
+                        .getErrorDialog(this@MainActivity, this, RC_GOOGLE_SERVICES_DIALOG)
+                        .show()
                     return false
                 }
                 else -> {
                     Toast.makeText(
                         this@MainActivity,
-                        "You can't make map requests", // todo string resource
+                        getString(R.string.cannot_make_map_requests),
                         Toast.LENGTH_SHORT
                     ).show()
                     return false

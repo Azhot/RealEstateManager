@@ -1,26 +1,40 @@
 package fr.azhot.realestatemanager.view.fragment
 
 import android.Manifest
+import android.location.Geocoder
 import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.android.gms.maps.model.*
+import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import fr.azhot.realestatemanager.R
+import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentMapBinding
+import fr.azhot.realestatemanager.model.Property
 import fr.azhot.realestatemanager.utils.*
+import fr.azhot.realestatemanager.viewmodel.MapFragmentViewModel
+import fr.azhot.realestatemanager.viewmodel.MapFragmentViewModelFactory
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 
 
 class MapFragment : Fragment(), OnMapReadyCallback {
@@ -33,6 +47,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var locationCallback: LocationCallback? = null
     private var deviceLocation: Location? = null
+    private val viewModel: MapFragmentViewModel by viewModels {
+        MapFragmentViewModelFactory(
+            (activity?.application as RealEstateManagerApplication).propertyRepository
+        )
+    }
 
 
     // overridden functions
@@ -66,6 +85,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
             checkLocationPermission()
         }
         getDeviceLocationUpdates()
+        observePropertyList()
     }
 
     override fun onPause() {
@@ -121,20 +141,26 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                     } else {
                         googleMap.isMyLocationEnabled = false
                         deviceLocation = null
-                        Toast.makeText(
-                            context,
-                            "Device Location is not available. Please check GPS settings.", // todo: string resource
-                            Toast.LENGTH_SHORT
-                        ).show()
+
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.location_not_available),
+                            LENGTH_SHORT
+                        ).run {
+                            setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+                            show()
+                        }
                     }
                 }
             }
         }
 
-        fusedLocationProviderClient =
-            LocationServices.getFusedLocationProviderClient(requireActivity()).apply {
-                requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
-            }
+        activity?.let { activity ->
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity)
+                .apply {
+                    requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper())
+                }
+        }
     }
 
     private fun moveCameraTo(location: Location) {
@@ -144,5 +170,58 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 DEFAULT_ZOOM
             )
         )
+    }
+
+    private fun observePropertyList() {
+        viewModel.getPropertyList().observe(viewLifecycleOwner) { propertyList ->
+            googleMap.clear()
+            CoroutineScope(IO).launch {
+                for (property in propertyList) {
+                    runCatching {
+                        Geocoder(context).getFromLocationName(property.address.toString(), 1)
+                            .run address@{
+                                if (this.isNotEmpty()) {
+                                    launch(Main) {
+                                        addMarker(
+                                            property,
+                                            LatLng(
+                                                this@address[0].latitude,
+                                                this@address[0].longitude
+                                            )
+                                        )
+                                    }
+                                }
+                            }
+                    }.run {
+                        this.exceptionOrNull()?.let { throwable ->
+                            Log.e(
+                                this@MapFragment::class.simpleName,
+                                "observePropertyList",
+                                throwable
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun addMarker(property: Property, latLng: LatLng) {
+        createBitmapWithGlide(
+            Glide.with(this@MapFragment),
+            RequestOptions().override(MAP_PHOTO_WIDTH, MAP_PHOTO_HEIGHT).circleCrop(),
+            Uri.parse(property.photoList[0].uri)
+        ) { bitmap ->
+            MarkerOptions().apply {
+                title(property.detail.propertyType?.toString() ?: getString(R.string.not_provided))
+                snippet(
+                    if (property.address.toString().isNotEmpty()) property.address.toString()
+                    else getString(R.string.not_provided)
+                )
+                icon(BitmapDescriptorFactory.fromBitmap(bitmap))
+                position(latLng)
+                googleMap.addMarker(this)
+            }
+        }
     }
 }

@@ -194,22 +194,22 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
             viewModel.apply {
                 getPriceBounds().observe(viewLifecycleOwner) { minMax ->
                     binding.priceRangeSlider.apply {
-                        minMax.min?.let { valueFrom = roundIntLower(it, stepSize) }
-                        minMax.max?.let { valueTo = roundIntUpper(it, stepSize) }
+                        valueFrom = roundIntLower(minMax.min, stepSize)
+                        valueTo = roundIntUpper(minMax.max, stepSize)
                         values = priceRange ?: listOf(valueFrom, valueTo)
                     }
                 }
                 getSquareMetersBounds().observe(viewLifecycleOwner) { minMax ->
                     binding.squareMetersRangeSlider.apply {
-                        minMax.min?.let { valueFrom = roundIntLower(it, stepSize) }
-                        minMax.max?.let { valueTo = roundIntUpper(it, stepSize) }
+                        valueFrom = roundIntLower(minMax.min, stepSize)
+                        valueTo = roundIntUpper(minMax.max, stepSize)
                         values = squareMetersRange ?: listOf(valueFrom, valueTo)
                     }
                 }
                 getRoomsBounds().observe(viewLifecycleOwner) { minMax ->
                     binding.roomsRangeSlider.apply {
-                        minMax.min?.let { valueFrom = roundIntLower(it, stepSize) }
-                        minMax.max?.let { valueTo = roundIntUpper(it, stepSize) }
+                        valueFrom = roundIntLower(minMax.min, stepSize)
+                        valueTo = roundIntUpper(minMax.max, stepSize)
                         values = roomsRange ?: listOf(valueFrom, valueTo)
                     }
                 }

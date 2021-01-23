@@ -376,8 +376,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                         if (item.toString() == realtor.toString()) {
                             makeSnackBar(
                                 binding.root,
-                                getString(R.string.realtor_already_exists, item),
-                                requireContext()
+                                getString(R.string.realtor_already_exists, item)
                             )
                             return
                         }
@@ -390,10 +389,11 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
         }
     }
 
-    private fun makeSnackBar(view: View, string: String, context: Context) {
-        Snackbar.make(view, string, Snackbar.LENGTH_SHORT)
-            .setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
-            .show()
+    private fun makeSnackBar(view: View, string: String) {
+        Snackbar.make(view, string, Snackbar.LENGTH_SHORT).run {
+            setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
+            show()
+        }
     }
 
     private fun buildEntryDatePicker() {
@@ -437,8 +437,7 @@ class AddDetailFragment : Fragment(), View.OnClickListener,
                 makeSnackBar(
                     binding.root,
                     if (editMode) getString(R.string.property_updated) else
-                        getString(R.string.new_property_created),
-                    requireContext()
+                        getString(R.string.new_property_created)
                 )
                 sharedViewModel.resetNewPropertyData()
                 navigateNext()

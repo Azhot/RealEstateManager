@@ -46,3 +46,35 @@ fun createBitmapWithGlide(
             override fun onLoadCleared(placeholder: Drawable?) {}
         })
 }
+
+/**
+ * Creates a [Bitmap] object from an [Uri] then making possible to do some additional work with
+ * this object through the [doSomethingWithBitmap] function.
+ *
+ * @param glide The [RequestManager] to be used
+ * @param requestOptions The [RequestOptions] to be used
+ * @param uri The [Uri] referencing the source to be decoded as a [Bitmap]
+ * @param doSomethingWithBitmap The function which will take the [Bitmap] as an argument to do
+ * some additional work with it.
+ */
+fun createBitmapWithGlide(
+    glide: RequestManager,
+    requestOptions: RequestOptions,
+    uri: Uri,
+    doSomethingWithBitmap: (Bitmap) -> Unit
+) {
+    glide
+        .asBitmap()
+        .apply(requestOptions)
+        .load(uri)
+        .into(object : CustomTarget<Bitmap>() {
+            override fun onResourceReady(
+                resource: Bitmap,
+                transition: Transition<in Bitmap>?
+            ) {
+                doSomethingWithBitmap(resource)
+            }
+
+            override fun onLoadCleared(placeholder: Drawable?) {}
+        })
+}
