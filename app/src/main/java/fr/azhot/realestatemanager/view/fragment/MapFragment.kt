@@ -1,6 +1,7 @@
 package fr.azhot.realestatemanager.view.fragment
 
 import android.Manifest
+import android.content.Context
 import android.location.Geocoder
 import android.location.Location
 import android.net.Uri
@@ -175,10 +176,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun observePropertyList() {
         viewModel.getPropertyList().observe(viewLifecycleOwner) { propertyList ->
             googleMap.clear()
+            val geocoder = Geocoder(context)
             CoroutineScope(IO).launch {
                 for (property in propertyList) {
                     runCatching {
-                        Geocoder(context).getFromLocationName(property.address.toString(), 1)
+                        geocoder.getFromLocationName(property.address.toString(), 1)
                             .run address@{
                                 if (this.isNotEmpty()) {
                                     launch(Main) {
@@ -187,7 +189,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                                             LatLng(
                                                 this@address[0].latitude,
                                                 this@address[0].longitude
-                                            )
+                                            ),
+                                            context
                                         )
                                     }
                                 }
@@ -206,9 +209,10 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         }
     }
 
-    private fun addMarker(property: Property, latLng: LatLng) {
+    private fun addMarker(property: Property, latLng: LatLng, context: Context?) {
+        if (context == null) return
         createBitmapWithGlide(
-            Glide.with(this@MapFragment),
+            Glide.with(context),
             RequestOptions().override(MAP_PHOTO_WIDTH, MAP_PHOTO_HEIGHT).circleCrop(),
             Uri.parse(property.photoList[0].uri)
         ) { bitmap ->
