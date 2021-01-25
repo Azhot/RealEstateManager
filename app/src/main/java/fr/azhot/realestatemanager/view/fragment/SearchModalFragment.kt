@@ -13,6 +13,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -25,6 +26,7 @@ import fr.azhot.realestatemanager.model.PropertyType
 import fr.azhot.realestatemanager.model.Realtor
 import fr.azhot.realestatemanager.utils.*
 import fr.azhot.realestatemanager.view.adapter.ExposedDropdownMenuAdapter
+import fr.azhot.realestatemanager.view.adapter.PoiTypeListAdapter
 import fr.azhot.realestatemanager.viewmodel.SearchModalFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.SearchModalFragmentViewModelFactory
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
@@ -32,7 +34,8 @@ import java.text.NumberFormat
 import java.util.*
 
 
-class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
+    PoiTypeListAdapter.PoiCheckboxListener {
 
     // variables
     private lateinit var binding: FragmentSearchModalBinding
@@ -82,6 +85,16 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
             setUpDateRangePickerButton(binding.saleDateButton, propertySearch.saleDateRange)
             setUpListeners(propertySearch)
         }
+
+        binding.poiTypeFilterRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = PoiTypeListAdapter(
+                PointOfInterestType.values(),
+                sharedViewModel.livePropertySearch.value?.poiTypeList,
+                this@SearchModalFragment
+            )
+        }
+
         observeCityList()
         observeRealtorList()
         setUpButtons()
@@ -123,6 +136,16 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
         }
     }
 
+    override fun onPoiCheckboxListener(poiType: PointOfInterestType, isChecked: Boolean) {
+        sharedViewModel.livePropertySearch.value?.apply {
+            if (poiTypeList == null) poiTypeList = mutableListOf()
+            if (isChecked) poiTypeList?.add(poiType)
+            else poiTypeList?.remove(poiType)
+            if (poiTypeList?.isEmpty() == true) poiTypeList = null
+        }
+        sharedViewModel.livePropertySearch.forceRefresh()
+    }
+
     //functions
     private fun setUpExposedDropdownMenus(propertySearch: PropertySearch) {
         setUpExposedDropdownMenu(
@@ -138,14 +161,6 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
             propertySearch.city,
         ) { item ->
             sharedViewModel.livePropertySearch.value?.city = item as String
-        }
-        setUpExposedDropdownMenu(
-            binding.poiFilterAutoComplete,
-            PointOfInterestType.values().toMutableList(),
-            propertySearch.pointOfInterestType?.toString(),
-        ) { item ->
-            sharedViewModel.livePropertySearch.value?.pointOfInterestType =
-                item as PointOfInterestType
         }
         setUpExposedDropdownMenu(
             binding.realtorFilterAutoComplete,
@@ -251,10 +266,6 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     photosSlider.apply { value = valueFrom }
                     entryDateButton.text = getString(R.string.entry_date_range)
                     saleDateButton.text = getString(R.string.sale_date_range)
-                    poiFilterAutoComplete.apply {
-                        setText(null, false)
-                        clearFocus()
-                    }
                     realtorFilterAutoComplete.apply {
                         setText(null, false)
                         clearFocus()

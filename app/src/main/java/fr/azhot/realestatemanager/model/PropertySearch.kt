@@ -16,7 +16,7 @@ class PropertySearch(
     var photoListSize: Float? = null,
     var entryDateRange: Pair<Long, Long>? = null,
     var saleDateRange: Pair<Long, Long>? = null,
-    var pointOfInterestTypeList: List<PointOfInterestType>? = null,
+    var poiTypeList: MutableList<PointOfInterestType>? = null,
     var realtor: Realtor? = null,
 ) {
 
@@ -29,7 +29,7 @@ class PropertySearch(
                 || photoListSize != null
                 || entryDateRange != null
                 || saleDateRange != null
-                || pointOfInterestTypeList != null
+                || poiTypeList != null
                 || realtor != null
     }
 
@@ -42,7 +42,7 @@ class PropertySearch(
         photoListSize = null
         entryDateRange = null
         saleDateRange = null
-        pointOfInterestTypeList = null
+        poiTypeList = null
         realtor = null
     }
 
@@ -145,12 +145,13 @@ class PropertySearch(
                     )
                 )
             }
-            if (pointOfInterestTypeList != null) {
+            if (poiTypeList != null) {
                 append("\n")
                 append(context.getString(R.string.points_of_interest))
                 append(": ")
-                for (poi in pointOfInterestTypeList!!) {
-                    append("${poi}, ")
+                for (i in 0..poiTypeList!!.lastIndex) {
+                    append("${poiTypeList?.get(i)}")
+                    if (i != poiTypeList!!.lastIndex) append(", ")
                 }
             }
             if (realtor != null) {

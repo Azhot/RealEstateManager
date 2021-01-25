@@ -6,9 +6,7 @@ enum class PointOfInterestType {
     SCHOOL,
     TRAIN_STATION,
     BUSINESS,
-    MEDICAL,
-    PARK,
-    POST_OFFICE;
+    PARK;
 
     override fun toString(): String {
         return super.toString()

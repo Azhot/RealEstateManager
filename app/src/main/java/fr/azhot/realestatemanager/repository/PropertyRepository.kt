@@ -97,7 +97,7 @@ class PropertyRepository(
                     append("AND d.saleTimeStamp >= '${it.first}' ")
                     append("AND d.saleTimeStamp <= '${it.second}' ")
                 }
-                pointOfInterestTypeList?.let {
+                poiTypeList?.let {
                     if (it.isNotEmpty()) {
                         append("AND poi.detailId IN (")
                         append(

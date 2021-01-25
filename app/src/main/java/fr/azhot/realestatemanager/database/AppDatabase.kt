@@ -139,7 +139,8 @@ abstract class AppDatabase : RoomDatabase() {
             )
 
             val detail = Detail(
-                propertyType = PropertyType.values()[faker.number().numberBetween(0, 4)],
+                propertyType = PropertyType.values()[faker.number()
+                    .numberBetween(0, PropertyType.values().size)],
                 price = roundIntUpper(
                     faker.number().numberBetween(500000, 2500001),
                     10000F
@@ -266,12 +267,12 @@ abstract class AppDatabase : RoomDatabase() {
                 photoDao.insertPhoto(photoList[faker.number().numberBetween(0, photoList.size)])
             }
 
-            repeat(faker.number().numberBetween(0, 7)) {
+            repeat(faker.number().numberBetween(0, 6)) {
                 pointOfInterestDao.insertPointOfInterest(
                     PointOfInterest(
                         detailId = detail.detailId,
                         pointOfInterestType = PointOfInterestType.values()[faker.number()
-                            .numberBetween(0, PointOfInterestType.values().lastIndex)],
+                            .numberBetween(0, PointOfInterestType.values().size)],
                         address = Address(
                             zipCode = faker.address().zipCode(),
                             city = faker.address().cityName(),
