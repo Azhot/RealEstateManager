@@ -16,6 +16,6 @@ interface AddressDao {
     @Delete
     suspend fun deleteAddress(address: Address)
 
-    @Query("SELECT DISTINCT city FROM address_table")
+    @Query("SELECT DISTINCT city FROM address_table WHERE city IS NOT NULL")
     fun getCityList(): Flow<List<String>>
 }
