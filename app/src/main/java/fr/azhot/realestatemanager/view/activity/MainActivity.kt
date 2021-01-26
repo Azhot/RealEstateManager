@@ -13,6 +13,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     private lateinit var binding: ActivityMainBinding
     private lateinit var menu: Menu
     private lateinit var navController: NavController
+    private lateinit var toggle: ActionBarDrawerToggle
     private val sharedViewModel: SharedViewModel by viewModels()
 
 
@@ -51,38 +53,30 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         observeLiveProperty()
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
+        setUpDrawerToggle()
         navController.addOnDestinationChangedListener(this)
         binding.navView.setNavigationItemSelectedListener(this)
-
-        // todo : toggle should change to a back arrow on all fragments but ListViewFragment
+        // todo : bottom nav should be list view and map view
+        // todo : remove map from nav drawer
+        // todo : content provider
         // todo : loan simulator
         // todo : add static map
         // todo : integration test for network verification
         // todo : content provider
-
-        val toggle = ActionBarDrawerToggle( // todo : in a method
-            this,
-            binding.drawerLayout,
-            binding.toolbar,
-            R.string.navigation_drawer_open,
-            R.string.navigation_drawer_close
-        )
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
     }
 
     override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        if (binding.root.isDrawerOpen(GravityCompat.START)) {
+            binding.root.closeDrawer(GravityCompat.START)
             return
         }
         super.onBackPressed()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menu?.let {
-            it.clear()
-            this.menu = it
+    override fun onCreateOptionsMenu(m: Menu?): Boolean {
+        m?.let { menu ->
+            menu.clear()
+            this.menu = menu
             menuInflater.inflate(
                 when (navController.currentDestination?.id) {
                     R.id.propertyListFragment -> R.menu.property_list_menu
@@ -118,15 +112,29 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             R.id.propertyListFragment -> {
                 toolbarTitle.typeface =
                     ResourcesCompat.getFont(this, R.font.robotocondensed_regular)
-                binding.bottomNavigation?.visibility = VISIBLE
-            }
-            R.id.propertyDetailFragment, R.id.searchModalFragment -> {
-                toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.robotocondensed_light)
+                binding.root.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                supportActionBar?.setDisplayHomeAsUpEnabled(false)
+                toggle.apply {
+                    isDrawerIndicatorEnabled = true
+                    toolbarNavigationClickListener = null
+                }
                 binding.bottomNavigation?.visibility = VISIBLE
             }
             else -> {
                 toolbarTitle.typeface = ResourcesCompat.getFont(this, R.font.robotocondensed_light)
-                binding.bottomNavigation?.visibility = GONE
+                binding.root.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                toggle.apply {
+                    isDrawerIndicatorEnabled = false
+                    setToolbarNavigationClickListener { onBackPressed() }
+                }
+                supportActionBar?.apply {
+                    setDisplayHomeAsUpEnabled(true)
+                    setHomeButtonEnabled(true)
+                }
+                binding.bottomNavigation?.visibility = when (destination.id) {
+                    R.id.propertyDetailFragment, R.id.searchModalFragment -> VISIBLE
+                    else -> GONE
+                }
             }
         }
     }
@@ -153,14 +161,18 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+
     // functions
     private fun initVariables() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val navHostFragment =
             supportFragmentManager.findFragmentById(binding.mainContainerView.id) as NavHostFragment
         navController = navHostFragment.findNavController()
-        binding.bottomNavigation?.let { NavigationUI.setupWithNavController(it, navController) }
-        binding.bottomNavigation?.menu?.findItem(R.id.propertyDetailFragment)?.isVisible = false
+        binding.bottomNavigation?.let { botNavView ->
+            NavigationUI.setupWithNavController(botNavView, navController)
+            botNavView.menu.findItem(R.id.propertyDetailFragment).isVisible =
+                false // todo : to be removed
+        }
     }
 
     private fun observeLiveProperty() {
@@ -173,6 +185,18 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 }
             }
         }
+    }
+
+    private fun setUpDrawerToggle() {
+        toggle = ActionBarDrawerToggle(
+            this,
+            binding.root,
+            binding.toolbar,
+            R.string.navigation_drawer_open,
+            R.string.navigation_drawer_close
+        )
+        binding.root.addDrawerListener(toggle)
+        toggle.syncState()
     }
 
     private fun startAddNewProperty() {
