@@ -204,51 +204,32 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/entry_date_button" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/poi_type_filter_constraint_layout"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/poi_type_filter_input_layout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="48dp"
             android:layout_marginTop="@dimen/average_margin"
             android:layout_marginEnd="48dp"
-            android:paddingBottom="@dimen/average_padding"
-            android:background="@drawable/ic_background_poi"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:textColor="@color/darkText"
+            android:textColorHint="@color/darkText"
+            app:boxBackgroundColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/sale_date_button">
+            app:layout_constraintTop_toBottomOf="@id/sale_date_button"
+            app:startIconDrawable="@drawable/ic_realtor_24"
+            app:startIconTint="@color/primaryLightColor">
 
-            <TextView
-                android:id="@+id/poi_type_filter_text_view"
+            <AutoCompleteTextView
+                android:id="@+id/poi_type_filter_auto_complete"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:drawablePadding="18dp"
-                android:gravity="center_vertical"
-                android:padding="13dp"
-                android:text="@string/poi_type_filter"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                android:textColor="@color/darkText"
-                android:textSize="16sp"
-                app:drawableStartCompat="@drawable/ic_address_24"
-                app:drawableTint="@color/primaryLightColor"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:hint="@string/poi_type_filter"
+                android:inputType="none"
+                android:textColor="@color/darkText" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/poi_type_filter_recycler_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/large_margin"
-                android:layout_marginEnd="@dimen/average_margin"
-                android:overScrollMode="never"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/poi_type_filter_text_view"
-                tools:itemCount="3"
-                tools:listitem="@layout/cell_poi_type" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/realtor_filter_input_layout"
@@ -263,7 +244,7 @@
             app:boxBackgroundColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/poi_type_filter_constraint_layout"
+            app:layout_constraintTop_toBottomOf="@id/poi_type_filter_input_layout"
             app:startIconDrawable="@drawable/ic_realtor_24"
             app:startIconTint="@color/primaryLightColor">
 

@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/average_margin"
         android:layout_marginEnd="@dimen/average_margin"
         android:background="@drawable/ic_background_filter"
-        android:drawablePadding="@dimen/average_padding"
+        android:drawablePadding="@dimen/large_padding"
         android:padding="@dimen/average_padding"
         android:textAllCaps="false"
         android:textColor="@color/gray"

@@ -5,28 +5,24 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AutoCompleteTextView
-import android.widget.Button
-import android.widget.FrameLayout
+import android.widget.*
 import androidx.core.util.Pair
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.LiveData
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.google.android.material.slider.RangeSlider
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentSearchModalBinding
-import fr.azhot.realestatemanager.model.PointOfInterestType
-import fr.azhot.realestatemanager.model.PropertySearch
-import fr.azhot.realestatemanager.model.PropertyType
-import fr.azhot.realestatemanager.model.Realtor
+import fr.azhot.realestatemanager.model.*
 import fr.azhot.realestatemanager.utils.*
+import fr.azhot.realestatemanager.view.adapter.CheckBoxDropdownAdapter
 import fr.azhot.realestatemanager.view.adapter.ExposedDropdownMenuAdapter
-import fr.azhot.realestatemanager.view.adapter.PoiTypeListAdapter
 import fr.azhot.realestatemanager.viewmodel.SearchModalFragmentViewModel
 import fr.azhot.realestatemanager.viewmodel.SearchModalFragmentViewModelFactory
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
@@ -34,8 +30,7 @@ import java.text.NumberFormat
 import java.util.*
 
 
-class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
-    PoiTypeListAdapter.PoiCheckboxListener {
+class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
 
     // variables
     private lateinit var binding: FragmentSearchModalBinding
@@ -86,14 +81,6 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
             setUpListeners(propertySearch)
         }
 
-        binding.poiTypeFilterRecyclerView.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = PoiTypeListAdapter(
-                PointOfInterestType.values(),
-                sharedViewModel.livePropertySearch.value?.poiTypeList,
-                this@SearchModalFragment
-            )
-        }
 
         observeCityList()
         observeRealtorList()
@@ -136,109 +123,139 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
         }
     }
 
-    override fun onPoiCheckboxListener(poiType: PointOfInterestType, isChecked: Boolean) {
-        sharedViewModel.livePropertySearch.value?.apply {
-            if (poiTypeList == null) poiTypeList = mutableListOf()
-            if (isChecked) poiTypeList?.add(poiType)
-            else poiTypeList?.remove(poiType)
-            if (poiTypeList?.isEmpty() == true) poiTypeList = null
+    //functions
+    private fun setUpExposedDropdownMenus(propertySearch: PropertySearch) {
+        binding.propertyTypeFilterAutoComplete.apply {
+            setAdapter(
+                ExposedDropdownMenuAdapter(
+                    context,
+                    R.layout.exposed_dropdown_menu_item,
+                    PropertyType.values().toMutableList()
+                )
+            )
+            propertySearch.propertyType?.let { setText(it.toString(), false) }
+        }
+
+        binding.cityFilterAutoComplete.apply {
+            setAdapter(
+                ExposedDropdownMenuAdapter(
+                    context,
+                    R.layout.exposed_dropdown_menu_item,
+                    mutableListOf()
+                )
+            )
+            setText(propertySearch.city, false)
+        }
+
+        binding.poiTypeFilterAutoComplete.apply {
+            sharedViewModel.livePropertySearch.value?.poiTypeList?.let {
+                setText(listToText(it), false)
+            }
+            setAdapter(
+                CheckBoxDropdownAdapter(
+                    requireContext(),
+                    R.layout.cell_poi_type,
+                    PointOfInterestType.values().toMutableList(),
+                    sharedViewModel.livePropertySearch.value?.poiTypeList,
+                    object : CheckBoxDropdownAdapter.ItemCheckListener {
+                        override fun onItemCheckListener(isChecked: Boolean, item: Any?) {
+                            onPoiTypeChecked(isChecked, item)
+                        }
+                    })
+            )
+        }
+
+        binding.realtorFilterAutoComplete.apply {
+            setAdapter(
+                ExposedDropdownMenuAdapter(
+                    context,
+                    R.layout.exposed_dropdown_menu_item,
+                    mutableListOf()
+                )
+            )
+            propertySearch.realtor?.let { setText(it.toString(), false) }
+        }
+    }
+
+    private fun onPoiTypeChecked(isChecked: Boolean, item: Any?) {
+        if (sharedViewModel.livePropertySearch.value?.poiTypeList == null)
+            sharedViewModel.livePropertySearch.value?.poiTypeList = mutableListOf()
+        sharedViewModel.livePropertySearch.value?.poiTypeList?.apply list@{
+            item as PointOfInterestType
+            if (isChecked && !this.contains(item)) this.add(item) else this.remove(item)
+            if (this.isEmpty()) {
+                sharedViewModel.livePropertySearch.value?.poiTypeList = null
+                binding.poiTypeFilterAutoComplete.setText(null, false)
+                binding.poiTypeFilterAutoComplete.clearFocus()
+            } else {
+                binding.poiTypeFilterAutoComplete.setText(listToText(this@list), false)
+            }
         }
         sharedViewModel.livePropertySearch.forceRefresh()
     }
 
-    //functions
-    private fun setUpExposedDropdownMenus(propertySearch: PropertySearch) {
-        setUpExposedDropdownMenu(
-            binding.propertyTypeFilterAutoComplete,
-            PropertyType.values().toMutableList(),
-            propertySearch.propertyType?.toString(),
-        ) { item ->
-            sharedViewModel.livePropertySearch.value?.propertyType = item as PropertyType
-        }
-        setUpExposedDropdownMenu(
-            binding.cityFilterAutoComplete,
-            mutableListOf(),
-            propertySearch.city,
-        ) { item ->
-            sharedViewModel.livePropertySearch.value?.city = item as String
-        }
-        setUpExposedDropdownMenu(
-            binding.realtorFilterAutoComplete,
-            mutableListOf(),
-            propertySearch.realtor?.toString()
-        ) { item ->
-            sharedViewModel.livePropertySearch.value?.realtor = item as Realtor
-        }
-    }
-
-    private fun setUpExposedDropdownMenu(
-        autoCompleteTextView: AutoCompleteTextView,
-        mutableList: MutableList<Any>,
-        existingData: String?,
-        functionToCall: (any: Any?) -> (Unit)
-    ) {
-        autoCompleteTextView.apply {
-            val adapter = ExposedDropdownMenuAdapter(
-                requireContext(),
-                R.layout.exposed_dropdown_menu_item,
-                mutableList
-            )
-            setAdapter(adapter)
-            existingData?.let { setText(it, false) }
-            setOnItemClickListener { _, _, position, _ ->
-                functionToCall(adapter.getItem(position))
-                sharedViewModel.livePropertySearch.forceRefresh()
+    private fun listToText(list: MutableList<*>): String {
+        StringBuilder().apply {
+            for (i in 0..list.lastIndex) {
+                append("${list[i]}")
+                if (i != list.lastIndex && list.isNotEmpty()) append(", ")
             }
+            return toString()
         }
     }
 
     private fun setUpSliders(propertySearch: PropertySearch) {
-        setUpSlidersBounds(propertySearch)
+        setUpSliderBounds(
+            binding.priceRangeSlider,
+            viewModel.getPriceBounds(),
+            propertySearch.priceRange,
+        )
 
-        // format label
         binding.priceRangeSlider.setLabelFormatter { value ->
             NumberFormat.getCurrencyInstance(Locale.US).run {
                 maximumFractionDigits = 0
                 format(value.toDouble())
             }
         }
-    }
 
-    private fun setUpSlidersBounds(propertySearch: PropertySearch) {
-        propertySearch.run {
-            viewModel.apply {
-                getPriceBounds().observe(viewLifecycleOwner) { minMax ->
-                    binding.priceRangeSlider.apply {
-                        valueFrom = roundIntLower(minMax.min, stepSize)
-                        valueTo = roundIntUpper(minMax.max, stepSize)
-                        values = priceRange ?: listOf(valueFrom, valueTo)
-                    }
-                }
-                getSquareMetersBounds().observe(viewLifecycleOwner) { minMax ->
-                    binding.squareMetersRangeSlider.apply {
-                        valueFrom = roundIntLower(minMax.min, stepSize)
-                        valueTo = roundIntUpper(minMax.max, stepSize)
-                        values = squareMetersRange ?: listOf(valueFrom, valueTo)
-                    }
-                }
-                getRoomsBounds().observe(viewLifecycleOwner) { minMax ->
-                    binding.roomsRangeSlider.apply {
-                        valueFrom = roundIntLower(minMax.min, stepSize)
-                        valueTo = roundIntUpper(minMax.max, stepSize)
-                        values = roomsRange ?: listOf(valueFrom, valueTo)
-                    }
-                }
-                getPhotoListMax().observe(viewLifecycleOwner) { max ->
-                    binding.photosSlider.apply {
-                        max?.let { valueTo = max.toFloat() }
-                        value = photoListSize ?: valueFrom
-                    }
-                }
+        setUpSliderBounds(
+            binding.roomsRangeSlider,
+            viewModel.getRoomsBounds(),
+            propertySearch.roomsRange,
+        )
+
+        setUpSliderBounds(
+            binding.squareMetersRangeSlider,
+            viewModel.getSquareMetersBounds(),
+            propertySearch.squareMetersRange,
+        )
+
+        viewModel.getPhotoListMax().observe(viewLifecycleOwner) { max ->
+            binding.photosSlider.apply {
+                max?.let { valueTo = max.toFloat() }
+                value = propertySearch.photoListSize ?: valueFrom
             }
         }
     }
 
-    private fun setUpDateRangePickerButton(button: Button, dateRange: Pair<Long, Long>?) {
+    private fun setUpSliderBounds(
+        slider: RangeSlider,
+        bounds: LiveData<MinMax>,
+        existingData: List<Float>?,
+    ) {
+        bounds.observe(viewLifecycleOwner) { minMax ->
+            slider.apply {
+                valueFrom = roundIntLower(minMax.min, stepSize)
+                valueTo = roundIntUpper(minMax.max, stepSize)
+                values = existingData ?: listOf(valueFrom, valueTo)
+            }
+        }
+    }
+
+    private fun setUpDateRangePickerButton(
+        button: Button,
+        dateRange: Pair<Long, Long>?
+    ) {
         dateRange?.let { range ->
             button.text = getString(
                 R.string.range_result,
@@ -266,6 +283,10 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
                     photosSlider.apply { value = valueFrom }
                     entryDateButton.text = getString(R.string.entry_date_range)
                     saleDateButton.text = getString(R.string.sale_date_range)
+                    poiTypeFilterAutoComplete.apply {
+                        setText(null, false)
+                        clearFocus()
+                    }
                     realtorFilterAutoComplete.apply {
                         setText(null, false)
                         clearFocus()
@@ -284,6 +305,15 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
 
     private fun setUpListeners(propertySearch: PropertySearch) {
         binding.apply {
+            propertyTypeFilterAutoComplete.setOnItemClickListener { _, _, position, _ ->
+                propertySearch.propertyType =
+                    propertyTypeFilterAutoComplete.adapter.getItem(position) as PropertyType
+                sharedViewModel.livePropertySearch.forceRefresh()
+            }
+            cityFilterAutoComplete.setOnItemClickListener { _, _, position, _ ->
+                propertySearch.city = cityFilterAutoComplete.adapter.getItem(position) as String
+                sharedViewModel.livePropertySearch.forceRefresh()
+            }
             priceRangeSlider.addOnChangeListener { slider, _, _ ->
                 propertySearch.priceRange =
                     if (slider.values.containsAll(listOf(slider.valueFrom, slider.valueTo))) null
@@ -308,6 +338,11 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
             }
             entryDateButton.setOnClickListener(this@SearchModalFragment)
             saleDateButton.setOnClickListener(this@SearchModalFragment)
+            realtorFilterAutoComplete.setOnItemClickListener { _, _, position, _ ->
+                propertySearch.realtor =
+                    realtorFilterAutoComplete.adapter.getItem(position) as Realtor
+                sharedViewModel.livePropertySearch.forceRefresh()
+            }
         }
     }
 
