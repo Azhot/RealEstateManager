@@ -14,5 +14,12 @@
         android:orderInCategory="2"
         android:title="@string/property_detail"
         app:iconTint="@color/primaryColor" />
+    <item
+        android:id="@+id/mapFragment"
+        android:enabled="true"
+        android:icon="@drawable/ic_map_24"
+        android:orderInCategory="3"
+        android:title="@string/map_view"
+        app:iconTint="@color/background" />
 
 </menu>

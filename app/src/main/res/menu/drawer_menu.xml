@@ -9,9 +9,4 @@
         android:icon="@drawable/ic_realtor_24"
         android:title="Edit realtors"
         app:iconTint="@color/background" />
-    <item
-        android:id="@+id/map_view_fragment"
-        android:icon="@drawable/ic_map_24"
-        android:title="Map view"
-        app:iconTint="@color/background" />
 </menu>

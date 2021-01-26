@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/add_property"
-        android:icon="@drawable/ic_add_24"
-        android:title="@string/add_property"
-        app:iconTint="@color/primaryColor"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/edit_property"
         android:icon="@drawable/ic_edit_24"
         android:title="@string/edit_property"

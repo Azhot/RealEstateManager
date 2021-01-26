@@ -11,21 +11,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.gms.common.ConnectionResult
+import com.google.android.gms.common.GoogleApiAvailability
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
-import com.google.android.material.snackbar.Snackbar
-import com.google.android.material.snackbar.Snackbar.LENGTH_SHORT
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.RealEstateManagerApplication
 import fr.azhot.realestatemanager.databinding.FragmentMapBinding
@@ -61,6 +61,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        checkGoogleServices()
+        checkAndRequestLocationPermission()
         binding = FragmentMapBinding.inflate(inflater)
         return binding.root
     }
@@ -68,7 +70,6 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         navController = Navigation.findNavController(view)
-        checkLocationPermission()
         startMap()
     }
 
@@ -91,11 +92,51 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     override fun onPause() {
         super.onPause()
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback)
+        if (this::fusedLocationProviderClient.isInitialized)
+            fusedLocationProviderClient.removeLocationUpdates(locationCallback)
     }
 
 
     // functions
+    private fun checkGoogleServices() {
+        GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(activity).run {
+            when {
+                this == ConnectionResult.SUCCESS -> return
+                GoogleApiAvailability.getInstance().isUserResolvableError(this) -> {
+                    GoogleApiAvailability.getInstance()
+                        .getErrorDialog(activity, this, RC_GOOGLE_SERVICES_DIALOG)
+                        .show()
+                }
+                else -> {
+                    Toast.makeText(
+                        context,
+                        getString(R.string.cannot_make_map_requests),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    activity?.onBackPressed()
+                }
+            }
+        }
+    }
+
+    private fun checkAndRequestLocationPermission() {
+        if (!checkPermissions(
+                requireContext(), arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            )
+        ) {
+            activity?.onBackPressed()
+            requestPermissions(
+                arrayOf(
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ), RC_LOCATION_PERMISSIONS
+            )
+        }
+    }
+
     private fun checkLocationPermission() {
         if (!checkPermissions(
                 requireContext(),
@@ -143,14 +184,11 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                         googleMap.isMyLocationEnabled = false
                         deviceLocation = null
 
-                        Snackbar.make(
-                            binding.root,
+                        Toast.makeText(
+                            context,
                             getString(R.string.location_not_available),
-                            LENGTH_SHORT
-                        ).run {
-                            setBackgroundTint(ContextCompat.getColor(context, R.color.primaryColor))
-                            show()
-                        }
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
@@ -176,35 +214,39 @@ class MapFragment : Fragment(), OnMapReadyCallback {
     private fun observePropertyList() {
         viewModel.getPropertyList().observe(viewLifecycleOwner) { propertyList ->
             googleMap.clear()
-            val geocoder = Geocoder(context)
+            val geoCoder = Geocoder(context)
             CoroutineScope(IO).launch {
                 for (property in propertyList) {
-                    runCatching {
-                        geocoder.getFromLocationName(property.address.toString(), 1)
-                            .run address@{
-                                if (this.isNotEmpty()) {
-                                    launch(Main) {
-                                        addMarker(
-                                            property,
-                                            LatLng(
-                                                this@address[0].latitude,
-                                                this@address[0].longitude
-                                            ),
-                                            context
-                                        )
-                                    }
-                                }
-                            }
-                    }.run {
-                        this.exceptionOrNull()?.let { throwable ->
-                            Log.e(
-                                this@MapFragment::class.simpleName,
-                                "observePropertyList",
-                                throwable
+                    retrieveLocationAndLoadMarker(property, geoCoder)
+                }
+            }
+        }
+    }
+
+    private suspend fun retrieveLocationAndLoadMarker(property: Property, geoCoder: Geocoder) {
+        runCatching {
+            geoCoder.getFromLocationName(property.address.toString(), 1)
+                .run address@{
+                    if (this.isNotEmpty()) {
+                        withContext(Main) {
+                            addMarker(
+                                property,
+                                LatLng(
+                                    this@address[0].latitude,
+                                    this@address[0].longitude
+                                ),
+                                context
                             )
                         }
                     }
                 }
+        }.run {
+            this.exceptionOrNull()?.let { throwable ->
+                Log.e(
+                    this@MapFragment::class.simpleName,
+                    "observePropertyList",
+                    throwable
+                )
             }
         }
     }

@@ -72,8 +72,9 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.search_property -> promptSearchFragment()
+            R.id.add_property -> navigateNewProperty()
             R.id.edit_property -> navigateEditProperty()
+            R.id.search_property -> promptSearchFragment()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -178,6 +179,10 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         navController.navigate(
             PropertyListFragmentDirections.actionPropertyListFragmentToSearchModalFragment()
         )
+    }
+
+    private fun navigateNewProperty() {
+        navController.navigate(PropertyListFragmentDirections.actionPropertyListFragmentToAddPhotoFragment())
     }
 
     private fun navigateEditProperty() {

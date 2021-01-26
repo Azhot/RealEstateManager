@@ -72,6 +72,7 @@
 
     <!-- Bottom navigation view -->
     <string name="property_list">Property list</string>
+    <string name="map_view">Map view</string>
 
     <!-- Search modal fragment -->
     <string name="search_properties">Search properties</string>
