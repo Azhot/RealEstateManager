@@ -284,14 +284,16 @@
                     app:layout_constraintTop_toBottomOf="@id/realtor_title_text_view"
                     tools:text="François Jouvelot" />
 
-                <ImageButton
-                    android:id="@+id/static_maps_image_button"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                <ImageView
+                    android:id="@+id/static_maps_image_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
                     android:layout_marginTop="@dimen/large_margin"
-                    android:background="@drawable/ic_map_24"
+                    android:background="@drawable/ic_background_static_map"
                     android:contentDescription="@null"
-                    app:backgroundTint="@color/lightGray"
+                    android:cropToPadding="true"
+                    android:padding="@dimen/very_small_padding"
+                    app:layout_constraintDimensionRatio="1:1"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/realtor_text_view" />

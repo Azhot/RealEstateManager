@@ -13,6 +13,11 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners
+import com.bumptech.glide.request.RequestOptions
+import fr.azhot.realestatemanager.BuildConfig
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.FragmentPropertyDetailBinding
 import fr.azhot.realestatemanager.model.Photo
@@ -95,6 +100,7 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
     private fun observeLiveProperty() {
         sharedViewModel.liveProperty.observe(viewLifecycleOwner) { property ->
             setUpWidgets(property)
+            loadStaticMap(property)
         }
     }
 
@@ -129,6 +135,47 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
         binding.realtorTextView.text = property.realtor?.toString()
             ?: getString(R.string.not_provided)
         loadPointOfInterestList(property)
+    }
+
+    private fun loadStaticMap(property: Property) {
+        Glide.with(this)
+            .load(staticMapQuery(property))
+            .apply(
+                RequestOptions().transform(
+                    CenterCrop(),
+                    GranularRoundedCorners(4f, 4f, 4f, 4f)
+                )
+            )
+            .into(binding.staticMapsImageView)
+
+        binding.staticMapsImageView.setOnClickListener {
+            startOpenPhotoActivity(
+                Photo(
+                    detailId = "",
+                    uri = staticMapQuery(property),
+                    title = property.address.toString()
+                )
+            )
+        }
+    }
+
+    private fun staticMapQuery(property: Property): String {
+        StringBuilder().apply {
+            append("https://maps.googleapis.com/maps/api/staticmap?key=")
+            append(BuildConfig.GOOGLE_API_KEY)
+            append("&center=")
+            append(property.address.toString())
+            append("&markers=")
+            append(property.address.toString())
+            for (poi in property.pointOfInterestList) {
+                poi.address?.toString()?.let {
+                    append("&markers=size:mid|color:blue|")
+                    append(it)
+                }
+            }
+            append("&zoom=15&size=400x400&scale=4")
+            return toString()
+        }
     }
 
     private fun loadNumberTextView(number: Int?, textView: TextView, suffix: String?) {

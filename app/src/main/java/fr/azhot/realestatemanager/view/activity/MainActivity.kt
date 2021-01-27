@@ -51,7 +51,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         // todo : content provider
         // todo : loan simulator
-        // todo : add static map
         // todo : integration test for network verification
     }
 
