@@ -53,7 +53,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         // todo : loan simulator
         // todo : add static map
         // todo : integration test for network verification
-        // todo : content provider
     }
 
     override fun onBackPressed() {

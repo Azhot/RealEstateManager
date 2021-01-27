@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.checkbox.MaterialCheckBox xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="28dp"
-    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-    android:textColor="@color/darkText"
-    app:buttonTint="@color/darkText"
-    tools:text="Train station" />
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/average_padding"
+    android:paddingEnd="@dimen/average_padding">
+
+    <com.google.android.material.checkbox.MaterialCheckBox
+        android:id="@+id/poi_checkbox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textColor="@color/darkText"
+        app:buttonTint="@color/darkText"
+        tools:text="Train station" />
+
+</LinearLayout>

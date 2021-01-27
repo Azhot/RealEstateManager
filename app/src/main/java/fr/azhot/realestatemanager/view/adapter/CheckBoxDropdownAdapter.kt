@@ -6,15 +6,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import androidx.appcompat.widget.AppCompatCheckBox
 import fr.azhot.realestatemanager.R
-import fr.azhot.realestatemanager.model.PointOfInterestType
 
-class CheckBoxDropdownAdapter(
+class CheckBoxDropdownAdapter<T>(
     context: Context,
     itemResource: Int,
-    items: List<Any>,
-    private val existingData: List<PointOfInterestType>?,
+    items: List<T>,
+    private val existingData: List<T>?,
     private val itemCheckListener: ItemCheckListener,
-) : ArrayAdapter<Any>(context, itemResource, items) {
+) : ArrayAdapter<T>(context, itemResource, items) {
 
     // listener
     interface ItemCheckListener {
@@ -22,17 +21,15 @@ class CheckBoxDropdownAdapter(
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-        val checkBox = convertView ?: View.inflate(context, R.layout.cell_poi_type, null)
-        checkBox as AppCompatCheckBox
-        checkBox.text = getItem(position).toString()
-        existingData?.let {
-            if (it.contains(getItem(position))) {
-                checkBox.isChecked = true
+        val view = convertView ?: View.inflate(context, R.layout.cell_poi_type, null)
+        val checkBox = view.findViewById<AppCompatCheckBox>(R.id.poi_checkbox)
+        checkBox.apply {
+            text = getItem(position).toString()
+            existingData?.let { isChecked = it.contains(getItem(position)) }
+            setOnCheckedChangeListener { _, isChecked ->
+                itemCheckListener.onItemCheckListener(isChecked, getItem(position))
             }
         }
-        checkBox.setOnCheckedChangeListener { _, isChecked ->
-            itemCheckListener.onItemCheckListener(isChecked, getItem(position))
-        }
-        return checkBox
+        return view
     }
 }
