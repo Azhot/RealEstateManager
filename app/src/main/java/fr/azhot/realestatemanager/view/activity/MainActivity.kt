@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
         binding.navView.setNavigationItemSelectedListener(this)
 
-        // todo : content provider
         // todo : loan simulator
         // todo : integration test for network verification
     }

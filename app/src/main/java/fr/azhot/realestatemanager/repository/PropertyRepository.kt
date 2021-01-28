@@ -64,14 +64,14 @@ class PropertyRepository(
             append(
                 """
                     SELECT DISTINCT d.*
-                    FROM detail_table d
-                    LEFT JOIN address_table a ON a.addressId = d.addressId
-                    LEFT JOIN (SELECT photos.detailId, COUNT(photos.detailId) photosCount 
-                        FROM photo_table photos
-                        GROUP BY photos.detailId
-                    ) ph ON ph.detailId = d.detailId
-                    LEFT JOIN point_of_interest_table poi ON poi.detailId = d.detailId
-                    LEFT JOIN realtor_table r ON r.realtorId = d.realtorId
+                    FROM detail_table AS d
+                    LEFT JOIN address_table AS a ON a.addressId = d.addressId
+                    LEFT JOIN (SELECT detailId, COUNT(detailId) AS photosCount 
+                        FROM photo_table
+                        GROUP BY detailId
+                    ) AS ph ON ph.detailId = d.detailId
+                    LEFT JOIN point_of_interest_table AS poi ON poi.detailId = d.detailId
+                    LEFT JOIN realtor_table AS r ON r.realtorId = d.realtorId
                 """
             )
             propertySearch.run {
@@ -97,23 +97,23 @@ class PropertyRepository(
                     append("AND d.saleTimeStamp >= '${it.first}' ")
                     append("AND d.saleTimeStamp <= '${it.second}' ")
                 }
-                poiTypeList?.let {
-                    if (it.isNotEmpty()) {
+                poiTypeList?.let { poiTypes ->
+                    if (poiTypes.isNotEmpty()) {
                         append("AND poi.detailId IN (")
                         append(
                             """
-                                SELECT poi0.detailId
-                                FROM point_of_interest_table as poi0
-                                WHERE poi0.pointOfInterestType = '${it[0].name}'
+                                SELECT detailId
+                                FROM point_of_interest_table
+                                WHERE pointOfInterestType = '${poiTypes[0].name}'
                             """
                         )
-                        for (i in 1..it.lastIndex) {
+                        for (poiType in poiTypes) {
                             append(
                                 """
                                     INTERSECT
-                                    SELECT poi${i}.detailId
-                                    FROM point_of_interest_table as poi${i}
-                                    WHERE poi${i}.pointOfInterestType = '${it[i].name}'
+                                    SELECT detailId
+                                    FROM point_of_interest_table
+                                    WHERE pointOfInterestType = '${poiType.name}'
                                 """
                             )
                         }

@@ -1,5 +1,6 @@
 package fr.azhot.realestatemanager.database.dao
 
+import android.database.Cursor
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import androidx.sqlite.db.SimpleSQLiteQuery
@@ -14,6 +15,17 @@ interface DetailDao {
     @Transaction
     @RawQuery
     fun getPropertyFilterableList(query: SimpleSQLiteQuery): Flow<List<Property>>
+
+    @Query(
+        """
+                   SELECT *
+                   FROM detail_table AS d
+                   LEFT JOIN address_table AS a ON a.addressId = d.addressId
+                   LEFT JOIN point_of_interest_table AS poi ON poi.detailId = d.detailId
+                   LEFT JOIN realtor_table AS r ON r.realtorId = d.realtorId
+               """
+    )
+    fun getPropertyList(): Cursor
 
     @Query("SELECT MIN(price) as min, MAX(price) as max FROM detail_table")
     fun getPriceBounds(): LiveData<MinMax>

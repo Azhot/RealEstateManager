@@ -225,28 +225,20 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     private suspend fun retrieveLocationAndLoadMarker(property: Property, geoCoder: Geocoder) {
         runCatching {
-            geoCoder.getFromLocationName(property.address.toString(), 1)
-                .run address@{
-                    if (this.isNotEmpty()) {
-                        withContext(Main) {
-                            addMarker(
-                                property,
-                                LatLng(
-                                    this@address[0].latitude,
-                                    this@address[0].longitude
-                                ),
-                                context
-                            )
-                        }
+            geoCoder.getFromLocationName(property.address.toString(), 1).run address@{
+                if (this.isNotEmpty()) {
+                    withContext(Main) {
+                        addMarker(
+                            property,
+                            LatLng(this@address[0].latitude, this@address[0].longitude),
+                            context
+                        )
                     }
                 }
+            }
         }.run {
             this.exceptionOrNull()?.let { throwable ->
-                Log.e(
-                    this@MapFragment::class.simpleName,
-                    "observePropertyList",
-                    throwable
-                )
+                Log.e(this@MapFragment::class.simpleName, "observePropertyList", throwable)
             }
         }
     }
