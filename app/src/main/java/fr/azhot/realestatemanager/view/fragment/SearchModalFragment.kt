@@ -30,7 +30,8 @@ import java.text.NumberFormat
 import java.util.*
 
 
-class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
+class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
+    CheckBoxDropdownAdapter.ItemCheckListener {
 
     // variables
     private lateinit var binding: FragmentSearchModalBinding
@@ -80,8 +81,6 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
             setUpDateRangePickerButton(binding.saleDateButton, propertySearch.saleDateRange)
             setUpListeners(propertySearch)
         }
-
-
         observeCityList()
         observeRealtorList()
         setUpButtons()
@@ -123,6 +122,26 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
         }
     }
 
+    override fun <T> onItemCheckListener(isChecked: Boolean, item: T) {
+        if (sharedViewModel.livePropertySearch.value?.poiTypeList == null)
+            sharedViewModel.livePropertySearch.value?.poiTypeList = mutableListOf()
+        sharedViewModel.livePropertySearch.value?.poiTypeList?.apply list@{
+            item as PointOfInterestType
+            if (isChecked && !this.contains(item)) this.add(item) else this.remove(item)
+            if (this.isEmpty()) {
+                sharedViewModel.livePropertySearch.value?.poiTypeList = null
+                binding.poiTypeFilterAutoComplete.apply {
+                    setText(null, false)
+                    clearFocus()
+                }
+            } else {
+                binding.poiTypeFilterAutoComplete.setText(listToText(this@list), false)
+            }
+        }
+        sharedViewModel.livePropertySearch.forceRefresh()
+    }
+
+
     //functions
     private fun setUpExposedDropdownMenus(propertySearch: PropertySearch) {
         binding.propertyTypeFilterAutoComplete.apply {
@@ -157,11 +176,8 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
                     R.layout.cell_poi_type,
                     PointOfInterestType.values().toMutableList(),
                     sharedViewModel.livePropertySearch.value?.poiTypeList,
-                    object : CheckBoxDropdownAdapter.ItemCheckListener {
-                        override fun onItemCheckListener(isChecked: Boolean, item: Any?) {
-                            onPoiTypeChecked(isChecked, item)
-                        }
-                    })
+                    this@SearchModalFragment
+                )
             )
         }
 
@@ -177,24 +193,8 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener {
         }
     }
 
-    private fun onPoiTypeChecked(isChecked: Boolean, item: Any?) {
-        if (sharedViewModel.livePropertySearch.value?.poiTypeList == null)
-            sharedViewModel.livePropertySearch.value?.poiTypeList = mutableListOf()
-        sharedViewModel.livePropertySearch.value?.poiTypeList?.apply list@{
-            item as PointOfInterestType
-            if (isChecked && !this.contains(item)) this.add(item) else this.remove(item)
-            if (this.isEmpty()) {
-                sharedViewModel.livePropertySearch.value?.poiTypeList = null
-                binding.poiTypeFilterAutoComplete.setText(null, false)
-                binding.poiTypeFilterAutoComplete.clearFocus()
-            } else {
-                binding.poiTypeFilterAutoComplete.setText(listToText(this@list), false)
-            }
-        }
-        sharedViewModel.livePropertySearch.forceRefresh()
-    }
-
-    private fun listToText(list: MutableList<*>): String {
+    private fun listToText(list: MutableList<PointOfInterestType>?): String? {
+        if (list == null) return null
         StringBuilder().apply {
             for (i in 0..list.lastIndex) {
                 append("${list[i]}")

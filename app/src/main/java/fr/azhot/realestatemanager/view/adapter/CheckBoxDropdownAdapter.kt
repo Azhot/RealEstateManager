@@ -17,15 +17,16 @@ class CheckBoxDropdownAdapter<T>(
 
     // listener
     interface ItemCheckListener {
-        fun onItemCheckListener(isChecked: Boolean, item: Any?)
+        fun <T> onItemCheckListener(isChecked: Boolean, item: T)
     }
 
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: View.inflate(context, R.layout.cell_poi_type, null)
         val checkBox = view.findViewById<AppCompatCheckBox>(R.id.poi_checkbox)
         checkBox.apply {
+            setOnCheckedChangeListener(null)
             text = getItem(position).toString()
-            existingData?.let { isChecked = it.contains(getItem(position)) }
+            if (existingData != null) isChecked = existingData.contains(getItem(position))
             setOnCheckedChangeListener { _, isChecked ->
                 itemCheckListener.onItemCheckListener(isChecked, getItem(position))
             }
