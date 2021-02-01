@@ -5,8 +5,8 @@
     tools:showIn="navigation_view">
 
     <item
-        android:id="@+id/edit_realtors"
-        android:icon="@drawable/ic_realtor_24"
-        android:title="Edit realtors"
+        android:id="@+id/loan_calculator"
+        android:icon="@drawable/ic_calculate_24"
+        android:title="@string/loan_calculator"
         app:iconTint="@color/background" />
 </menu>

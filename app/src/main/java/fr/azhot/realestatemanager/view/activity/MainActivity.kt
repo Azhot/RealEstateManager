@@ -17,16 +17,15 @@ import androidx.navigation.NavDestination
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.NavigationUI
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 import fr.azhot.realestatemanager.R
 import fr.azhot.realestatemanager.databinding.ActivityMainBinding
+import fr.azhot.realestatemanager.view.fragment.PropertyListFragmentDirections
 import fr.azhot.realestatemanager.viewmodel.SharedViewModel
 
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener,
-    NavigationView.OnNavigationItemSelectedListener,
-    BottomNavigationView.OnNavigationItemSelectedListener {
+    NavigationView.OnNavigationItemSelectedListener {
 
 
     // variables
@@ -49,7 +48,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         navController.addOnDestinationChangedListener(this)
         binding.navView.setNavigationItemSelectedListener(this)
 
-        // todo : loan simulator
         // todo : integration test for network verification
     }
 
@@ -122,8 +120,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+            (R.id.loan_calculator) -> {
+                navController.navigate(
+                    PropertyListFragmentDirections.actionPropertyListFragmentToLoanCalculatorFragment()
+                )
+            }
         }
-        // todo : onBackPressed() to be applied to drawer nav items
+        onBackPressed()
         return true
     }
 
@@ -131,15 +134,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     // functions
     private fun initVariables() {
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(binding.mainContainerView.id) as NavHostFragment
+        val navHostFragment = supportFragmentManager.findFragmentById(binding.mainContainerView.id)
+                as NavHostFragment
         navController = navHostFragment.findNavController()
     }
 
     private fun setUpNavigationUI() {
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
-        binding.bottomNavigation.menu.findItem(R.id.propertyDetailFragment).isVisible =
-            false
+        binding.bottomNavigation.menu.findItem(R.id.propertyDetailFragment).isVisible = false
     }
 
     private fun observeLiveProperty() {

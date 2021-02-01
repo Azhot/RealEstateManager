@@ -93,4 +93,13 @@
     <string name="cannot_make_map_requests">This device cannot make map requests.</string>
     <string name="location_not_available">Location is not available… Check GPS settings.</string>
 
+    <!-- Loan calculator fragment -->
+    <string name="loan_calculator">Loan calculator</string>
+    <string name="loan_calculator_title">Fill in the information below to obtain live projections …</string>
+    <string name="loan_amount">Amount of the loan</string>
+    <string name="interest_rate">Interest rate</string>
+    <string name="insurance_rate">Insurance rate</string>
+    <string name="loan_duration">Loan duration (year)</string>
+    <string name="monthly_payment">Monthly payment</string>
+
 </resources>

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.LoanCalculatorFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginStart="@dimen/average_margin"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="@dimen/average_margin"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/ic_background"
+        android:paddingTop="@dimen/very_large_padding"
+        android:paddingBottom="@dimen/very_large_padding">
+
+        <TextView
+            android:id="@+id/loan_calculator_title_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/very_large_margin"
+            android:gravity="center"
+            android:text="@string/loan_calculator_title"
+            android:textAppearance="?attr/textAppearanceHeadline5"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/loan_amount_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/extra_large_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/loan_amount"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loan_calculator_title_text_view" />
+
+        <TextView
+            android:id="@+id/loan_amount_display_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:gravity="end"
+            android:textColor="@color/lightText"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/loan_amount_slider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/loan_amount_slider"
+            app:layout_constraintTop_toTopOf="@id/loan_amount_slider"
+            tools:text="$1,000,000" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/loan_amount_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/average_margin"
+            android:stepSize="5000"
+            android:valueFrom="0"
+            android:valueTo="1000000"
+            app:layout_constraintEnd_toStartOf="@id/loan_amount_display_text_view"
+            app:layout_constraintHorizontal_weight="4"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/loan_amount_text_view" />
+
+        <TextView
+            android:id="@+id/interest_rate_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/interest_rate"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loan_amount_slider" />
+
+        <TextView
+            android:id="@+id/interest_rate_display_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:gravity="end"
+            android:textColor="@color/lightText"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/interest_rate_slider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/interest_rate_slider"
+            app:layout_constraintTop_toTopOf="@id/interest_rate_slider"
+            tools:text="1,20%" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/interest_rate_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/average_margin"
+            android:valueFrom="0"
+            android:valueTo="5"
+            app:layout_constraintEnd_toStartOf="@id/interest_rate_display_text_view"
+            app:layout_constraintHorizontal_weight="6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/interest_rate_text_view" />
+
+        <TextView
+            android:id="@+id/insurance_rate_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/insurance_rate"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/interest_rate_slider" />
+
+        <TextView
+            android:id="@+id/insurance_rate_display_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:gravity="end"
+            android:textColor="@color/lightText"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/insurance_rate_slider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/insurance_rate_slider"
+            app:layout_constraintTop_toTopOf="@id/insurance_rate_slider"
+            tools:text="0,20%" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/insurance_rate_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/average_margin"
+            android:valueFrom="0"
+            android:valueTo="2"
+            app:layout_constraintEnd_toStartOf="@id/insurance_rate_display_text_view"
+            app:layout_constraintHorizontal_weight="6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/insurance_rate_text_view" />
+
+        <TextView
+            android:id="@+id/loan_duration_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/average_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:text="@string/loan_duration"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/insurance_rate_slider" />
+
+        <TextView
+            android:id="@+id/loan_duration_display_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/very_large_margin"
+            android:drawablePadding="@dimen/average_padding"
+            android:gravity="end"
+            android:textColor="@color/lightText"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/loan_duration_slider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/loan_duration_slider"
+            app:layout_constraintTop_toTopOf="@id/loan_duration_slider"
+            tools:text="25" />
+
+        <com.google.android.material.slider.Slider
+            android:id="@+id/loan_duration_slider"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/very_large_margin"
+            android:layout_marginTop="@dimen/average_margin"
+            android:stepSize="1"
+            android:valueFrom="1"
+            android:valueTo="30"
+            app:layout_constraintEnd_toStartOf="@id/loan_duration_display_text_view"
+            app:layout_constraintHorizontal_weight="9"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/loan_duration_text_view" />
+
+        <TextView
+            android:id="@+id/monthly_payment_title_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/very_large_margin"
+            android:text="@string/monthly_payment"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/loan_duration_slider" />
+
+        <TextView
+            android:id="@+id/monthly_payment_result_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/small_margin"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            android:textColor="@color/lightText"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/monthly_payment_title_text_view"
+            tools:text="$1,513.17" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

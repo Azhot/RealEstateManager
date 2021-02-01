@@ -32,6 +32,14 @@
             android:id="@+id/action_propertyListFragment_to_searchModalFragment"
             app:destination="@id/searchModalFragment" />
 
+        <action
+            android:id="@+id/action_propertyListFragment_to_loanCalculatorFragment"
+            app:destination="@id/loanCalculatorFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <!-- Property Detail Fragment -->
@@ -132,5 +140,12 @@
         android:name="fr.azhot.realestatemanager.view.fragment.MapFragment"
         android:label="Map view"
         tools:layout="@layout/fragment_map" />
+
+    <!-- Loan Calculator Fragment -->
+    <fragment
+        android:id="@+id/loanCalculatorFragment"
+        android:name="fr.azhot.realestatemanager.view.fragment.LoanCalculatorFragment"
+        android:label="@string/loan_calculator"
+        tools:layout="@layout/fragment_loan_calculator" />
 
 </navigation>
