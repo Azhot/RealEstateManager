@@ -17,7 +17,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.math.roundToInt
 
-class UtilsUnitTest {
+class UtilsTest {
 
     @Test
     fun convertEuroToDollar_isCorrect() {
