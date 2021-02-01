@@ -47,8 +47,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setUpDrawerToggle()
         navController.addOnDestinationChangedListener(this)
         binding.navView.setNavigationItemSelectedListener(this)
-
-        // todo : integration test for network verification
     }
 
     override fun onBackPressed() {

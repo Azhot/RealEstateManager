@@ -2,8 +2,9 @@ package fr.azhot.realestatemanager.utils;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.net.NetworkCapabilities;
 import android.net.NetworkInfo;
-import android.net.wifi.WifiManager;
+import android.os.Build;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -26,7 +27,7 @@ public class Utils {
      * @return the euro rounded amount converted from the dollars argument
      */
     public static int convertDollarToEuro(int dollars) {
-        return (int) Math.round(dollars * 0.812);
+        return Math.round(dollars * EUR_DOLLAR_EXCHANGE_RATE);
     }
 
     public static int convertEuroToDollar(int euros) {
@@ -52,12 +53,17 @@ public class Utils {
      * @return a Boolean stating the status of the internet availability
      */
     public static Boolean isInternetAvailable(Context context) {
-        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = null;
-        if (connectivityManager != null)  {
-            networkInfo = connectivityManager.getActiveNetworkInfo();
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+            NetworkInfo ni = null;
+            if (cm != null) ni = cm.getActiveNetworkInfo();
+            return ni != null && ni.isConnectedOrConnecting();
+        } else {
+            NetworkCapabilities nc = null;
+            if (cm != null) nc = cm.getNetworkCapabilities(cm.getActiveNetwork());
+            return nc != null && nc.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET);
         }
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
-        // TODO : this requires an Instrumented Test
     }
 }
