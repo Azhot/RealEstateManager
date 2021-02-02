@@ -1,7 +1,6 @@
 <resources>
     <!-- general -->
     <string name="app_name">Real Estate Manager</string>
-    <string name="error_occurred">An error has occurred. Try again.</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 
@@ -88,7 +87,6 @@
     <string name="realtor_filter">Realtor filter</string>
     <string name="poi_type_filter">Point of interest type filter</string>
     <string name="reset">Reset</string>
-    <string name="apply">Apply</string>
     <string name="ok">OK</string>
     <string name="cannot_make_map_requests">This device cannot make map requests.</string>
     <string name="location_not_available">Location is not available… Check GPS settings.</string>

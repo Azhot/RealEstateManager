@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import fr.azhot.realestatemanager.databinding.CellAddPhotoBinding
 
 class AddPhotoListAdapter(
-    var bitmapList: MutableList<Pair<Bitmap, String>>,
+    private var bitmapList: MutableList<Pair<Bitmap, String>>,
     private val onDeletePhotoListener: OnDeletePhotoListener
 ) : RecyclerView.Adapter<AddPhotoListAdapter.PhotoMapViewHolder>() {
 

@@ -17,10 +17,4 @@
         <item name="fontFamily">@font/robotocondensed_light</item>
     </style>
 
-    <style name="next_button">
-        <item name="android:textSize">24sp</item>
-        <item name="android:textColor">@color/primaryDarkColor</item>
-        <item name="fontFamily">sans-serif-medium</item>
-    </style>
-
 </resources>
