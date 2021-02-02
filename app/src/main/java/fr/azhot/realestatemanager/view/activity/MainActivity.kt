@@ -50,6 +50,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     override fun onBackPressed() {
+        // if drawer is open, onBackPressed should simply close it
         if (binding.root.isDrawerOpen(GravityCompat.START)) {
             binding.root.closeDrawer(GravityCompat.START)
             return
@@ -61,6 +62,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         m?.let { menu ->
             menu.clear()
             this.menu = menu
+            // define on which fragments a menu is to be shown
             menuInflater.inflate(
                 when (navController.currentDestination?.id) {
                     R.id.propertyListFragment -> R.menu.property_list_menu
@@ -69,6 +71,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 },
                 this.menu
             )
+            // user should only be shown the "edit property" opt when a property was selected
             if (resources.getBoolean(R.bool.isLandscape) && sharedViewModel.liveProperty.value == null) {
                 this.menu.findItem(R.id.edit_property)?.isVisible = false
             }
@@ -82,9 +85,12 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         destination: NavDestination,
         arguments: Bundle?
     ) {
-        invalidateOptionsMenu()
+        invalidateOptionsMenu() // to prompt onCreateOptionsMenu
         supportActionBar?.title = destination.label
+        // get a hold on the toolbar's title textView
         val toolbarTitle = binding.toolbar.getChildAt(0) as TextView
+        /* opening drawer must only be available in property list.
+        otherwise, burger icon is replaced by back arrow */
         when (destination.id) {
             R.id.propertyListFragment -> {
                 toolbarTitle.typeface =
@@ -139,12 +145,15 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     private fun setUpNavigationUI() {
         NavigationUI.setupWithNavController(binding.bottomNavigation, navController)
+        // property detail must be only activated when a property is selected by the user
         binding.bottomNavigation.menu.findItem(R.id.propertyDetailFragment).isVisible = false
     }
 
     private fun observeLiveProperty() {
         sharedViewModel.liveProperty.observe(this) { property ->
             if (property != null) {
+                /* property detail must be only activated when a property is selected by the user
+                and device is not in landscape (master-detail display) */
                 binding.bottomNavigation.menu.findItem(R.id.propertyDetailFragment)?.isVisible =
                     !resources.getBoolean(R.bool.isLandscape)
                 if (resources.getBoolean(R.bool.isLandscape) && this::menu.isInitialized) {

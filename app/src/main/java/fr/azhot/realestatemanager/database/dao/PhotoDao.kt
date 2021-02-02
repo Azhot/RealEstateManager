@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import fr.azhot.realestatemanager.model.Photo
 
+/**
+ * Data Access Object for [Photo] entity.
+ */
 @Dao
 interface PhotoDao {
 

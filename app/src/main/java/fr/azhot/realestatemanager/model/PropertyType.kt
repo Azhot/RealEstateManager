@@ -2,6 +2,9 @@ package fr.azhot.realestatemanager.model
 
 import java.util.*
 
+/**
+ * An enum representing the type of a [Property].
+ */
 enum class PropertyType {
     DUPLEX,
     LOFT,

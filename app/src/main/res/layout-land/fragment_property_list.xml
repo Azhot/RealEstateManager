@@ -7,7 +7,7 @@
     tools:context=".view.fragment.PropertyListFragment">
 
     <TextView
-        android:id="@+id/filer_on_text_view"
+        android:id="@+id/filter_on_text_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/average_margin"
@@ -41,7 +41,7 @@
         app:layout_constraintEnd_toStartOf="@id/detail_container_view"
         app:layout_constraintHorizontal_weight="5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/filer_on_text_view"
+        app:layout_constraintTop_toBottomOf="@id/filter_on_text_view"
         tools:listitem="@layout/cell_property" />
 
     <androidx.fragment.app.FragmentContainerView

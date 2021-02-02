@@ -1,8 +1,13 @@
 package fr.azhot.realestatemanager.model
 
 import androidx.room.*
+import fr.azhot.realestatemanager.database.AppDatabase
 import java.util.*
 
+/**
+ * POJO representing a point of interest.
+ * Entity in the [AppDatabase].
+ */
 @Entity(
     tableName = "point_of_interest_table",
     foreignKeys = [

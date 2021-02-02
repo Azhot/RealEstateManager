@@ -4,6 +4,9 @@ import androidx.room.*
 import fr.azhot.realestatemanager.model.Realtor
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object for [Realtor] entity.
+ */
 @Dao
 interface RealtorDao {
 

@@ -41,9 +41,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
 
     // overridden functions
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentPropertyListBinding.inflate(layoutInflater)
         return binding.root
@@ -60,7 +58,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
 
     override fun onResume() {
         super.onResume()
-        // if landscape, load detail fragment to the respective container
+        // if landscape, load detail fragment to the respective fragment container (master-detail)
         if (activity?.resources?.getBoolean(R.bool.isLandscape) == true
             && sharedViewModel.liveProperty.value != null
         ) {
@@ -79,7 +77,6 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         return super.onOptionsItemSelected(item)
     }
 
-    // androidx.lifecycle.Observer interface
     override fun onChanged(propertyList: List<Property>) {
         binding.propertyListRecyclerView.apply {
             (adapter as PropertyListAdapter).setList(propertyList)
@@ -87,7 +84,6 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
         }
     }
 
-    // PropertyListAdapter callback
     override fun onPropertyClickListener(property: Property) {
         if (activity?.resources?.getBoolean(R.bool.isLandscape) == true) {
             if (property == sharedViewModel.liveProperty.value) return
@@ -114,7 +110,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
 
     // sets the action on click either to the right drawable or the text of filter text view
     private fun setUpFilterOnTextView() {
-        binding.filerOnTextView.apply {
+        binding.filterOnTextView.apply {
             setOnTouchListener { v, event ->
                 v.performClick()
                 when (event.action) {
@@ -140,7 +136,7 @@ class PropertyListFragment : Fragment(), PropertyClickListener, Observer<List<Pr
             // get property data from room
             observePropertyFilterableList(propertySearch)
             // animate filter text view
-            binding.filerOnTextView.apply {
+            binding.filterOnTextView.apply {
                 if (propertySearch.isOn()) {
                     alpha = 0f
                     text = propertySearch.toString(context)

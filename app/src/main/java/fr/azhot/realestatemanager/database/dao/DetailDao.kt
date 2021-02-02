@@ -9,6 +9,9 @@ import fr.azhot.realestatemanager.model.MinMax
 import fr.azhot.realestatemanager.model.Property
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object for [Detail] entity.
+ */
 @Dao
 interface DetailDao {
 

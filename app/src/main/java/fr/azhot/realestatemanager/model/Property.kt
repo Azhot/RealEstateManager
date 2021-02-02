@@ -3,6 +3,9 @@ package fr.azhot.realestatemanager.model
 import androidx.room.Embedded
 import androidx.room.Relation
 
+/**
+ * POJO representing a real estate property.
+ */
 data class Property(
     @Embedded
     val detail: Detail,

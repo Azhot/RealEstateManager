@@ -3,10 +3,14 @@ package fr.azhot.realestatemanager.model
 import android.content.Context
 import androidx.core.util.Pair
 import fr.azhot.realestatemanager.R
+import fr.azhot.realestatemanager.database.AppDatabase
 import fr.azhot.realestatemanager.utils.formatTimeStamp
 import java.text.NumberFormat
 import java.util.*
 
+/**
+ * Object representing a user cross-criteria search over [AppDatabase] available properties.
+ */
 class PropertySearch(
     var propertyType: PropertyType? = null,
     var city: String? = null,

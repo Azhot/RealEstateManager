@@ -5,9 +5,14 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import fr.azhot.realestatemanager.database.AppDatabase
 import kotlinx.parcelize.Parcelize
 import java.util.*
 
+/**
+ * POJO representing a photo being stored within the device's storage.
+ * Entity in the [AppDatabase].
+ */
 @Parcelize
 @Entity(
     tableName = "photo_table",

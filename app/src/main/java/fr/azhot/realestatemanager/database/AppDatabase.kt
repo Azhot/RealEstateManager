@@ -15,6 +15,10 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.*
 
+/**
+ * Database implementation for this app.
+ * @see [RoomDatabase]
+ */
 @Database(
     entities = [
         Detail::class,
@@ -58,7 +62,7 @@ abstract class AppDatabase : RoomDatabase() {
     }
 
 
-    // callback
+    // callbacks
     private class AppDatabaseCallback(private val scope: CoroutineScope) : RoomDatabase.Callback() {
 
         override fun onCreate(db: SupportSQLiteDatabase) {
@@ -72,9 +76,9 @@ abstract class AppDatabase : RoomDatabase() {
                     val pointOfInterestDao = database.pointOfInterestDao()
                     val realtorDao = database.realtorDao()
 
-                    createRealtorAndCityList(faker, realtorDao).run {
-                        repeat(30) {
-                            createProperty(
+                    createDummyRealtorAndCityList(faker, realtorDao).run {
+                        repeat(10) {
+                            createDummyProperty(
                                 faker,
                                 detailDao,
                                 addressDao,
@@ -88,7 +92,9 @@ abstract class AppDatabase : RoomDatabase() {
             }
         }
 
-        private suspend fun createRealtorAndCityList(
+
+        // functions
+        private suspend fun createDummyRealtorAndCityList(
             faker: Faker,
             realtorDao: RealtorDao
         ): Pair<ArrayList<Realtor>, ArrayList<String>> {
@@ -111,7 +117,7 @@ abstract class AppDatabase : RoomDatabase() {
             return realtorList to cityList
         }
 
-        private suspend fun createProperty(
+        private suspend fun createDummyProperty(
             faker: Faker,
             detailDao: DetailDao,
             addressDao: AddressDao,

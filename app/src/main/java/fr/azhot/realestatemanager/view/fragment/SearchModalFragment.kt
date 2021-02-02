@@ -64,9 +64,7 @@ class SearchModalFragment : BottomSheetDialogFragment(), View.OnClickListener,
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentSearchModalBinding.inflate(layoutInflater)
         return binding.root

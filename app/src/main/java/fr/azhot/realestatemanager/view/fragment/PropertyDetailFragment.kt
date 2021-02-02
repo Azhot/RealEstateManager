@@ -43,9 +43,7 @@ class PropertyDetailFragment : Fragment(), PhotoListAdapter.OnPhotoClickListener
 
     // overridden functions
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentPropertyDetailBinding.inflate(layoutInflater)
         return binding.root

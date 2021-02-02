@@ -4,6 +4,9 @@ import androidx.room.*
 import fr.azhot.realestatemanager.model.Address
 import kotlinx.coroutines.flow.Flow
 
+/**
+ * Data Access Object for [Address] entity.
+ */
 @Dao
 interface AddressDao {
 

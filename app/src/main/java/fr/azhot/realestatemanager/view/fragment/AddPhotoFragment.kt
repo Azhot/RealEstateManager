@@ -49,9 +49,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
 
     // overridden functions
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddPhotoBinding.inflate(inflater)
         return binding.root
@@ -75,9 +73,7 @@ class AddPhotoFragment : Fragment(), View.OnClickListener,
     }
 
     override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
+        requestCode: Int, permissions: Array<out String>, grantResults: IntArray
     ) {
         if (checkPermissionsGranted(
                 RC_READ_EXTERNAL_STORAGE_PERMISSION,

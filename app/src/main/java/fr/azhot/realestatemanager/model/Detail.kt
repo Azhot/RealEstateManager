@@ -4,8 +4,13 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import fr.azhot.realestatemanager.database.AppDatabase
 import java.util.*
 
+/**
+ * POJO representing information details about a real estate property.
+ * Entity in the [AppDatabase].
+ */
 @Entity(
     tableName = "detail_table",
     foreignKeys = [

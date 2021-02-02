@@ -3,6 +3,9 @@ package fr.azhot.realestatemanager.database.dao
 import androidx.room.*
 import fr.azhot.realestatemanager.model.PointOfInterest
 
+/**
+ * Data Access Object for [PointOfInterest] entity.
+ */
 @Dao
 interface PointOfInterestDao {
 

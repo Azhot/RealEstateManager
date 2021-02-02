@@ -57,9 +57,7 @@ class MapFragment : Fragment(), OnMapReadyCallback {
 
     // overridden functions
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         checkGoogleServices()
         checkAndRequestLocationPermission()
@@ -132,7 +130,8 @@ class MapFragment : Fragment(), OnMapReadyCallback {
                 arrayOf(
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.ACCESS_FINE_LOCATION
-                ), RC_LOCATION_PERMISSIONS
+                ),
+                RC_LOCATION_PERMISSIONS
             )
         }
     }

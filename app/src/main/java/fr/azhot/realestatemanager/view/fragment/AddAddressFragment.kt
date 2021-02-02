@@ -24,9 +24,7 @@ class AddAddressFragment : Fragment(), View.OnClickListener {
 
     // overridden functions
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = FragmentAddAddressBinding.inflate(inflater)
         return binding.root
